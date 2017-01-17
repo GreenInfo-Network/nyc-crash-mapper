@@ -1,0 +1,6 @@
+@import '~normalize-scss/sass/normalize';
+@include normalize();
+
+@import './skeleton/skeleton';
+
+@import 'app';
