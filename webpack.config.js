@@ -5,7 +5,6 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 const VENDOR_LIBS = [
   'classnames',
-  'leaflet',
   'react',
   'react-dom',
   'query-string',
