@@ -31,10 +31,27 @@ module.exports = {
   module: {
     rules: [
       {
-        use: 'babel-loader',
         test: /\.js$/,
+        enforce: 'pre',
+        use: [
+          {
+            loader: 'babel-loader'
+          },
+          {
+            loader: 'eslint-loader'
+          }
+        ],
+        include: path.resolve(process.cwd(), 'src'),
+        options: {
+          fix: true,
+        },
         exclude: /node_modules/
       },
+      // {
+      //   use: 'babel-loader',
+      //   test: /\.js$/,
+      //   exclude: /node_modules/
+      // },
       {
         loader: ExtractTextPlugin.extract({
           loader: "css-loader?sourceMap!sass-loader?sourceMap",
@@ -43,6 +60,17 @@ module.exports = {
         test: /\.scss$/
       }
     ]
+  },
+  watch: true,
+  watchOptions: {
+    poll: 1000
+  },
+  devServer: {
+    watchContentBase: true,
+    lazy: false,
+    watchOptions: {
+      poll: true
+    }
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
