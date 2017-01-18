@@ -8,6 +8,7 @@
     "indent": [1, 2, { "SwitchCase": 1 }],
     "semi": [2, "always"],
     "react/jsx-filename-extension": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
     "space-before-function-paren": 0,
     "comma-dangle": 0,
     "arrow-body-style": ["error", "as-needed"]
