@@ -1,0 +1,12 @@
+.app-header {
+  width: $app-header-width;
+  height: $app-header-height;
+  position: absolute;
+  top: $margin-25;
+  left: $margin-25;
+
+  .header-title,
+  .header-about {
+    margin: 0;
+  }
+}

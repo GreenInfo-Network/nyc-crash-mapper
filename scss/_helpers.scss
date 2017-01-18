@@ -1,0 +1,30 @@
+// helper classes
+.uppercase {
+  text-transform: uppercase;
+}
+
+.title-case {
+  text-transform: title-case;
+}
+
+.roboto-bold {
+  @extend %roboto-bold;
+}
+
+.roboto-regular {
+  @extend %roboto-regular;
+}
+
+.roboto-medium {
+  @extend %roboto-medium;
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.hidden-sneaky {
+  opacity: 0;
+  z-index: -9999;
+}

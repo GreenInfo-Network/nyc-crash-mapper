@@ -1,6 +1,20 @@
+// normalize browser defaults
 @import '~normalize-scss/sass/normalize';
 @include normalize();
 
+// skeleton.css base styles
 @import './skeleton/skeleton';
 
+// skeleton overrides
+@import 'variables';
+
+// app globals
 @import 'app';
+@import 'helpers';
+
+// individual component styles
+@import 'components/app-header';
+@import 'components/zoom-controls';
+@import 'components/leaflet-map';
+@import 'components/app-options-filters';
+@import 'components/app-stats-legend';

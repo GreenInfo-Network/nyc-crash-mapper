@@ -1,3 +1,31 @@
 body {
-  // background: black;
+  font-family: $roboto;
 }
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.app {
+  position: relative;
+}
+
+// UI elements
+.ui {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  background-color: $light-grey;
+  padding: $padding-10;
+}
+
+// positioning for UI elements
+.bottom { bottom: 0; }
+.left { left: 0; }
+.right { right: 0; }
