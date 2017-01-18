@@ -42,16 +42,8 @@ module.exports = {
           }
         ],
         include: path.resolve(process.cwd(), 'src'),
-        options: {
-          fix: true,
-        },
         exclude: /node_modules/
       },
-      // {
-      //   use: 'babel-loader',
-      //   test: /\.js$/,
-      //   exclude: /node_modules/
-      // },
       {
         loader: ExtractTextPlugin.extract({
           loader: "css-loader?sourceMap!sass-loader?sourceMap",
