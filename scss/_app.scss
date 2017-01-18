@@ -29,3 +29,20 @@ body,
 .bottom { bottom: 0; }
 .left { left: 0; }
 .right { right: 0; }
+
+// remove margins on h1 - h6
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding-bottom: 1rem;
+}
+
+p {
+  margin: 0;
+}
+
+// ruled lines
+hr {
+  border-top-color: $medium-grey;
+  margin: 0;
+  padding: 1rem 0;
+}
