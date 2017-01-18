@@ -7,6 +7,7 @@ const VENDOR_LIBS = [
   'classnames',
   'react',
   'react-dom',
+  'react-router',
   'query-string',
   'react-collapse',
   'react-height',
