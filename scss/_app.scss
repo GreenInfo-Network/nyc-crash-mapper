@@ -40,6 +40,21 @@ p {
   margin: 0;
 }
 
+// map options ul .filter-lists
+.filter-list {
+  display: inline-block;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  padding-left: $padding-10;
+
+  li {
+    padding: 0;
+    margin: 0;
+  }
+}
+
 // ruled lines
 hr {
   border-top-color: $medium-grey;

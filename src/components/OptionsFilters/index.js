@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import OptionsContainer from './OptionsContainer';
 import FilterByBoundary from './FilterByBoundary';
+import FilterByType from './FilterByType';
 
 class OptionsFilters extends Component {
   constructor() {
@@ -13,15 +14,17 @@ class OptionsFilters extends Component {
 
   render() {
     // TO DO: make component collapse to bottom of window instead of top
+    // const { innerHeight } = this.props;
+
     return (
       <div className="ui right app-options-filters">
-        <OptionsContainer title={'MAP OPTIONS'} ruledLine={true}>
+        <OptionsContainer title={'MAP OPTIONS'} ruledLine>
           <OptionsContainer title={'Filter by Boundary'}>
             <FilterByBoundary />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Type'}>
-            <p>to do...</p>
+            <FilterByType />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Date Range'}>
@@ -43,7 +46,11 @@ class OptionsFilters extends Component {
   }
 }
 
-OptionsFilters.defaultProps = {};
-OptionsFilters.propTypes = {};
+OptionsFilters.defaultProps = {
+  innerHeight: 0
+};
+OptionsFilters.propTypes = {
+  innerHeight: PropTypes.number
+};
 
 export default OptionsFilters;

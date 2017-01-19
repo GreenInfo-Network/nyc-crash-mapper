@@ -7,7 +7,7 @@ const FilterByBoundary = () => {
   const noop = () => {};
 
   return (
-    <ul className="filter-by-boundary">
+    <ul className="filter-by-boundary filter-list">
       <li>
         <FilterButton filterName={'Citywide'} callback={noop} />
       </li>

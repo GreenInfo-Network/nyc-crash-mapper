@@ -16,8 +16,9 @@ class OptionsContainer extends Component {
   }
 
   render() {
-    const { children, ruledLine, title } = this.props;
+    const { children, collapseHeight, ruledLine, title } = this.props;
     const { opened } = this.state;
+    const fixedHeight = collapseHeight > 0 ? collapseHeight : undefined;
 
     return (
       <section className="options-container">
@@ -29,6 +30,7 @@ class OptionsContainer extends Component {
         <Collapse
           className="options-container-collapsable"
           isOpened={opened}
+          {...fixedHeight}
         >
           { children }
         </Collapse>
@@ -38,12 +40,14 @@ class OptionsContainer extends Component {
 }
 
 OptionsContainer.defaultProps = {
-  ruledLine: false
+  ruledLine: false,
+  collapseHeight: 0
 };
 
 OptionsContainer.propTypes = {
   title: PropTypes.string.isRequired,
   ruledLine: PropTypes.bool,
+  collapseHeight: PropTypes.number,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.array

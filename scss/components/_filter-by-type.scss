@@ -1,0 +1,9 @@
+.filter-by-type {
+  display: table;
+  width: 100%;
+
+  .filter-list {
+    display: table-cell;
+    vertical-align: top;
+  }
+}

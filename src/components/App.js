@@ -4,7 +4,7 @@ import AppHeader from './AppHeader';
 import ZoomControls from './ZoomControls';
 import LeafletMap from './LeafletMap';
 import StatsLegend from './StatsLegend';
-import OptionsFilters from './OptionsFilters/';
+import OptionsFiltersConnected from '../containers/OptionsFiltersConnected';
 
 export default () => (
   <div className="App">
@@ -12,6 +12,6 @@ export default () => (
     <ZoomControls />
     <LeafletMap />
     <StatsLegend />
-    <OptionsFilters />
+    <OptionsFiltersConnected />
   </div>
 );

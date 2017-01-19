@@ -1,8 +1,19 @@
 .filter-options-button {
   height: 25px;
-  width: 155px;
   line-height: 25px;
-  padding: 0 15px;
+  padding: 0 10px;
   text-align: left;
   text-transform: none;
+
+  &.wide {
+    width: 145px;
+  }
+
+  &.narrow {
+    width: 90px;
+  }
+
+  &.auto {
+    width: auto;
+  }
 }
