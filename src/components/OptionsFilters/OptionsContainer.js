@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Collapse from 'react-collapse';
-// import cx from 'classnames';
+import cx from 'classnames';
 
 class OptionsContainer extends Component {
   constructor() {
@@ -19,9 +19,13 @@ class OptionsContainer extends Component {
     const { children, collapseHeight, ruledLine, title } = this.props;
     const { opened } = this.state;
     const fixedHeight = collapseHeight > 0 ? collapseHeight : undefined;
+    const optionsContainerCX = cx({
+      'options-container': true,
+      opened
+    });
 
     return (
-      <section className="options-container">
+      <section className={optionsContainerCX}>
         <div className="options-container-header" onClick={() => this.handleOpenClose()}>
           <h6 className="options-container-title roboto-bold">{title}</h6>
           <span className="options-container-collapse-icon">{opened ? '–' : '+'}</span>

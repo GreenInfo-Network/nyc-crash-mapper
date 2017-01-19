@@ -1,6 +1,11 @@
 .options-container {
 
+  &.opened {
+    padding-bottom: $padding-10;
+  }
+
   .options-container-header {
+    padding-top: $padding-10;
     cursor: pointer;
   }
 
