@@ -1,0 +1,16 @@
+.download-data {
+  display: table;
+  width: 100%;
+  padding-bottom: $padding-10;
+
+  .filter-button,
+  .data-last-updated {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  .data-last-updated {
+    font-size: 1.1rem;
+    padding-left: $padding-25;
+  }
+}

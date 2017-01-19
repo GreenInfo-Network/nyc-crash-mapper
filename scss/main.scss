@@ -2,6 +2,8 @@
 @import '~normalize-scss/sass/normalize';
 @include normalize();
 
+@import '~react-datepicker/dist/react-datepicker.css';
+
 // skeleton.css base styles
 @import './skeleton/skeleton';
 
@@ -22,3 +24,5 @@
 @import 'components/filter-button';
 @import 'components/filter-by-boundary';
 @import 'components/filter-by-type';
+@import 'components/filter-by-date';
+@import 'components/download-data';

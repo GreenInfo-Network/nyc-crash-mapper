@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import OptionsContainer from './OptionsContainer';
 import FilterByBoundary from './FilterByBoundary';
 import FilterByType from './FilterByType';
+import FilterByDate from './FilterByDate';
+import DownloadData from './DownloadData';
 
 class OptionsFilters extends Component {
   constructor() {
@@ -28,11 +30,11 @@ class OptionsFilters extends Component {
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Date Range'}>
-            <p>to do...</p>
+            <FilterByDate />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Data'}>
-            <p>to do...</p>
+            <DownloadData lastUpdated="12/31/2016" />
           </OptionsContainer>
           <hr />
         </OptionsContainer>

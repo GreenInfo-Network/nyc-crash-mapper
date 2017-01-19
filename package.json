@@ -28,10 +28,12 @@
   "homepage": "https://github.com/clhenrick/nyc-crash-mapper#readme",
   "dependencies": {
     "classnames": "^2.2.5",
+    "moment": "^2.17.1",
     "normalize-scss": "^6.0.0",
     "query-string": "^4.3.1",
     "react": "^15.4.2",
     "react-collapse": "^2.3.3",
+    "react-datepicker": "^0.39.0",
     "react-dom": "^15.4.2",
     "react-height": "^2.1.1",
     "react-motion": "^0.4.7",

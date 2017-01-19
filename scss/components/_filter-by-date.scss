@@ -1,0 +1,21 @@
+.filter-by-date {
+
+  .start-date,
+  .end-date {
+
+  }
+
+  .filter-date-label {
+    width: 60px;
+    display: inline-block;
+    font-size: 1.2rem;
+    padding-right: $padding-10;
+  }
+
+  // react-datepicker overrides
+  .react-datepicker__input-container input {
+    font-size: 1.2rem;
+    padding: 0 10px;
+    height: $button-height;
+  }
+}
