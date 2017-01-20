@@ -43,7 +43,7 @@ class OptionsFilters extends Component {
           title={'Share'}
           className="no-padding-bottom"
           collapsable={false}
-          optionsContainerHeight={88}
+          optionsContainerHeight={93}
         >
           <ShareOptions />
         </OptionsContainer>
