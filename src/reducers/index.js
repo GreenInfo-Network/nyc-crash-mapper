@@ -9,7 +9,13 @@ const browser = createResponsiveStateReducer({
   medium: 750,
   large: 1000,
   extraLarge: 1200
-});
+},
+  {
+    extraFields: () => ({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+  });
 
 const rootReducer = combineReducers({
   browser

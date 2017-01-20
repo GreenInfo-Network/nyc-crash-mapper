@@ -3,7 +3,7 @@ import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { createResponsiveStoreEnhancer } from 'redux-responsive';
 
-import reducer from './reducers/index';
+import reducer from './reducers/';
 
 const middleware = [thunkMiddleware];
 

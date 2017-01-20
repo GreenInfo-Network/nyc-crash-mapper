@@ -28,6 +28,7 @@
   "homepage": "https://github.com/clhenrick/nyc-crash-mapper#readme",
   "dependencies": {
     "classnames": "^2.2.5",
+    "lodash": "^4.17.4",
     "moment": "^2.17.1",
     "normalize-scss": "^6.0.0",
     "query-string": "^4.3.1",
