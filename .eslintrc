@@ -4,6 +4,10 @@
   "env": {
     "browser": true
   },
+  "globals": {
+    "L": false,
+    "cartodb": false
+  },
   "rules": {
     "indent": [1, 2, { "SwitchCase": 1 }],
     "semi": [2, "always"],
