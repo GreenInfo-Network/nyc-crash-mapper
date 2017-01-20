@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 
 class FilterByDate extends Component {
@@ -48,7 +47,7 @@ class FilterByDate extends Component {
           <p className="filter-date-label">End Date:</p>
           <DatePicker
             selected={endDate}
-            onChange={this.handleStartChange}
+            onChange={this.handleEndChange}
           />
         </li>
       </ul>
