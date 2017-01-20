@@ -17,7 +17,7 @@ class OptionsFilters extends Component {
       <div className="ui right app-options-filters">
         <OptionsContainer
           title={'MAP OPTIONS'}
-          collapseHeight={height - 117 - 45}
+          collapseHeight={height - 120 - 45}
           className="no-padding-bottom"
           ruledLine
           scroll
@@ -43,6 +43,7 @@ class OptionsFilters extends Component {
           title={'Share'}
           className="no-padding-bottom"
           collapsable={false}
+          optionsContainerHeight={88}
         >
           <ShareOptions />
         </OptionsContainer>
