@@ -5,22 +5,23 @@ import FilterByBoundary from './FilterByBoundary';
 import FilterByType from './FilterByType';
 import FilterByDate from './FilterByDate';
 import DownloadData from './DownloadData';
+import ShareOptions from './ShareOptions';
+import FooterOptions from './FooterOptions';
 
 class OptionsFilters extends Component {
-  constructor() {
-    super();
-    this.state = {
-      opened: true
-    };
-  }
-
   render() {
     // TO DO: make component collapse to bottom of window instead of top
-    // const { innerHeight } = this.props;
+    const { height } = this.props;
 
     return (
       <div className="ui right app-options-filters">
-        <OptionsContainer title={'MAP OPTIONS'} ruledLine>
+        <OptionsContainer
+          title={'MAP OPTIONS'}
+          collapseHeight={height - 117 - 45}
+          className="no-padding-bottom"
+          ruledLine
+          scroll
+        >
           <OptionsContainer title={'Filter by Boundary'}>
             <FilterByBoundary />
           </OptionsContainer>
@@ -36,23 +37,26 @@ class OptionsFilters extends Component {
           <OptionsContainer title={'Data'}>
             <DownloadData lastUpdated="12/31/2016" />
           </OptionsContainer>
-          <hr />
-        </OptionsContainer>
-        <OptionsContainer title={'Share'}>
-          <p>to do...</p>
         </OptionsContainer>
         <hr />
-        <p style={{ fontSize: 11 }}>{'Disclaimer | About | Copyright'}</p>
+        <OptionsContainer
+          title={'Share'}
+          className="no-padding-bottom"
+          collapsable={false}
+        >
+          <ShareOptions />
+        </OptionsContainer>
+        <FooterOptions />
       </div>
     );
   }
 }
 
 OptionsFilters.defaultProps = {
-  innerHeight: 0
+  height: 120
 };
 OptionsFilters.propTypes = {
-  innerHeight: PropTypes.number
+  height: PropTypes.number
 };
 
 export default OptionsFilters;

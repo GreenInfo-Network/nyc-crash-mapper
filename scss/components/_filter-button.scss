@@ -16,4 +16,9 @@
   &.auto {
     width: auto;
   }
+
+  &.link {
+    border: none;
+    border-radius: 0;
+  }
 }

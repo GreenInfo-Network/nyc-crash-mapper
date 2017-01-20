@@ -1,4 +1,8 @@
 .app-options-filters {
-  height: $app-options-filters-height;
+  height: auto; //$app-options-filters-height;
   width: $app-options-filters-width;
+  bottom: 0;
+  padding-top: 0;
+  padding-right: 0;
+  overflow-y: hidden;
 }

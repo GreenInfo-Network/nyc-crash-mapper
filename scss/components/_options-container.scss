@@ -4,8 +4,16 @@
     padding-bottom: $padding-10;
   }
 
+  &.no-padding-bottom {
+    padding-bottom: 0;
+  }
+
   .options-container-header {
     padding-top: $padding-10;
+    cursor: default
+  }
+
+  .collapsable .options-container-header {
     cursor: pointer;
   }
 
@@ -16,5 +24,11 @@
   .options-container-collapse-icon {
     display: inline-block;
     float: right;
+    margin-right: 10px;
+  }
+
+  .options-container-collapsable.scroll {
+    overflow-y: auto !important;
+    overflow-x: hidden;
   }
 }

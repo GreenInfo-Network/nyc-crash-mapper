@@ -12,29 +12,40 @@ class OptionsContainer extends Component {
   }
 
   handleOpenClose() {
-    this.setState(prevState => ({ opened: !prevState.opened }));
+    if (this.props.collapsable) {
+      this.setState(prevState => ({ opened: !prevState.opened }));
+    }
   }
 
   render() {
-    const { children, collapseHeight, ruledLine, title } = this.props;
+    const { children, collapsable, collapseHeight, ruledLine, scroll,
+      title, className } = this.props;
     const { opened } = this.state;
     const fixedHeight = collapseHeight > 0 ? collapseHeight : undefined;
-    const optionsContainerCX = cx({
+    const optionsContainerCX = cx(className, {
       'options-container': true,
+      collapsable,
       opened
+    });
+    const collapseCX = cx({
+      'options-container-collapsable': true,
+      scroll
     });
 
     return (
       <section className={optionsContainerCX}>
         <div className="options-container-header" onClick={() => this.handleOpenClose()}>
           <h6 className="options-container-title roboto-bold">{title}</h6>
-          <span className="options-container-collapse-icon">{opened ? '–' : '+'}</span>
+          {
+            collapsable &&
+              <span className="options-container-collapse-icon">{opened ? '–' : '+'}</span>
+          }
           { ruledLine ? <hr /> : null }
         </div>
         <Collapse
-          className="options-container-collapsable"
+          className={collapseCX}
           isOpened={opened}
-          {...fixedHeight}
+          fixedHeight={fixedHeight}
         >
           { children }
         </Collapse>
@@ -44,18 +55,24 @@ class OptionsContainer extends Component {
 }
 
 OptionsContainer.defaultProps = {
+  className: '',
+  collapsable: true,
+  collapseHeight: 0,
   ruledLine: false,
-  collapseHeight: 0
+  scroll: false
 };
 
 OptionsContainer.propTypes = {
-  title: PropTypes.string.isRequired,
-  ruledLine: PropTypes.bool,
-  collapseHeight: PropTypes.number,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.array
-  ]).isRequired
+  ]).isRequired,
+  className: PropTypes.string, // additional classname(s) to tack on to section el
+  collapsable: PropTypes.bool, // should the content be collapsable?
+  collapseHeight: PropTypes.number, // should the collapsable content have a fixed height?
+  ruledLine: PropTypes.bool, // add a ruled line under the header?
+  scroll: PropTypes.bool, // should the content in Collapse be scrollable?
+  title: PropTypes.string.isRequired, // title in the header
 };
 
 export default OptionsContainer;

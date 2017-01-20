@@ -19,6 +19,24 @@
   @extend %roboto-medium;
 }
 
+// scrollbar styling
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 10px;  /* for vertical scrollbars */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
 .hidden {
   display: none;
   visibility: hidden;

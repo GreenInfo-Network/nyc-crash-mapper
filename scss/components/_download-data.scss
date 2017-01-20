@@ -2,8 +2,9 @@
   display: table;
   width: 100%;
   padding-bottom: $padding-10;
+  margin-left: $margin-10;
 
-  .filter-button,
+  .filter-options-button,
   .data-last-updated {
     display: table-cell;
     vertical-align: top;
