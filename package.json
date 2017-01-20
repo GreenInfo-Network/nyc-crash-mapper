@@ -5,9 +5,9 @@
   "main": "webpack.config.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "NODE_ENV=production npm run clean && webpack -p",
+    "build": "export NODE_ENV=production npm run clean && webpack -p",
     "serve": "webpack-dev-server",
-    "deploy:gh-pages": "npm run build && git subtree push --prefix dist origin gh-pages",
+    "deploy:gh-pages": "npm run build && . ./deploy_gh_pages.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
