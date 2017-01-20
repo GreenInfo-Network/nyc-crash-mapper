@@ -1,4 +1,21 @@
 .app-stats-legend {
   height: $app-stats-legend-height;
   width: $app-stats-legend-width;
+
+  h6 {
+    padding-bottom: 0;
+  }
+
+  .stats-date-range,
+  .stats-total-crash-counter {
+    width: 50%;
+    float: left;
+    display: inline-block;
+    border-bottom: 1px solid $medium-grey;
+
+    h6 {
+      font-size: 1.6rem;
+    }
+  }
+
 }

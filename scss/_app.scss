@@ -22,7 +22,7 @@ body,
   z-index: 1;
   box-sizing: border-box;
   background-color: $light-grey;
-  padding: $padding-10 0 $padding-10 $padding-10;
+  padding: $padding-10 0 $padding-5 $padding-10;
 }
 
 // positioning for UI elements
@@ -76,13 +76,20 @@ hr {
 }
 
 .row {
-  height: 100%;
+  &.stats-header {
+    height: $stats-header-height;
+    overflow-y: hidden;
+  }
+
+  &.stats-content {
+    height: $stats-content-height;
+  }
 }
 
 .column,
 .columns {
   height: 100%;
-  border: 1px solid $medium-grey;
+  // border: 1px solid $medium-grey;
 
   @media screen and (#{$bp-larger-than-phablet}) {
     margin-left: 0;
@@ -110,5 +117,11 @@ hr {
 .six.columns {
   @media screen and (#{$bp-larger-than-phablet}) {
     width: 50%;
+  }
+}
+
+.seven.columns {
+  @media screen and (#{$bp-larger-than-phablet}) {
+    width: 58.3333333333%
   }
 }

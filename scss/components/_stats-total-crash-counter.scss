@@ -1,4 +1,9 @@
 .stats-total-crash-counter {
+  width: 50%;
   display: inline-block;
-  padding-left: $padding-10;
+  float: left;
+
+  h6 {
+    font-size: 1.6rem;
+  }
 }
