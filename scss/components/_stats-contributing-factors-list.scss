@@ -1,0 +1,31 @@
+.contributing-factors-list {
+  height: calc(100% - #{$padding-5});
+  border: 1px solid $medium-grey;
+
+  ul, li {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  li, p {
+    width: 100%;
+  }
+
+  p {
+    font-size: 1.4rem;
+  }
+
+  .factor-count,
+  .factor-type {
+    display: inline-block;
+  }
+
+  .factor-count {
+    width: 20%;
+  }
+
+  .factor-type {
+    width: 80%;
+  }
+}

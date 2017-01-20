@@ -1,11 +1,13 @@
 .stats-counter {
   display: inline-block;
   width: 50%;
+  border-top: 1px solid $medium-grey;
 
   &:nth-of-type(2n) {
     border-left: 1px solid $medium-grey;
-    width: calc(50% - 1px - 10px);
+    width: calc(50% - 1px - 20px);
     padding-left: $padding-10;
+    margin-right: $padding-10;
   }
 
   .count {

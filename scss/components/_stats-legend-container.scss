@@ -1,0 +1,93 @@
+.legend-container {
+  position: relative;
+  padding-left: $padding-10;
+  width: calc(100% - $padding-10);
+  height: 100%;
+
+  .legend-crash-types,
+  .legend-crash-count {
+    display: inline-block;
+    float: left;
+    height: 100%;
+    width: 50%;
+  }
+
+  .legend-crash-count {
+    width: 40%;
+    position: absolute;
+    top: -$stats-header-height + 8;
+    right: 0;
+  }
+
+  ul, li {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  li {
+    width: 100%;
+    margin-left: 5px;
+  }
+
+  p {
+    display: inline;
+    font-size: 1.1rem;
+    margin-left: 5px;
+  }
+
+  .legend-crash-count p {
+
+  }
+
+  // TO DO: adjust the size of dots to match size of map dots
+  span {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #000;
+  }
+
+  .count-1 {
+    span {
+      margin-left: 4.6px;
+    }
+    p {
+      padding-left: 8px;
+    }
+  }
+
+  .count-2 {
+    span {
+      width: 11px;
+      height: 11px;
+      margin-left: 3.5px;
+    }
+    p {
+      padding-left: 6px;
+    }
+  }
+
+  .count-3 {
+    span {
+      width: 13px;
+      height: 13px;
+      margin-left: 2.5px;
+    }
+    p {
+      padding-left: 4px;
+    }
+  }
+
+  .count-4-plus {
+    span {
+      width: 16px;
+      height: 16px;
+      margin-left: 1px;
+    }
+    p {
+      padding-left: 2px;
+    }
+  }
+}
