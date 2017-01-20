@@ -22,7 +22,7 @@ body,
   z-index: 1;
   box-sizing: border-box;
   background-color: $light-grey;
-  padding: $padding-10;
+  padding: $padding-10 0 $padding-10 $padding-10;
 }
 
 // positioning for UI elements
@@ -34,6 +34,10 @@ body,
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding-bottom: 1rem;
+}
+
+h6 {
+  font-size: 1.4rem;
 }
 
 p {
@@ -60,4 +64,51 @@ hr {
   border-top-color: $medium-grey;
   margin: 0;
   padding: 0;
+}
+
+// Skeleton Grid Overrides
+.container {
+  @media screen and (#{$bp-larger-than-phablet}) {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.row {
+  height: 100%;
+}
+
+.column,
+.columns {
+  height: 100%;
+  border: 1px solid $medium-grey;
+
+  @media screen and (#{$bp-larger-than-phablet}) {
+    margin-left: 0;
+  }
+}
+
+.two.columns {
+  @media screen and (#{$bp-larger-than-phablet}) {
+    width: 16.666666666666667%;
+  }
+}
+
+.three.columns {
+  @media screen and (#{$bp-larger-than-phablet}) {
+    width: 25%;
+  }
+}
+
+.four.columns {
+  @media screen and (#{$bp-larger-than-phablet}) {
+    width: 33.333333333333%;
+  }
+}
+
+.six.columns {
+  @media screen and (#{$bp-larger-than-phablet}) {
+    width: 50%;
+  }
 }
