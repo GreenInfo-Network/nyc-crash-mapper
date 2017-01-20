@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 
+import ZoomControls from './ZoomControls';
+
 class LeafletMap extends Component {
+  constructor() {
+    super();
+    this.map = null;
+    this.handleZoomIn = this.handleZoomIn.bind(this);
+    this.handleZoomOut = this.handleZoomOut.bind(this);
+  }
 
   componentDidMount() {
     this.initMap();
@@ -11,8 +19,17 @@ class LeafletMap extends Component {
     return false;
   }
 
+  handleZoomIn() {
+    this.map.zoomIn();
+  }
+
+  handleZoomOut() {
+    this.map.zoomOut();
+  }
+
   initMap() {
-    const map = L.map(this.mapDiv, {
+    const self = this;
+    this.map = L.map(this.mapDiv, {
       center: [40.687, -73.982],
       zoom: 12,
       zoomControl: false,
@@ -24,12 +41,16 @@ class LeafletMap extends Component {
     L.tileLayer(url, {
       maxZoom: 18,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
-    }).addTo(map);
+    }).addTo(self.map);
   }
 
   render() {
     return (
       <div className="leaflet-map">
+        <ZoomControls
+          handleZoomIn={this.handleZoomIn}
+          handleZoomOut={this.handleZoomOut}
+        />
         <div ref={(_) => { this.mapDiv = _; }} id="map" />
       </div>
     );
