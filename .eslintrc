@@ -9,6 +9,7 @@
     "cartodb": false
   },
   "rules": {
+    "camelcase": 0,
     "indent": [1, 2, { "SwitchCase": 1 }],
     "semi": [2, "always"],
     "react/jsx-filename-extension": 0,
