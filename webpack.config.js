@@ -16,7 +16,8 @@ const VENDOR_LIBS = [
   'redux',
   'redux-responsive',
   'redux-logger',
-  'redux-thunk'
+  'redux-thunk',
+  'single-line-string'
 ];
 
 module.exports = {
