@@ -2,7 +2,10 @@
   height: $app-stats-legend-height;
   width: $app-stats-legend-width;
 
-  h6 {
+  .stats-title {
+    @extend .roboto-medium;
+    text-transform: uppercase;
+    font-size: 1.6rem;
     padding-bottom: 0;
   }
 
@@ -11,10 +14,10 @@
     width: 50%;
     float: left;
     display: inline-block;
+  }
 
-    h6 {
-      font-size: 1.6rem;
-    }
+  .stats-total-crash-counter h6 {
+    @extend .roboto-bold;
   }
 
 }

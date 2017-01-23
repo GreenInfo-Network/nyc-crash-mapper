@@ -1,10 +1,14 @@
 .stats-counter {
   display: inline-block;
   width: 50%;
-  border-top: 1px solid $medium-grey;
+  border-top: 1px solid $hr-border;
+
+  .stats-title {
+    text-transform: uppercase;
+  }
 
   &:nth-of-type(2n) {
-    border-left: 1px solid $medium-grey;
+    border-left: 1px solid $hr-border;
     width: calc(50% - 1px - 20px);
     padding-left: $padding-10;
     margin-right: $padding-10;

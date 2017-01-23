@@ -6,7 +6,7 @@ const ZoomControls = (props) => {
   return (
     <div className="ui zoom-controls">
       <button className="zoom-in" onClick={() => handleZoomIn()}>+</button>
-      <button className="zoom-out" onClick={() => handleZoomOut()}>-</button>
+      <button className="zoom-out" onClick={() => handleZoomOut()}>–</button>
     </div>
   );
 };

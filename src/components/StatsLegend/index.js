@@ -23,10 +23,10 @@ export default () => {
             <TotalCrashCounter totalCount={0} />
           </div>
           <div className="three columns">
-            <h6 className="roboto-bold">Contributing Factors</h6>
+            <h6 className="stats-title">Contributing Factors</h6>
           </div>
           <div className="two columns">
-            <h6 className="roboto-bold">Legend</h6>
+            <h6 className="stats-title">Legend</h6>
           </div>
         </div>
         <div className="row stats-content">

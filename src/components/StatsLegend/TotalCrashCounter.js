@@ -6,7 +6,7 @@ const TotalCrashCounter = (props) => {
 
   return (
     <div className="stats-total-crash-counter">
-      <h6 className="roboto-bold">{`${totalCount} Total ${crash}`}</h6>
+      <h6 className="stats-title">{`${totalCount} Total ${crash}`}</h6>
     </div>
   );
 };

@@ -5,10 +5,19 @@
   top: $margin-10;
   left: $margin-25;
   z-index: 1;
+  color: rgba($marine-light, 0.7);
 
   .header-title,
   .header-about {
     margin: 0;
     padding: 0;
+  }
+
+  .header-title {
+    text-transform: uppercase;
+  }
+
+  .header-about {
+    @extend .roboto-bold;
   }
 }

@@ -32,12 +32,8 @@
 
   p {
     display: inline;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-left: 5px;
-  }
-
-  .legend-crash-count p {
-
   }
 
   // TO DO: adjust the size of dots to match size of map dots
@@ -45,16 +41,29 @@
     width: 8px;
     height: 8px;
     display: inline-block;
+    border: 0.7px solid $off-white;
     border-radius: 50%;
-    background: #000;
+    background: $transparent;
+
+    &.type-fatality {
+      background: $orange-red;
+    }
+
+    &.type-injury {
+      background: $orange;
+    }
+
+    &.type-no-inj-fat {
+      background: $yellow-orange;
+    }
   }
 
   .count-1 {
     span {
-      margin-left: 4.6px;
+      margin-left: 5.5px;
     }
     p {
-      padding-left: 8px;
+      padding-left: 7.5px;
     }
   }
 

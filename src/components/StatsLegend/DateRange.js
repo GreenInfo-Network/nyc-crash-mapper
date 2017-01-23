@@ -5,7 +5,7 @@ const DateRange = (props) => {
 
   return (
     <div className="stats-date-range">
-      <h6>{`From ${startDate} – ${endDate}:`}</h6>
+      <h6 className="stats-title">{`From ${startDate} – ${endDate}:`}</h6>
     </div>
   );
 };

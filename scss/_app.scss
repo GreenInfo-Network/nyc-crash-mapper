@@ -10,6 +10,7 @@ body,
   width: 100%;
   overflow: hidden;
   background-color: #fff;
+  -webkit-font-smoothing: antialiased;
 }
 
 .app {
@@ -21,7 +22,8 @@ body,
   position: absolute;
   z-index: 1;
   box-sizing: border-box;
-  background-color: $light-grey;
+  background-color: $ui-grey;
+  color: $off-white;
   padding: $padding-10 0 $padding-5 $padding-10;
 }
 
@@ -61,7 +63,7 @@ p {
 
 // ruled lines
 hr {
-  border-top-color: $medium-grey;
+  border-top-color: $hr-border;
   margin: 0;
   padding: 0;
 }

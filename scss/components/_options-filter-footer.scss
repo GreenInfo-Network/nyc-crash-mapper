@@ -1,12 +1,12 @@
 .options-filters-footer {
   height: $options-footer-height;
-  border-top: 1px solid $medium-grey;
+  border-top: 1px solid $hr-border;
 
   .filter-options-button {
     width: calc(33.333333333% - 2px);
     font-size: 1rem;
     text-align: center;
-    border-right: 1px solid $medium-grey;
+    border-right: 1px solid $hr-border;
     margin-bottom: 0;
 
     &:last-child {

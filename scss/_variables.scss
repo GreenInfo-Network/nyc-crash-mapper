@@ -8,9 +8,18 @@ $orange-red: #F03B20 !default;
 $red: #BD0026 !default;
 
 // possible UI color values
-$blue-green: #105B63 !default;
+$marine: #105b63 !default;
+$marine-light: lighten($marine, 10) !default;
+
 $off-white: #FFFAD5 !default;
 $medium-grey: lighten($dark-grey, 50) !default;
+$ui-grey: rgba(#4d4d4d, 0.8) !default;
+$transparent: rgba(0,0,0,0) !default;
+
+$btn-hover: lighten($yellow-orange, 10) !default;
+$btn-bg: $off-white !default;
+
+$hr-border: $off-white !default;
 
 // Typography
 //––––––––––––––––––––––––––––––––––––––––––––––––––

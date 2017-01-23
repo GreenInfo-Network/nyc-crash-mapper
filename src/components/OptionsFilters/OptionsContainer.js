@@ -35,7 +35,7 @@ class OptionsContainer extends Component {
     return (
       <section className={optionsContainerCX} style={{ height: optionsContainerHeight }}>
         <div className="options-container-header" onClick={() => this.handleOpenClose()}>
-          <h6 className="options-container-title roboto-bold">{title}</h6>
+          <h6 className="options-container-title">{title}</h6>
           {
             collapsable &&
               <span className="options-container-collapse-icon">{opened ? '–' : '+'}</span>

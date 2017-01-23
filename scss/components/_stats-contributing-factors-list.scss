@@ -1,6 +1,6 @@
 .contributing-factors-list {
   height: calc(100% - #{$padding-5});
-  border: 1px solid $medium-grey;
+  border: 1px solid $hr-border;
 
   ul, li {
     padding: 0;
@@ -14,6 +14,7 @@
 
   p {
     font-size: 1.4rem;
+    padding-left: $padding-5;
   }
 
   .factor-count,

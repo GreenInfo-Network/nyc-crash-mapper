@@ -1,9 +1,20 @@
 .filter-options-button {
   height: 25px;
   line-height: 25px;
+  background-color: $btn-bg;
+  border-color: rgba(0,0,0,0);
+  color: $marine-light;
   padding: 0 10px;
   text-align: left;
   text-transform: none;
+  border: none;
+
+  &:hover,
+  &.selected {
+    background-color: $btn-hover;
+    color: $marine;
+    border: none;
+  }
 
   &.wide {
     width: 145px;
@@ -20,5 +31,11 @@
   &.link {
     border: none;
     border-radius: 0;
+    background-color: $transparent;
+    color: $btn-bg;
+
+    &:hover {
+      color: $btn-hover;
+    }
   }
 }
