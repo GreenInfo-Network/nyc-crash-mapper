@@ -4,6 +4,7 @@ import FilterButton from './FilterButton';
 
 const FilterByBoundary = () => {
   // TO DO: replace noops with actual function calls
+  // NOTE: only one of these may be active at a given time.
   const noop = () => {};
 
   return (

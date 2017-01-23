@@ -10,7 +10,7 @@
   border: none;
 
   &:hover,
-  &.selected {
+  &.active {
     background-color: $btn-hover;
     color: $marine;
     border: none;

@@ -1,23 +1,42 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import cx from 'classnames';
 
-const FilterButton = (props) => {
-  const { filterName, callback, btnType } = props;
+class FilterButton extends Component {
+  constructor() {
+    super();
 
-  const btnClasses = cx(btnType, {
-    'filter-options-button': true,
-    'roboto-medium': true
-  });
+    this.state = {
+      active: false
+    };
 
-  return (
-    <button
-      className={btnClasses}
-      onClick={() => callback(filterName)}
-    >
-      { filterName }
-    </button>
-  );
-};
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(prevState => ({ active: !prevState.active }));
+    this.props.callback();
+  }
+
+  render() {
+    const { filterName, btnType } = this.props;
+    const { active } = this.state;
+
+    const btnClasses = cx(btnType, {
+      'filter-options-button': true,
+      'roboto-medium': true,
+      active
+    });
+
+    return (
+      <button
+        className={btnClasses}
+        onClick={this.handleClick}
+      >
+        { filterName }
+      </button>
+    );
+  }
+}
 
 FilterButton.defaultProps = {
   btnType: 'wide'
