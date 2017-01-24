@@ -241,3 +241,39 @@ export const statsDateByAreaFiltered = ({ startDate, endDate, filterCol, geoTabl
   AND
     (${filterCol} > 0)
 `;
+
+/*
+ ************************ MAP ************************
+ */
+
+// Default: citywide crashes for all crash & person types
+// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+export const crashesByDate = ({ startDate, endDate }) => sls`
+  SELECT
+    c.the_geom,
+    c.the_geom_webmercator,
+    c.on_street_name,
+    c.cross_street_name,
+    COUNT(c.cartodb_id) as total_crashes,
+    SUM(c.number_of_cyclist_injured) as cyclist_injured,
+    SUM(c.number_of_cyclist_killed) as cyclist_killed,
+    SUM(c.number_of_motorist_injured) as motorist_injured,
+    SUM(c.number_of_motorist_killed) as motorist_killed,
+    SUM(c.number_of_pedestrians_injured) as pedestrians_injured,
+    SUM(c.number_of_pedestrians_killed) as pedestrians_killed,
+    SUM(c.number_of_persons_injured) as persons_injured,
+    SUM(c.number_of_persons_killed) as persons_killed,
+    SUM(CASE WHEN c.number_of_persons_injured > 0 THEN 1 ELSE 0 END) AS total_crashes_with_injury,
+    SUM(CASE WHEN c.number_of_persons_killed > 0 THEN 1 ELSE 0 END) AS total_crashes_with_death
+  FROM
+    ${nyc_crashes} c
+  WHERE
+    (date <= date '${startDate}')
+  AND
+    (date >= date '${endDate}')
+  AND
+   c.the_geom IS NOT NULL
+  GROUP BY
+    c.the_geom, c.the_geom_webmercator, c.on_street_name, c.cross_street_name
+`;
