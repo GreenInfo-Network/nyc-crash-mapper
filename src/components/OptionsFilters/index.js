@@ -3,14 +3,13 @@ import React, { Component, PropTypes } from 'react';
 import OptionsContainer from './OptionsContainer';
 import FilterByBoundary from './FilterByBoundary';
 import FilterByType from './FilterByType';
-import FilterByDate from './FilterByDate';
+import FilterByDate from '../../containers/FilterByDateConnected';
 import DownloadData from './DownloadData';
 import ShareOptions from './ShareOptions';
 import FooterOptions from './FooterOptions';
 
 class OptionsFilters extends Component {
   render() {
-    // TO DO: make component collapse to bottom of window instead of top
     const { height } = this.props;
 
     return (

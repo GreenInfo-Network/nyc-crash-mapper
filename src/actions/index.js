@@ -1,5 +1,2 @@
-import * as async from './async_actions';
-
-export default {
-  ...async
-};
+export { fetchCrashData } from './async_actions';
+export { startDateChange, endDateChange } from './date_range_actions';
