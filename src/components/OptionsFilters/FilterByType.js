@@ -46,6 +46,13 @@ const FilterByType = () => {
             btnType={'narrow'}
           />
         </li>
+        <li>
+          <FilterButton
+            filterName={'No Inj/Fat'}
+            callback={noop}
+            btnType={'narrow'}
+          />
+        </li>
       </ul>
     </div>
   );
