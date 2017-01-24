@@ -6,7 +6,7 @@ import { calculateResponsiveState } from 'redux-responsive';
 import { debounce } from 'lodash';
 
 import makeStore from './store';
-import { defaultState } from './constants/api';
+import defaultState from './constants/api';
 import App from './components/App';
 import '../scss/main.scss';
 

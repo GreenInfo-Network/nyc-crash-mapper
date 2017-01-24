@@ -3,7 +3,7 @@ import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { createResponsiveStoreEnhancer } from 'redux-responsive';
 
-import reducer from './reducers/';
+import rootReducer from './reducers/';
 
 const middleware = [thunkMiddleware];
 
@@ -14,7 +14,7 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
 
 export default function makeStore(initialState) {
   const store = createStore(
-    reducer,
+    rootReducer,
     initialState,
     compose(
       createResponsiveStoreEnhancer(500), // throttle time
