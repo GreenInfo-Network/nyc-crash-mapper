@@ -5,19 +5,14 @@ const DateRange = (props) => {
 
   return (
     <div className="stats-date-range">
-      <h6 className="stats-title">{`From ${startDate} – ${endDate}:`}</h6>
+      <h6 className="stats-title">{`From ${startDate} – ${endDate}`}</h6>
     </div>
   );
 };
 
-DateRange.defaultProps = {
-  startDate: '',
-  endDate: ''
-};
-
 DateRange.propTypes = {
-  startDate: PropTypes.string,
-  endDate: PropTypes.string
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired
 };
 
 export default DateRange;

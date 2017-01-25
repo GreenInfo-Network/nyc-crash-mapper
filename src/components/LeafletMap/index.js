@@ -55,16 +55,13 @@ class LeafletMap extends Component {
 
   initCartoLayer() {
     const self = this;
-    const startEndDates = {
-      startDate: '2016-07-01',
-      endDate: '2016-12-31'
-    };
+    const { startDate, endDate } = this.props;
+    const startEndDates = { startDate, endDate };
     const layerSource = configureLayerSource(crashesByDate(startEndDates));
     const options = {
       https: true,
       infowindow: false,
       legends: false,
-
     };
 
     // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
@@ -87,7 +84,9 @@ class LeafletMap extends Component {
   updateCartoLayer(props) {
     const { startDate, endDate } = props;
     // TO DO: Logic for determining SQL query based on app filters
-    this.cartoLayer.setSQL(crashesByDate({ startDate, endDate }));
+    this.cartoLayer.setSQL(
+      crashesByDate({ startDate, endDate })
+    );
   }
 
   render() {
