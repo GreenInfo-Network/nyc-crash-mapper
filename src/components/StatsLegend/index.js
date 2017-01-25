@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import DateRange from './DateRange';
 import TotalCrashCounter from './TotalCrashCounter';
@@ -6,7 +6,8 @@ import StatsCounter from './StatsCounter';
 import ContributingFactorsList from './ContributingFactorsList';
 import LegendContainer from './LegendContainer';
 
-export default () => {
+const StatsLegend = (props) => {
+  const { startDate, endDate } = props;
   const placeholderFactors = [
     { count: 2053, type: 'unspecified' },
     { count: 112, type: 'Driver Inattention / Distraction' },
@@ -19,7 +20,7 @@ export default () => {
       <div className="container">
         <div className="row stats-header">
           <div className="seven columns">
-            <DateRange startDate={'Jul 1, 2016'} endDate={'Dec 31, 2016'} />
+            <DateRange startDate={startDate} endDate={endDate} />
             <TotalCrashCounter totalCount={0} />
           </div>
           <div className="three columns">
@@ -45,3 +46,10 @@ export default () => {
     </div>
   );
 };
+
+StatsLegend.propTypes = {
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired
+};
+
+export default StatsLegend;
