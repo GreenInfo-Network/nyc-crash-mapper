@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import OptionsContainer from './OptionsContainer';
 import FilterByArea from './FilterByArea';
-import FilterByType from './FilterByType';
+import FilterByType from '../../containers/FilterByTypeConnected';
 import FilterByDate from '../../containers/FilterByDateConnected';
 import DownloadData from './DownloadData';
 import ShareOptions from './ShareOptions';
