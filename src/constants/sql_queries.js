@@ -96,8 +96,8 @@ export const dateBounds = () => sls`
  */
 
 // Counts all death / injury stats for a given date range
-// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
-// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 export const statsDate = ({ endDate, startDate }) => sls`
   SELECT
     COUNT(c.cartodb_id) as total_crashes,
@@ -120,8 +120,8 @@ export const statsDate = ({ endDate, startDate }) => sls`
 `;
 
 // Counts all death / injury stats for a given date range filtered by some geometry table
-// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
-// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 // @param {string} geoTable Table with boundaries / geometry to join on
 // @param {number} identifier A number referring to a borough, city council district, etc
 export const statsDateByArea = ({ startDate, endDate, geoTable, identifier }) => sls`
@@ -152,8 +152,8 @@ export const statsDateByArea = ({ startDate, endDate, geoTable, identifier }) =>
 `;
 
 // Counts all death / injury stats for a given date range filtered by a custom shape.
-// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
-// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 // @param {PostGIS} shape, eg: 'POLYGON(( -73.96682739257812 40.68089838511525,
 //  -73.94691467285156 40.63193284946615, -73.90056610107422 40.65720146993478,
 //  -73.92974853515625 40.69755930345006, -73.96682739257812 40.68089838511525 ))'
@@ -181,8 +181,8 @@ export const statsDateByCustomArea = ({ startDate, endDate, shape }) => sls`
 `;
 
 // Counts all death / injury stats for a given date range
-// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
-// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 // @param {string} filterCol Name of column to filter by, eg: number_of_persons_injured,
 export const statsDateFiltered = ({ startDate, endDate, filterCol }) => sls`
   SELECT
@@ -209,8 +209,8 @@ export const statsDateFiltered = ({ startDate, endDate, filterCol }) => sls`
 
 // Counts all death / injury stats for a given date range filtered by some geometry table
 // and some column
-// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
-// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 // @param {string} filterCol Name of column to filter by, eg: number_of_persons_injured,
 // @param {string} geoTable Table with boundaries / geometry to join on
 // @param {number} identifier A number referring to a borough, city council district, etc
@@ -248,8 +248,8 @@ export const statsDateByAreaFiltered = ({ startDate, endDate, filterCol, geoTabl
  */
 
 // Default: citywide crashes for all crash & person types
-// @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
-// @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} startDate Min date of date range, formatted like 'YYYY-MM-DD'
+// @param {string} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 export const crashesByDate = ({ startDate, endDate }) => sls`
   SELECT
     c.the_geom,
