@@ -21,7 +21,18 @@ class StatsLegend extends Component {
   }
 
   render() {
-    const { startDate, endDate } = this.props;
+    const { startDate,
+      endDate,
+      total_crashes,
+      cyclist_injured,
+      cyclist_killed,
+      motorist_injured,
+      motorist_killed,
+      pedestrians_injured,
+      pedestrians_killed,
+      persons_injured,
+      persons_killed } = this.props;
+
     const placeholderFactors = [
       { count: 2053, type: 'unspecified' },
       { count: 112, type: 'Driver Inattention / Distraction' },
@@ -35,7 +46,7 @@ class StatsLegend extends Component {
           <div className="row stats-header">
             <div className="seven columns">
               <DateRange startDate={startDate} endDate={endDate} />
-              <TotalCrashCounter totalCount={0} />
+              <TotalCrashCounter totalCount={total_crashes} />
             </div>
             <div className="three columns">
               <h6 className="stats-title">Contributing Factors</h6>
@@ -46,8 +57,20 @@ class StatsLegend extends Component {
           </div>
           <div className="row stats-content">
             <div className="seven columns">
-              <StatsCounter title={'Fatalities'} />
-              <StatsCounter title={'Injuries'} />
+              <StatsCounter
+                title={'Fatalities'}
+                cyclist={cyclist_killed}
+                driver={motorist_killed}
+                ped={pedestrians_killed}
+                total={persons_killed}
+              />
+              <StatsCounter
+                title={'Injuries'}
+                cyclist={cyclist_injured}
+                driver={motorist_injured}
+                ped={pedestrians_injured}
+                total={persons_injured}
+              />
             </div>
             <div className="three columns">
               <ContributingFactorsList factors={placeholderFactors} />
@@ -62,10 +85,31 @@ class StatsLegend extends Component {
   }
 }
 
+StatsLegend.defaultProps = {
+  total_crashes: 0,
+  cyclist_injured: 0,
+  cyclist_killed: 0,
+  motorist_injured: 0,
+  motorist_killed: 0,
+  pedestrians_injured: 0,
+  pedestrians_killed: 0,
+  persons_injured: 0,
+  persons_killed: 0,
+};
+
 StatsLegend.propTypes = {
+  total_crashes: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  fetchCrashStatsData: PropTypes.func.isRequired
+  fetchCrashStatsData: PropTypes.func.isRequired,
+  cyclist_injured: PropTypes.number,
+  cyclist_killed: PropTypes.number,
+  motorist_injured: PropTypes.number,
+  motorist_killed: PropTypes.number,
+  pedestrians_injured: PropTypes.number,
+  pedestrians_killed: PropTypes.number,
+  persons_injured: PropTypes.number,
+  persons_killed: PropTypes.number,
 };
 
 export default StatsLegend;

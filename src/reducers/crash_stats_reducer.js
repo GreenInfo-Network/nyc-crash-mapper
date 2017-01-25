@@ -10,20 +10,20 @@ export default (state = {}, action) => {
       return {
         ...state,
         _fetchingCrashStatsTypes: true,
-        json: undefined
+        typeStats: undefined
       };
     case CRASHES_ALL_SUCCESS:
       return {
         ...state,
         _fetchingCrashStatsTypes: false,
-        json: action.json
+        typeStats: action.json
       };
     case CRASHES_ALL_ERROR:
       return {
         ...state,
         _fetchingCrashStatsTypes: false,
         error: action.error,
-        json: undefined
+        typeStats: undefined
       };
     default:
       return state;

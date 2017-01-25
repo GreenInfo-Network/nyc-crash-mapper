@@ -7,19 +7,19 @@ const StatsCounter = (props) => {
     <div className="stats-counter">
       <h6 className="stats-title">{title}</h6>
       <div className="count">
-        <p>{cyclist}</p>
+        <p>{cyclist.toLocaleString()}</p>
         <p>Cyclist</p>
       </div>
       <div className="count">
-        <p>{ped}</p>
+        <p>{ped.toLocaleString()}</p>
         <p>Ped</p>
       </div>
       <div className="count">
-        <p>{driver}</p>
+        <p>{driver.toLocaleString()}</p>
         <p>Driver</p>
       </div>
       <div className="count">
-        <p className="roboto-bold">{total}</p>
+        <p className="roboto-bold">{total.toLocaleString()}</p>
         <p className="roboto-bold">Total</p>
       </div>
     </div>
