@@ -1,3 +1,5 @@
+import { cartoLayerSource } from './app_config';
+
 // default app state, only export for now
 export default {
   dateRange: {
@@ -14,4 +16,9 @@ export default {
     persona: 'ALL',
   },
   filterContributingFactor: 'ALL'
+};
+
+export const configureLayerSource = (sql) => {
+  cartoLayerSource.sublayers[0].sql = sql;
+  return cartoLayerSource;
 };

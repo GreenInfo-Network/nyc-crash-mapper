@@ -270,9 +270,9 @@ export const crashesByDate = ({ startDate, endDate }) => sls`
   FROM
     ${nyc_crashes} c
   WHERE
-    (date <= date '${startDate}')
+    (date_val <= date '${endDate}')
   AND
-    (date >= date '${endDate}')
+    (date_val >= date '${startDate}')
   AND
    c.the_geom IS NOT NULL
   GROUP BY

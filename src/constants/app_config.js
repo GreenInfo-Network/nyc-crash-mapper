@@ -1,3 +1,5 @@
+import cartocss from './cartocss';
+
 // CARTO account name
 export const cartoUser = 'chekpeds';
 
@@ -10,6 +12,29 @@ export const cartoTables = {
   nyc_nypd_precinct: 'nyc_nypd_precinct',
   nyc_zip_code: 'nyc_zip_code',
   nyc_crashes: 'export2016_07'
+};
+
+export const crashDataFieldNames = [
+  'cyclist_injured',
+  'cyclist_killed',
+  'motorist_injured',
+  'motorist_killed',
+  'pedestrians_injured',
+  'pedestrians_killed',
+  'persons_injured',
+  'persons_killed',
+  'on_street_name',
+  'cross_street_name'
+];
+
+export const cartoLayerSource = {
+  user_name: cartoUser,
+  type: 'cartodb',
+  sublayers: [{
+    sql: '',
+    cartocss,
+    interactivity: crashDataFieldNames,
+  }]
 };
 
 // basemap for Leaflet
