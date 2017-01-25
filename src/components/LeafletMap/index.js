@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 
+import { crashesByDate } from '../../constants/sql_queries';
+import { basemapURL } from '../../constants/app_config';
+import { configureLayerSource } from '../../constants/api';
 import ZoomControls from './ZoomControls';
 
 class LeafletMap extends Component {
   constructor() {
     super();
     this.map = null;
+    this.cartoLayer = null;
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
@@ -15,7 +19,7 @@ class LeafletMap extends Component {
   }
 
   shouldComponentUpdate() {
-    // let Leaflet have control over this part of the DOM
+    // let Leaflet have control over this part of the DOM, not React.
     return false;
   }
 
@@ -36,12 +40,46 @@ class LeafletMap extends Component {
       scrollWheelZoom: false
     });
 
-    // TO DO: move url for tileLayer to a config file
-    const url = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
-    L.tileLayer(url, {
+    L.tileLayer(basemapURL, {
       maxZoom: 18,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
     }).addTo(self.map);
+
+    this.initCartoLayer();
+  }
+
+  initCartoLayer() {
+    const self = this;
+    const startEndDates = {
+      startDate: '2016-07-01',
+      endDate: '2016-12-31'
+    };
+    const layerSource = configureLayerSource(crashesByDate(startEndDates));
+    const options = {
+      https: true,
+      infowindow: false,
+      legends: false,
+
+    };
+
+    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
+    // this creates the tile layer & utf grid for Leaflet
+    cartodb.createLayer(self.map, layerSource, options)
+      .addTo(self.map)
+      .on('done', (layer) => {
+        layer
+          .on('featureOver', (e, latlng, pos, data) => {
+            console.log(e, latlng, pos, data);
+          })
+          .on('error', error => console.warn(`layer interaction error: ${error}`));
+
+        // store a reference to the Carto layer so we can act upon it later,
+        // mainly to update the SQL query based on filters applied by the user
+        self.cartoLayer = layer;
+      })
+      .on('error', (error) => {
+        console.warn(`cartodb.createLayer error: ${error}`);
+      });
   }
 
   render() {
