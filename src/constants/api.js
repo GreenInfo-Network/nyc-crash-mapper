@@ -2,6 +2,15 @@
 export default {
   dateRange: {
     startDate: '2016-07-01',
-    endDate: '2016-12-31'
+    endDate: '2016-12-31',
+  },
+  filterByArea: {
+    area: 'CITYWIDE',
+    identifier: undefined,
+    latLons: [],
+  },
+  filterByType: {
+    harm: 'ALL',
+    persona: 'ALL',
   }
 };

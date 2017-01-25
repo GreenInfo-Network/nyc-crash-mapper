@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import { createResponsiveStateReducer } from 'redux-responsive';
 import dateRange from './date_range_reducer';
+import filterByArea from './filter_by_area_reducer';
+import filterByType from './filter_by_type_reducer';
 
 // breakpoints for redux-responsive store
 // taken from scss/skeleton/base/variables
@@ -20,7 +22,9 @@ const browser = createResponsiveStateReducer({
 
 const rootReducer = combineReducers({
   browser,
-  dateRange
+  dateRange,
+  filterByArea,
+  filterByType,
 });
 
 export default rootReducer;
