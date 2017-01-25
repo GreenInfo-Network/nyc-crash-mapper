@@ -11,7 +11,7 @@ export default (state = defaultState, action) => {
     case FILTER_BY_AREA:
       return {
         ...state,
-        area: action.area,
+        geo: action.geo,
         latLons: action.latLons
       };
 

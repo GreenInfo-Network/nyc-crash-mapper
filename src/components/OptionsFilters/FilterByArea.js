@@ -1,40 +1,75 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import FilterButton from './FilterButton';
 
-const FilterByBoundary = () => {
-  // TO DO: replace noops with actual function calls
-  // NOTE: only one of these may be active at a given time.
-  const noop = () => {};
+const FilterByBoundary = (props) => {
+  const { filterByArea, geo } = props;
 
   return (
     <ul className="filter-by-boundary filter-list">
       <li>
-        <FilterButton filterName={'Citywide'} callback={noop} />
+        <FilterButton
+          filterName={'Citywide'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'Borough'} callback={noop} />
+        <FilterButton
+          filterName={'Borough'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'Community Board'} callback={noop} />
+        <FilterButton
+          filterName={'Community Board'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'City Council District'} callback={noop} />
+        <FilterButton
+          filterName={'City Council District'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'Neighborhood (NTA)'} callback={noop} />
+        <FilterButton
+          filterName={'Neighborhood (NTA)'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'NYPD Precinct'} callback={noop} />
+        <FilterButton
+          filterName={'NYPD Precinct'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'Zipcode (ZCTA)'} callback={noop} />
+        <FilterButton
+          filterName={'Zipcode (ZCTA)'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
       <li>
-        <FilterButton filterName={'Custom'} callback={noop} />
+        <FilterButton
+          filterName={'Custom'}
+          btnVal={geo}
+          callback={filterByArea}
+        />
       </li>
     </ul>
   );
+};
+
+FilterByBoundary.propTypes = {
+  filterByArea: PropTypes.func.isRequired,
+  geo: PropTypes.string.isRequired,
 };
 
 export default FilterByBoundary;

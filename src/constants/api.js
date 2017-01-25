@@ -5,7 +5,7 @@ export default {
     endDate: '2016-12-31',
   },
   filterArea: {
-    geo: 'CITYWIDE',
+    geo: 'Citywide',
     identifier: undefined,
     latLons: [],
   },
