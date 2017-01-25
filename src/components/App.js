@@ -1,14 +1,14 @@
 import React from 'react';
 
 import AppHeader from './AppHeader';
-import LeafletMap from './LeafletMap/';
+import LeafletMapConnected from '../containers/LeafletMapConnected';
 import StatsLegend from './StatsLegend/';
 import OptionsFiltersConnected from '../containers/OptionsFiltersConnected';
 
 export default () => (
   <div className="App">
     <AppHeader />
-    <LeafletMap />
+    <LeafletMapConnected />
     <StatsLegend />
     <OptionsFiltersConnected />
   </div>
