@@ -207,7 +207,8 @@ export const statsDateFiltered = ({ startDate, endDate, filterCol }) => sls`
     (${filterCol} > 0)
 `;
 
-// Counts all death / injury stats for a given date range filtered by some geometry table and some column
+// Counts all death / injury stats for a given date range filtered by some geometry table
+// and some column
 // @param {date} startDate Min date of date range, formatted like 'YYYY-MM-DD'
 // @param {date} endDate Max date of date range, formatted like 'YYYY-MM-DD'
 // @param {string} filterCol Name of column to filter by, eg: number_of_persons_injured,
