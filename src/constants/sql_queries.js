@@ -114,9 +114,9 @@ export const statsDate = ({ endDate, startDate }) => sls`
   FROM
     ${nyc_crashes} c
   WHERE
-    (date <= date '${endDate}')
+    (date_val <= date '${endDate}')
   AND
-    (date >= date '${startDate}')
+    (date_val >= date '${startDate}')
 `;
 
 // Counts all death / injury stats for a given date range filtered by some geometry table

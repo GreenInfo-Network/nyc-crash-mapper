@@ -1,7 +1,7 @@
 import { polyfill } from 'es6-promise';
 import fetch from 'isomorphic-fetch';
-import * as config from '../constants/app_config';
-import * as actions from '../actions/';
+import { cartoSQLQuery } from '../constants/app_config';
+import * as actions from '../constants/action_types';
 import * as sql from '../constants/sql_queries';
 
 polyfill();
@@ -22,12 +22,12 @@ const receiveCrashStatsError = error => ({
 
 const fetchCrashStatsData = ({ startDate, endDate }) => {
   const query = sql.statsDate({ startDate, endDate });
-  const url = `${config.sql_endpoint}q=${query}`;
+  const url = cartoSQLQuery(query);
   return (dispatch) => {
     dispatch(requestCrashStatsData());
     return fetch(url)
       .then(res => res.json())
-      .then(json => dispatch(recieveCrashStatsData(json.rows)))
+      .then(json => dispatch(recieveCrashStatsData(json.rows[0])))
       .catch(error => dispatch(receiveCrashStatsError(error)));
   };
 };

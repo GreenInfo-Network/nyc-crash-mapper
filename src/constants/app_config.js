@@ -3,6 +3,10 @@ import cartocss from './cartocss';
 // CARTO account name
 export const cartoUser = 'chekpeds';
 
+// CARTO SQL API endpoint
+export const cartoSQLQuery = query =>
+  `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
+
 // CARTO table names lookup
 export const cartoTables = {
   nyc_borough: 'nyc_borough',
