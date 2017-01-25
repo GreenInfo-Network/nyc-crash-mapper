@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import OptionsContainer from './OptionsContainer';
-import FilterByBoundary from './FilterByBoundary';
+import FilterByArea from './FilterByArea';
 import FilterByType from './FilterByType';
 import FilterByDate from '../../containers/FilterByDateConnected';
 import DownloadData from './DownloadData';
@@ -22,7 +22,7 @@ class OptionsFilters extends Component {
           scroll
         >
           <OptionsContainer title={'Filter by Boundary'}>
-            <FilterByBoundary />
+            <FilterByArea />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Type'}>
