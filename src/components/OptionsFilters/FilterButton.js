@@ -2,19 +2,24 @@ import React, { PropTypes, Component } from 'react';
 import cx from 'classnames';
 
 class FilterButton extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      active: false
+      active: props.btnVal === props.filterName
     };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      active: nextProps.btnVal === this.props.filterName
+    });
+  }
+
   handleClick() {
-    this.setState(prevState => ({ active: !prevState.active }));
-    this.props.callback();
+    this.props.callback(this.props.filterName);
   }
 
   render() {
@@ -39,13 +44,15 @@ class FilterButton extends Component {
 }
 
 FilterButton.defaultProps = {
-  btnType: 'wide'
+  btnType: 'wide',
+  btnVal: ''
 };
 
 FilterButton.propTypes = {
   btnType: PropTypes.string,
   filterName: PropTypes.string.isRequired,
-  callback: PropTypes.func.isRequired
+  callback: PropTypes.func.isRequired,
+  btnVal: PropTypes.string
 };
 
 export default FilterButton;
