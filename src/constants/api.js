@@ -4,13 +4,14 @@ export default {
     startDate: '2016-07-01',
     endDate: '2016-12-31',
   },
-  filterByArea: {
-    area: 'CITYWIDE',
+  filterArea: {
+    geo: 'CITYWIDE',
     identifier: undefined,
     latLons: [],
   },
-  filterByType: {
+  filterType: {
     harm: 'ALL',
     persona: 'ALL',
-  }
+  },
+  filterContributingFactor: 'ALL'
 };
