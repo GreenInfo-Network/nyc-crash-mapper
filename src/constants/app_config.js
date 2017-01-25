@@ -1,5 +1,5 @@
 // CARTO account name
-cartoUser = 'chekpeds';
+export const cartoUser = 'chekpeds';
 
 // CARTO table names lookup
 export const cartoTables = {
