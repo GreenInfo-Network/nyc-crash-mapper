@@ -20,21 +20,21 @@ export default () => (
     </div>
     <div className="legend-crash-count">
       <ul>
-        <li className="count-4-plus">
+        <li title="74 or fewer crashes" className="count-size-4">
           <span />
-          <p>4+</p>
+          <p>{'<=74'}</p>
         </li>
-        <li className="count-3">
+        <li title="46 or fewer crashes" className="count-size-3">
           <span />
-          <p>3</p>
+          <p>{'<=46'}</p>
         </li>
-        <li className="count-2">
+        <li title="32 or fewer crashes" className="count-size-2">
           <span />
-          <p>2</p>
+          <p>{'<=32'}</p>
         </li>
-        <li className="count-1">
+        <li title="11 or fewer crashes" className="count-size-1">
           <span />
-          <p>1</p>
+          <p>{'<=11'}</p>
         </li>
       </ul>
     </div>
