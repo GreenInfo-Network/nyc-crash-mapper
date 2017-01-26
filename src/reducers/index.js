@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import { createResponsiveStateReducer } from 'redux-responsive';
+import { routerReducer } from 'react-router-redux';
+
 import dateRange from './date_range_reducer';
 import filterArea from './filter_by_area_reducer';
 import filterType from './filter_by_type_reducer';
@@ -31,6 +33,7 @@ const rootReducer = combineReducers({
   filterArea,
   filterContributingFactor,
   filterType,
+  routing: routerReducer,
 });
 
 export default rootReducer;

@@ -3,21 +3,25 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
+// vendor libs get bundled separately to take advantage of browser caching
 const VENDOR_LIBS = [
   'classnames',
-  'react',
-  'react-dom',
-  'react-router',
   'query-string',
+  'react',
   'react-collapse',
+  'react-datepicker',
+  'react-dom',
   'react-height',
+  'react-moment-proptypes',
   'react-motion',
   'react-redux',
+  'react-router',
+  'react-router-redux',
   'redux',
-  'redux-responsive',
   'redux-logger',
+  'redux-responsive',
   'redux-thunk',
-  'single-line-string'
+  'single-line-string',
 ];
 
 module.exports = {
