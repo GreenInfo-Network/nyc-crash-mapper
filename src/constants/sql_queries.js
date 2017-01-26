@@ -244,6 +244,158 @@ export const statsDateByAreaFiltered = ({ startDate, endDate, filterCol, geoTabl
 `;
 
 /*
+ ******************* CONTRIBUTING FACTORS ********************
+ */
+
+// All contributing factors filtered by start and end date
+export const allFactorsByDate = ({ startDate, endDate }) => sls`
+  WITH all_factors as (
+    SELECT
+      c.contributing_factor_vehicle_1 as factor
+    FROM
+      ${nyc_crashes} c
+    WHERE
+      (date_val <= date '${endDate}')
+    AND
+      (date_val >= date '${startDate}')
+    UNION ALL
+    SELECT
+      c.contributing_factor_vehicle_2 as factor
+    FROM
+      ${nyc_crashes} c
+    WHERE
+      (date_val <= date '${endDate}')
+    AND
+      (date_val >= date '${startDate}')
+    UNION ALL
+    SELECT
+      c.contributing_factor_vehicle_3 as factor
+    FROM
+      ${nyc_crashes} c
+    WHERE
+      (date_val <= date '${endDate}')
+    AND
+      (date_val >= date '${startDate}')
+    UNION ALL
+    SELECT
+      c.contributing_factor_vehicle_4 as factor
+    FROM
+      ${nyc_crashes} c
+    WHERE
+      (date_val <= date '${endDate}')
+    AND
+      (date_val >= date '${startDate}')
+    UNION ALL
+    SELECT
+      c.contributing_factor_vehicle_5 as factor
+    FROM
+      ${nyc_crashes} c
+    WHERE
+      (date_val <= date '${endDate}')
+    AND
+      (date_val >= date '${startDate}')
+    )
+  SELECT
+   COUNT(af.factor) as count_factor,
+   af.factor
+  FROM
+    all_factors af
+  GROUP BY
+    af.factor
+  ORDER BY
+    count_factor desc
+ `;
+
+// contributing factors by date by some geo by some column filter
+export const allFactorsByDateByAreaFiltered = ({ startDate, endDate, geoTable, identifier, filterCol }) => sls`
+  WITH all_factors as (
+   SELECT
+     c.contributing_factor_vehicle_1 as factor
+   FROM
+     ${nyc_crashes} c
+   JOIN
+     ${geoTable} a
+   ON
+     (ST_Within(c.the_geom, a.the_geom) AND (a.identifier = ${identifier}))
+   WHERE
+     (date_val <= date '${endDate}')
+   AND
+     (date >= date '${startDate}')
+   AND
+     (${filterCol} > 0)
+   UNION ALL
+   SELECT
+     c.contributing_factor_vehicle_2 as factor
+   FROM
+     ${nyc_crashes} c
+   JOIN
+     ${geoTable} a
+   ON
+     (ST_Within(c.the_geom, a.the_geom) AND (a.identifier = ${identifier}))
+   WHERE
+     (date <= date '${endDate}')
+   AND
+     (date >= date '${startDate}')
+   AND
+     (${filterCol} > 0)
+     UNION ALL
+   SELECT
+     c.contributing_factor_vehicle_3 as factor
+   FROM
+     ${nyc_crashes} c
+   JOIN
+     ${geoTable} a
+   ON
+     (ST_Within(c.the_geom, a.the_geom) AND (a.identifier = ${identifier}))
+   WHERE
+     (date <= date '${endDate}')
+   AND
+     (date >= date '${startDate}')
+   AND
+     (${filterCol} > 0)
+     UNION ALL
+   SELECT
+     c.contributing_factor_vehicle_4 as factor
+   FROM
+     ${nyc_crashes} c
+   JOIN
+     ${geoTable} a
+   ON
+     (ST_Within(c.the_geom, a.the_geom) AND (a.identifier = ${identifier}))
+   WHERE
+     (date <= date '${endDate}')
+   AND
+     (date >= date '${startDate}')
+   AND
+     (${filterCol} > 0)
+     UNION ALL
+   SELECT
+     c.contributing_factor_vehicle_5 as factor
+   FROM
+     ${nyc_crashes} c
+   JOIN
+     ${geoTable} a
+   ON
+     (ST_Within(c.the_geom, a.the_geom) AND (a.identifier = ${identifier}))
+   WHERE
+     (date <= date '${endDate}')
+   AND
+     (date >= date '${startDate}')
+   AND
+     (${filterCol} > 0)
+   )
+  SELECT
+    COUNT(af.factor) as count_factor,
+    af.factor
+  FROM
+    all_factors af
+  GROUP BY
+    af.factor
+  ORDER BY
+    count_factor desc
+`;
+
+/*
  ************************ MAP ************************
  */
 

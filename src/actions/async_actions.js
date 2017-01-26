@@ -10,7 +10,7 @@ const requestCrashStatsData = () => ({
   type: actions.CRASHES_ALL_REQUEST
 });
 
-const recieveCrashStatsData = json => ({
+const receiveCrashStatsData = json => ({
   type: actions.CRASHES_ALL_SUCCESS,
   json
 });
@@ -20,16 +20,40 @@ const receiveCrashStatsError = error => ({
   error
 });
 
-const fetchCrashStatsData = ({ startDate, endDate }) => {
+export const fetchCrashStatsData = ({ startDate, endDate }) => {
   const query = sql.statsDate({ startDate, endDate });
   const url = cartoSQLQuery(query);
   return (dispatch) => {
     dispatch(requestCrashStatsData());
     return fetch(url)
       .then(res => res.json())
-      .then(json => dispatch(recieveCrashStatsData(json.rows[0])))
+      .then(json => dispatch(receiveCrashStatsData(json.rows[0])))
       .catch(error => dispatch(receiveCrashStatsError(error)));
   };
 };
 
-export default fetchCrashStatsData;
+const requestContributingFactors = () => ({
+  type: actions.CONTRIBUTING_FACTORS_REQUEST
+});
+
+const receiveContributingFactors = json => ({
+  type: actions.CONTRIBUTING_FACTORS_SUCCESS,
+  json
+});
+
+const receiveContributingFactorsError = error => ({
+  type: actions.CONTRIBUTING_FACTORS_ERROR,
+  error
+});
+
+export const fetchContributingFactors = ({ startDate, endDate }) => {
+  const query = sql.allFactorsByDate({ startDate, endDate });
+  const url = cartoSQLQuery(query);
+  return (dispatch) => {
+    dispatch(requestContributingFactors());
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => dispatch(receiveContributingFactors(json.rows)))
+      .catch(error => dispatch(receiveContributingFactorsError(error)));
+  };
+};
