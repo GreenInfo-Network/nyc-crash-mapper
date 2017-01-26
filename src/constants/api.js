@@ -8,7 +8,7 @@ export const dateStringFormatView = 'MMM D, YYYY';
 export default {
   dateRange: {
     startDate: moment('2016-07-01', dateStringFormatModel, true),
-    endDate: moment('2016-12-31', dateStringFormatModel, true),
+    endDate: moment('2016-07-31', dateStringFormatModel, true),
   },
   filterArea: {
     geo: 'Citywide',
