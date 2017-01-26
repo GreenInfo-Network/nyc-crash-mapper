@@ -38,9 +38,10 @@ class LeafletMap extends Component {
 
   initMap() {
     const self = this;
+    const { zoom, lat, lng, onMapMoved } = this.props;
     this.map = L.map(this.mapDiv, {
-      center: [40.687, -73.982],
-      zoom: 12,
+      center: [lat, lng],
+      zoom,
       zoomControl: false,
       scrollWheelZoom: false
     });
@@ -49,6 +50,9 @@ class LeafletMap extends Component {
       maxZoom: 18,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
     }).addTo(self.map);
+
+    // update the URL query params with map zoom & center
+    this.map.on('moveend', onMapMoved);
 
     this.initCartoLayer();
   }
@@ -102,9 +106,19 @@ class LeafletMap extends Component {
   }
 }
 
+LeafletMap.defaultProps = {
+  zoom: 12,
+  lat: 40.687,
+  lng: -73.982,
+};
+
 LeafletMap.propTypes = {
+  onMapMoved: PropTypes.func.isRequired,
   startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired
+  endDate: PropTypes.string.isRequired,
+  zoom: PropTypes.number,
+  lat: PropTypes.number,
+  lng: PropTypes.number,
 };
 
 export default LeafletMap;
