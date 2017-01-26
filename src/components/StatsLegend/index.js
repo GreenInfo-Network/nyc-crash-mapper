@@ -11,19 +11,22 @@ class StatsLegend extends Component {
   componentWillMount() {
     const { startDate, endDate } = this.props;
     this.props.fetchCrashStatsData({ startDate, endDate });
+    this.props.fetchContributingFactors({ startDate, endDate });
   }
 
   componentWillReceiveProps(nextProps) {
     const { startDate, endDate } = nextProps;
     if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
       this.props.fetchCrashStatsData({ startDate, endDate });
+      this.props.fetchContributingFactors({ startDate, endDate });
     }
   }
 
   render() {
+    console.log(this.props);
     const { startDate,
       endDate,
-      total_crashes,
+      contributingFactors,
       cyclist_injured,
       cyclist_killed,
       motorist_injured,
@@ -31,7 +34,8 @@ class StatsLegend extends Component {
       pedestrians_injured,
       pedestrians_killed,
       persons_injured,
-      persons_killed } = this.props;
+      persons_killed,
+      total_crashes, } = this.props;
 
     const placeholderFactors = [
       { count: 2053, type: 'unspecified' },
@@ -73,7 +77,7 @@ class StatsLegend extends Component {
               />
             </div>
             <div className="three columns">
-              <ContributingFactorsList factors={placeholderFactors} />
+              <ContributingFactorsList factors={contributingFactors} />
             </div>
             <div className="two columns">
               <LegendContainer />
@@ -86,7 +90,7 @@ class StatsLegend extends Component {
 }
 
 StatsLegend.defaultProps = {
-  total_crashes: 0,
+  contributingFactors: [],
   cyclist_injured: 0,
   cyclist_killed: 0,
   motorist_injured: 0,
@@ -95,13 +99,18 @@ StatsLegend.defaultProps = {
   pedestrians_killed: 0,
   persons_injured: 0,
   persons_killed: 0,
+  total_crashes: 0,
 };
 
 StatsLegend.propTypes = {
-  total_crashes: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
+  fetchContributingFactors: PropTypes.func.isRequired,
   fetchCrashStatsData: PropTypes.func.isRequired,
+  contributingFactors: PropTypes.arrayOf(PropTypes.shape({
+    count_factor: PropTypes.number,
+    factor: PropTypes.string
+  })),
   cyclist_injured: PropTypes.number,
   cyclist_killed: PropTypes.number,
   motorist_injured: PropTypes.number,
@@ -110,6 +119,7 @@ StatsLegend.propTypes = {
   pedestrians_killed: PropTypes.number,
   persons_injured: PropTypes.number,
   persons_killed: PropTypes.number,
+  total_crashes: PropTypes.number,
 };
 
 export default StatsLegend;

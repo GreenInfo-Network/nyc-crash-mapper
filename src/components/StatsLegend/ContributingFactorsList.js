@@ -5,10 +5,14 @@ const ContributingFactorsList = (props) => {
 
   const factorsList = () =>
     factors.map(factor =>
-      (<li key={factor.type}>
+      (<li key={factor.factor}>
         <p>
-          <span className="factor-count">{factor.count}</span>
-          <span className="factor-type">{factor.type}</span>
+          <span className="factor-count">
+            {factor.count_factor.toLocaleString()}
+          </span>
+          <span className="factor-type">
+            {factor.factor}
+          </span>
         </p>
       </li>)
     );
@@ -28,8 +32,8 @@ ContributingFactorsList.defaultProps = {
 
 ContributingFactorsList.propTypes = {
   factors: PropTypes.arrayOf(PropTypes.shape({
-    count: PropTypes.number,
-    type: PropTypes.string
+    count_factor: PropTypes.number,
+    factor: PropTypes.string
   }))
 };
 

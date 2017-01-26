@@ -1,18 +1,23 @@
 import { connect } from 'react-redux';
 
 import { dateStringFormatView } from '../constants/api';
-import { fetchCrashStatsData } from '../actions/';
+import { fetchCrashStatsData, fetchContributingFactors } from '../actions/';
 import StatsLegend from '../components/StatsLegend/';
 
-const mapStateToProps = ({ dateRange, crashStats: { typeStats } }) => {
+const mapStateToProps = (state) => {
+  const { dateRange, crashStats, contributingFactors } = state;
   const { startDate, endDate } = dateRange;
+  const { typeStats } = crashStats;
+  const { factors } = contributingFactors;
   return {
     startDate: startDate.format(dateStringFormatView),
     endDate: endDate.format(dateStringFormatView),
-    ...typeStats
+    ...typeStats,
+    contributingFactors: factors
   };
 };
 
 export default connect(mapStateToProps, {
-  fetchCrashStatsData
+  fetchCrashStatsData,
+  fetchContributingFactors
 })(StatsLegend);
