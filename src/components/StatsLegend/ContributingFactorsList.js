@@ -4,18 +4,23 @@ const ContributingFactorsList = (props) => {
   const { factors } = props;
 
   const factorsList = () =>
-    factors.map(factor =>
-      (<li key={factor.factor}>
-        <p>
-          <span className="factor-count">
-            {factor.count_factor.toLocaleString()}
-          </span>
-          <span className="factor-type">
-            {factor.factor}
-          </span>
-        </p>
-      </li>)
-    );
+    factors.map((f) => {
+      const { factor, count_factor } = f;
+
+      return (
+        <li key={factor}>
+          <p>
+            <span className="factor-count">
+              {count_factor.toLocaleString()}
+            </span>
+            <span className="factor-type">
+              {
+                factor !== '' ? factor : 'None Recorded'
+              }
+            </span>
+          </p>
+        </li>);
+    });
 
   return (
     <div className="contributing-factors-list scroll">

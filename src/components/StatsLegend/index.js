@@ -23,7 +23,6 @@ class StatsLegend extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { startDate,
       endDate,
       contributingFactors,
@@ -36,13 +35,6 @@ class StatsLegend extends Component {
       persons_injured,
       persons_killed,
       total_crashes, } = this.props;
-
-    const placeholderFactors = [
-      { count: 2053, type: 'unspecified' },
-      { count: 112, type: 'Driver Inattention / Distraction' },
-      { count: 29, type: 'Fatigue / Drowsey' },
-      { count: 14, type: 'Failure to Yield / Right of Way' }
-    ];
 
     return (
       <div className="ui bottom app-stats-legend">
