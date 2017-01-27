@@ -12,6 +12,13 @@ class App extends Component {
     this.onMapMoved = this.onMapMoved.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { startDate, endDate } = nextProps;
+    if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
+      this.updateQueryParams({ startDate, endDate });
+    }
+  }
+
   onMapMoved(event) {
     // update the url query params with map center & zoom
     if (event && event.target) {
@@ -24,11 +31,21 @@ class App extends Component {
   }
 
   updateQueryParams(params) {
-    const { lat, lng, zoom } = params;
-    const newQueryParams = {};
-    newQueryParams.lat = lat || null;
-    newQueryParams.lng = lng || null;
-    newQueryParams.zoom = zoom || null;
+    // updates the URL location query with app state filters & map zoom & center
+    // this allows for "stateful URLs" so that when app loads, it will load
+    // with the same filters & map zoom & center last viewed, enabling sharing
+    // of unique views of the data via the URL between users
+    const { lat, lng, zoom, startDate, endDate } = params;
+    const { query } = this.props.location;
+
+    const newQueryParams = {
+      lat: lat || query.lat,
+      lng: lng || query.lng,
+      zoom: zoom || query.zoom,
+      startDate: startDate || this.props.startDate,
+      endDate: endDate || this.props.endDate,
+    };
+
     this.context.router.push(`?${queryString.stringify(newQueryParams)}`);
   }
 
@@ -51,7 +68,9 @@ class App extends Component {
 App.propTypes = {
   location: PropTypes.shape({
     query: PropTypes.object.isRequired
-  }).isRequired
+  }).isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired
 };
 
 App.contextTypes = {
