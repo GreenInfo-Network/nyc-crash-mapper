@@ -19,12 +19,25 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // update the cartoLayer using new props, such as start and end dates
-    this.updateCartoLayer(nextProps);
+    if (this.shouldCartoLayerUpdate(nextProps)) {
+      // update the cartoLayer using new props, such as start and end dates
+      this.updateCartoLayer(nextProps);
+    }
   }
 
   shouldComponentUpdate() {
     // let Leaflet have control over this part of the DOM, not React.
+    return false;
+  }
+
+  shouldCartoLayerUpdate(nextProps) {
+    const { endDate, startDate } = nextProps;
+    if (this.cartoLayer !== null) {
+      if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
+        return true;
+      }
+      return false;
+    }
     return false;
   }
 
