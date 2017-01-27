@@ -4,8 +4,20 @@ import DatePicker from 'react-datepicker';
 
 class FilterByDate extends Component {
 
+  handleStartDateChange(date) {
+    if (date.isBefore(this.props.endDate)) {
+      this.props.startDateChange(date);
+    }
+  }
+
+  handleEndDateChange(date) {
+    if (date.isAfter(this.props.startDate)) {
+      this.props.endDateChange(date);
+    }
+  }
+
   render() {
-    const { startDate, endDate, startDateChange, endDateChange } = this.props;
+    const { startDate, endDate } = this.props;
 
     return (
       <ul className="filter-by-date filter-list">
@@ -14,7 +26,7 @@ class FilterByDate extends Component {
           <DatePicker
             dateFormat={'YYYY-MM-DD'}
             selected={startDate}
-            onChange={date => startDateChange(date)}
+            onChange={date => this.handleStartDateChange(date)}
           />
         </li>
         <li className="end-date">
@@ -22,7 +34,7 @@ class FilterByDate extends Component {
           <DatePicker
             dateFormat={'YYYY-MM-DD'}
             selected={endDate}
-            onChange={date => endDateChange(date)}
+            onChange={date => this.handleEndDateChange(date)}
           />
         </li>
       </ul>
