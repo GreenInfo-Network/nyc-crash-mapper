@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-import { crashesByDate } from '../../constants/sql_queries';
+// import { crashesByDate } from '../../constants/sql_queries';
 import { basemapURL } from '../../constants/app_config';
-import { configureLayerSource } from '../../constants/api';
+import { configureLayerSource, configureMapSQL } from '../../constants/api';
 import ZoomControls from './ZoomControls';
 
 class LeafletMap extends Component {
@@ -31,9 +31,12 @@ class LeafletMap extends Component {
   }
 
   shouldCartoLayerUpdate(nextProps) {
-    const { endDate, startDate } = nextProps;
+    const { endDate, startDate, persona, harm } = nextProps;
     if (this.cartoLayer !== null) {
-      if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
+      if (startDate !== this.props.startDate ||
+          endDate !== this.props.endDate ||
+          persona !== this.props.persona ||
+          harm !== this.props.harm) {
         return true;
       }
       return false;
@@ -72,9 +75,9 @@ class LeafletMap extends Component {
 
   initCartoLayer() {
     const self = this;
-    const { startDate, endDate } = this.props;
-    const startEndDates = { startDate, endDate };
-    const layerSource = configureLayerSource(crashesByDate(startEndDates));
+    const { startDate, endDate, persona, harm } = this.props;
+    const sqlParams = { startDate, endDate, persona, harm };
+    const layerSource = configureLayerSource(configureMapSQL(sqlParams));
     const options = {
       https: true,
       infowindow: false,
@@ -99,10 +102,10 @@ class LeafletMap extends Component {
   }
 
   updateCartoLayer(props) {
-    const { startDate, endDate } = props;
+    const { startDate, endDate, persona, harm } = props;
     // TO DO: Logic for determining SQL query based on app filters
     this.cartoLayer.setSQL(
-      crashesByDate({ startDate, endDate })
+      configureMapSQL({ startDate, endDate, persona, harm })
     );
   }
 
@@ -127,6 +130,8 @@ LeafletMap.defaultProps = {
 
 LeafletMap.propTypes = {
   onMapMoved: PropTypes.func.isRequired,
+  harm: PropTypes.string.isRequired,
+  persona: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   zoom: PropTypes.number,

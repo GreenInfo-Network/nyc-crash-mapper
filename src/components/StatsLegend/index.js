@@ -9,17 +9,30 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   componentWillMount() {
-    const { startDate, endDate } = this.props;
-    this.props.fetchCrashStatsData({ startDate, endDate });
+    const { startDate, endDate, harm, persona } = this.props;
+    this.props.fetchCrashStatsData({ startDate, endDate, harm, persona });
     this.props.fetchContributingFactors({ startDate, endDate });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startDate, endDate } = nextProps;
-    if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
-      this.props.fetchCrashStatsData({ startDate, endDate });
-      this.props.fetchContributingFactors({ startDate, endDate });
+    const { startDate, endDate, harm, persona } = nextProps;
+    if (this.shouldFetchNewData(nextProps)) {
+      this.props.fetchCrashStatsData({ startDate, endDate, harm, persona });
+      this.props.fetchContributingFactors({ startDate, endDate, harm, persona });
     }
+  }
+
+  shouldFetchNewData(nextProps) {
+    const { startDate, endDate, harm, persona } = nextProps;
+    if (
+      startDate !== this.props.startDate ||
+      endDate !== this.props.endDate ||
+      harm !== this.props.harm ||
+      persona !== this.props.persona
+    ) {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -112,6 +125,8 @@ StatsLegend.propTypes = {
   persons_injured: PropTypes.number,
   persons_killed: PropTypes.number,
   total_crashes: PropTypes.number,
+  harm: PropTypes.string.isRequired,
+  persona: PropTypes.string.isRequired,
 };
 
 export default StatsLegend;
