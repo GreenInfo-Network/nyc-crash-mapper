@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-// import { crashesByDate } from '../../constants/sql_queries';
+import { crashesByDate } from '../../constants/sql_queries';
 import { basemapURL } from '../../constants/app_config';
-import { configureLayerSource, configureMapSQL } from '../../constants/api';
+import { configureLayerSource } from '../../constants/api';
 import ZoomControls from './ZoomControls';
 
 class LeafletMap extends Component {
@@ -77,7 +77,7 @@ class LeafletMap extends Component {
     const self = this;
     const { startDate, endDate, persona, harm } = this.props;
     const sqlParams = { startDate, endDate, persona, harm };
-    const layerSource = configureLayerSource(configureMapSQL(sqlParams));
+    const layerSource = configureLayerSource(crashesByDate(sqlParams));
     const options = {
       https: true,
       infowindow: false,
@@ -105,7 +105,7 @@ class LeafletMap extends Component {
     const { startDate, endDate, persona, harm } = props;
     // TO DO: Logic for determining SQL query based on app filters
     this.cartoLayer.setSQL(
-      configureMapSQL({ startDate, endDate, persona, harm })
+      crashesByDate({ startDate, endDate, persona, harm })
     );
   }
 
