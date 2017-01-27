@@ -10,56 +10,56 @@ const FilterByBoundary = (props) => {
       <li>
         <FilterButton
           filterName={'Citywide'}
-          btnVal={geo}
+          btnVal={geo === 'Citywide'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'Borough'}
-          btnVal={geo}
+          btnVal={geo === 'Borough'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'Community Board'}
-          btnVal={geo}
+          btnVal={geo === 'Community Board'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'City Council District'}
-          btnVal={geo}
+          btnVal={geo === 'City Council District'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'Neighborhood (NTA)'}
-          btnVal={geo}
+          btnVal={geo === 'Neighborhood (NTA)'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'NYPD Precinct'}
-          btnVal={geo}
+          btnVal={geo === 'NYPD Precinct'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'Zipcode (ZCTA)'}
-          btnVal={geo}
+          btnVal={geo === 'Zipcode (ZCTA)'}
           callback={filterByArea}
         />
       </li>
       <li>
         <FilterButton
           filterName={'Custom'}
-          btnVal={geo}
+          btnVal={geo === 'Custom'}
           callback={filterByArea}
         />
       </li>

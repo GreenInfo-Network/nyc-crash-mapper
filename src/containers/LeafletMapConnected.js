@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { dateStringFormatModel } from '../constants/api';
 import LeafletMap from '../components/LeafletMap/';
 
-const mapStateToProps = ({ dateRange: { startDate, endDate } }, ownProps) => {
+const mapStateToProps = ({ dateRange }, ownProps) => {
+  const { startDate, endDate } = dateRange;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
   return {

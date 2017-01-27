@@ -6,7 +6,7 @@ class FilterButton extends Component {
     super(props);
 
     this.state = {
-      active: props.btnVal === props.filterName
+      active: props.btnVal
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -14,7 +14,7 @@ class FilterButton extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      active: nextProps.btnVal === this.props.filterName
+      active: nextProps.btnVal
     });
   }
 
@@ -45,14 +45,14 @@ class FilterButton extends Component {
 
 FilterButton.defaultProps = {
   btnType: 'wide',
-  btnVal: ''
+  btnVal: false,
 };
 
 FilterButton.propTypes = {
   btnType: PropTypes.string,
   filterName: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
-  btnVal: PropTypes.string
+  btnVal: PropTypes.bool
 };
 
 export default FilterButton;

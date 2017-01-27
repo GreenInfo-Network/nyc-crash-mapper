@@ -73,8 +73,8 @@ class LeafletMap extends Component {
   initCartoLayer() {
     const self = this;
     const { startDate, endDate } = this.props;
-    const startEndDates = { startDate, endDate };
-    const layerSource = configureLayerSource(crashesByDate(startEndDates));
+    const sqlParams = { startDate, endDate };
+    const layerSource = configureLayerSource(crashesByDate(sqlParams));
     const options = {
       https: true,
       infowindow: false,
@@ -99,10 +99,10 @@ class LeafletMap extends Component {
   }
 
   updateCartoLayer(props) {
-    const { startDate, endDate } = props;
+    const { startDate, endDate, persona, harm } = props;
     // TO DO: Logic for determining SQL query based on app filters
     this.cartoLayer.setSQL(
-      crashesByDate({ startDate, endDate })
+      crashesByDate({ startDate, endDate, persona, harm })
     );
   }
 

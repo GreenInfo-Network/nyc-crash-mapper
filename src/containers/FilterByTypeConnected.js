@@ -1,17 +1,23 @@
 import { connect } from 'react-redux';
 
-import { filterByTypePersona, filterByTypeHarm } from '../actions/';
+import {
+  filterByTypeInjury,
+  filterByTypeFatality,
+  filterByNoInjFat
+} from '../actions/';
 import FilterByType from '../components/OptionsFilters/FilterByType';
 
 const mapStateToProps = ({ filterType }) => {
-  const { harm, persona } = filterType;
+  const { injury, fatality, noInjuryFatality } = filterType;
   return {
-    harm,
-    persona
+    injury,
+    fatality,
+    noInjuryFatality,
   };
 };
 
 export default connect(mapStateToProps, {
-  filterByTypePersona,
-  filterByTypeHarm
+  filterByTypeFatality,
+  filterByTypeInjury,
+  filterByNoInjFat,
 })(FilterByType);

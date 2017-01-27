@@ -9,17 +9,28 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   componentWillMount() {
-    const { startDate, endDate } = this.props;
-    this.props.fetchCrashStatsData({ startDate, endDate });
-    this.props.fetchContributingFactors({ startDate, endDate });
+    // const { startDate, endDate, harm, persona } = this.props;
+    // this.props.fetchCrashStatsData({ startDate, endDate, harm, persona });
+    // this.props.fetchContributingFactors({ startDate, endDate, harm, persona });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startDate, endDate } = nextProps;
-    if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
-      this.props.fetchCrashStatsData({ startDate, endDate });
-      this.props.fetchContributingFactors({ startDate, endDate });
+    // const { startDate, endDate, harm, persona } = nextProps;
+    if (this.shouldFetchNewData(nextProps)) {
+      // this.props.fetchCrashStatsData({ startDate, endDate, harm, persona });
+      // this.props.fetchContributingFactors({ startDate, endDate, harm, persona });
     }
+  }
+
+  shouldFetchNewData(nextProps) {
+    const { startDate, endDate } = nextProps;
+    if (
+      startDate !== this.props.startDate ||
+      endDate !== this.props.endDate
+    ) {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -97,8 +108,8 @@ StatsLegend.defaultProps = {
 StatsLegend.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  fetchContributingFactors: PropTypes.func.isRequired,
-  fetchCrashStatsData: PropTypes.func.isRequired,
+  // fetchContributingFactors: PropTypes.func.isRequired,
+  // fetchCrashStatsData: PropTypes.func.isRequired,
   contributingFactors: PropTypes.arrayOf(PropTypes.shape({
     count_factor: PropTypes.number,
     factor: PropTypes.string

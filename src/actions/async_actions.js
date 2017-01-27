@@ -2,7 +2,7 @@ import { polyfill } from 'es6-promise';
 import fetch from 'isomorphic-fetch';
 import { cartoSQLQuery } from '../constants/app_config';
 import * as actions from '../constants/action_types';
-import * as sql from '../constants/sql_queries';
+import { configureStatsSQL, configureFactorsSQL } from '../constants/api';
 
 polyfill();
 
@@ -20,8 +20,8 @@ const receiveCrashStatsError = error => ({
   error
 });
 
-export const fetchCrashStatsData = ({ startDate, endDate }) => {
-  const query = sql.statsDate({ startDate, endDate });
+export const fetchCrashStatsData = (params) => {
+  const query = configureStatsSQL(params);
   const url = cartoSQLQuery(query);
   return (dispatch) => {
     dispatch(requestCrashStatsData());
@@ -46,8 +46,8 @@ const receiveContributingFactorsError = error => ({
   error
 });
 
-export const fetchContributingFactors = ({ startDate, endDate }) => {
-  const query = sql.allFactorsByDate({ startDate, endDate });
+export const fetchContributingFactors = (params) => {
+  const query = configureFactorsSQL(params);
   const url = cartoSQLQuery(query);
   return (dispatch) => {
     dispatch(requestContributingFactors());
