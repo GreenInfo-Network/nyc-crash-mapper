@@ -7,11 +7,12 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { debounce } from 'lodash';
 
 import makeStore from './store';
-import defaultState from './constants/api';
-import App from './components/App';
+import { makeDefaultState } from './constants/api';
+import AppConnected from './containers/AppConnected';
 import '../scss/main.scss';
 
-const store = makeStore(defaultState);
+const state = makeDefaultState();
+const store = makeStore(state);
 const history = syncHistoryWithStore(hashHistory, store);
 
 // fire redux-responsive on window resize event
@@ -21,10 +22,10 @@ window.addEventListener('resize', debounce(() =>
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={App}>
-        <IndexRoute component={App} />
+      <Route path="/" component={AppConnected}>
+        <IndexRoute component={AppConnected} />
       </Route>
-      <Route path="*" component={App} />
+      <Route path="*" component={AppConnected} />
     </Router>
   </Provider>,
   document.getElementById('root')

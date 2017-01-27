@@ -1,25 +1,36 @@
 import moment from 'moment';
+import queryString from 'query-string';
 import { cartoLayerSource } from './app_config';
 
 export const dateStringFormatModel = 'YYYY-MM-DD';
 export const dateStringFormatView = 'MMM D, YYYY';
 
-// default app state, only export for now
-export default {
-  dateRange: {
-    startDate: moment('2016-07-01', dateStringFormatModel, true),
-    endDate: moment('2016-07-31', dateStringFormatModel, true),
-  },
-  filterArea: {
-    geo: 'Citywide',
-    identifier: undefined,
-    latLons: [],
-  },
-  filterType: {
-    harm: 'ALL',
-    persona: 'ALL',
-  },
-  filterContributingFactor: 'ALL'
+const momentize = dateString => moment(dateString, dateStringFormatModel, true);
+
+// creates default app state using any available params from window.location.hash
+export const makeDefaultState = () => {
+  const hash = window.location.hash;
+  const qString = hash.substring(3, hash.length);
+  const q = queryString.parse(qString);
+  const startDate = q.startDate ? momentize(q.startDate) : momentize('2016-07-01');
+  const endDate = q.endDate ? momentize(q.endDate) : momentize('2016-07-31');
+
+  return {
+    dateRange: {
+      startDate,
+      endDate,
+    },
+    filterArea: {
+      geo: q.geo || 'Citywide',
+      identifier: q.identifier || undefined,
+      latLons: q.latLons || [],
+    },
+    filterType: {
+      harm: q.harm || 'ALL',
+      persona: q.persona || 'ALL',
+    },
+    filterContributingFactor: q.contrFactor || 'ALL'
+  };
 };
 
 export const configureLayerSource = (sql) => {
