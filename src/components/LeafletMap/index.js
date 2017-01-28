@@ -31,12 +31,9 @@ class LeafletMap extends Component {
   }
 
   shouldCartoLayerUpdate(nextProps) {
-    const { endDate, startDate, persona, harm } = nextProps;
+    const { endDate, startDate } = nextProps;
     if (this.cartoLayer !== null) {
-      if (startDate !== this.props.startDate ||
-          endDate !== this.props.endDate ||
-          persona !== this.props.persona ||
-          harm !== this.props.harm) {
+      if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
         return true;
       }
       return false;
@@ -75,8 +72,8 @@ class LeafletMap extends Component {
 
   initCartoLayer() {
     const self = this;
-    const { startDate, endDate, persona, harm } = this.props;
-    const sqlParams = { startDate, endDate, persona, harm };
+    const { startDate, endDate } = this.props;
+    const sqlParams = { startDate, endDate };
     const layerSource = configureLayerSource(crashesByDate(sqlParams));
     const options = {
       https: true,
@@ -130,8 +127,6 @@ LeafletMap.defaultProps = {
 
 LeafletMap.propTypes = {
   onMapMoved: PropTypes.func.isRequired,
-  harm: PropTypes.string.isRequired,
-  persona: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   zoom: PropTypes.number,

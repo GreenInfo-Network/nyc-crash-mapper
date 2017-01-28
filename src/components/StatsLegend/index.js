@@ -23,12 +23,10 @@ class StatsLegend extends Component {
   }
 
   shouldFetchNewData(nextProps) {
-    const { startDate, endDate, harm, persona } = nextProps;
+    const { startDate, endDate } = nextProps;
     if (
       startDate !== this.props.startDate ||
-      endDate !== this.props.endDate ||
-      harm !== this.props.harm ||
-      persona !== this.props.persona
+      endDate !== this.props.endDate
     ) {
       return true;
     }
@@ -125,8 +123,6 @@ StatsLegend.propTypes = {
   persons_injured: PropTypes.number,
   persons_killed: PropTypes.number,
   total_crashes: PropTypes.number,
-  harm: PropTypes.string.isRequired,
-  persona: PropTypes.string.isRequired,
 };
 
 export default StatsLegend;
