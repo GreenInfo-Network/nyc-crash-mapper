@@ -6,7 +6,8 @@
   color: $marine-light;
   padding: 0 10px;
   text-align: left;
-  text-transform: none;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
   border: none;
 
   &:hover,
@@ -17,7 +18,11 @@
   }
 
   &.wide {
-    width: 145px;
+    width: 135px;
+  }
+
+  &.med {
+    width: 125px;
   }
 
   &.narrow {

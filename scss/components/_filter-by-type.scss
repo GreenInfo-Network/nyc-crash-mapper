@@ -5,5 +5,10 @@
   .filter-list {
     display: table-cell;
     vertical-align: top;
+    width: 50%;
+
+    &:nth-of-type(2) {
+      padding-left: 0;
+    }
   }
 }
