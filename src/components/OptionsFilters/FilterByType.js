@@ -3,65 +3,67 @@ import React, { PropTypes, Component } from 'react';
 import FilterButton from './FilterButton';
 
 class FilterByType extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-
   render() {
-    const { filterByTypeHarm, filterByTypePersona, harm, persona } = this.props;
+    const { filterByTypeFatality, filterByTypeInjury, filterByNoInjFat, injury,
+      fatality, noInjuryFatality } = this.props;
 
     return (
       <div className="filter-by-type">
         <ul className="filter-list">
           <li>
             <FilterButton
-              filterName={'Cyclist'}
-              callback={filterByTypePersona}
-              btnType={'narrow'}
-              btnVal={persona}
+              filterName={'cyclist fatality'}
+              callback={filterByTypeFatality}
+              btnType={'med'}
+              btnVal={fatality.cyclist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'Motorist'}
-              callback={filterByTypePersona}
-              btnType={'narrow'}
-              btnVal={persona}
+              filterName={'motorist fatality'}
+              callback={filterByTypeFatality}
+              btnType={'med'}
+              btnVal={fatality.motorist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'Pedestrian'}
-              callback={filterByTypePersona}
-              btnType={'narrow'}
-              btnVal={persona}
+              filterName={'pedestrian fatality'}
+              callback={filterByTypeFatality}
+              btnType={'med'}
+              btnVal={fatality.pedestrian}
+            />
+            <FilterButton
+              filterName={'No Injury / Fatality'}
+              callback={filterByNoInjFat}
+              btnType={'med'}
+              btnVal={noInjuryFatality}
             />
           </li>
         </ul>
         <ul className="filter-list">
           <li>
             <FilterButton
-              filterName={'Fatality'}
-              callback={filterByTypeHarm}
-              btnType={'narrow'}
-              btnVal={harm}
+              filterName={'cyclist injury'}
+              callback={filterByTypeInjury}
+              btnType={'med'}
+              btnVal={injury.cyclist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'Injury'}
-              callback={filterByTypeHarm}
-              btnType={'narrow'}
-              btnVal={harm}
+              filterName={'motorist injury'}
+              callback={filterByTypeInjury}
+              btnType={'med'}
+              btnVal={injury.motorist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'No Inj/Fat'}
-              callback={filterByTypeHarm}
-              btnType={'narrow'}
-              btnVal={harm}
+              filterName={'pedestrian injury'}
+              callback={filterByTypeInjury}
+              btnType={'med'}
+              btnVal={injury.pedestrian}
             />
           </li>
         </ul>
@@ -71,10 +73,20 @@ class FilterByType extends Component {
 }
 
 FilterByType.propTypes = {
-  filterByTypePersona: PropTypes.func.isRequired,
-  filterByTypeHarm: PropTypes.func.isRequired,
-  harm: PropTypes.string.isRequired,
-  persona: PropTypes.string.isRequired
+  filterByTypeInjury: PropTypes.func.isRequired,
+  filterByTypeFatality: PropTypes.func.isRequired,
+  filterByNoInjFat: PropTypes.func.isRequired,
+  fatality: PropTypes.shape({
+    cyclist: PropTypes.bool.isRequired,
+    motorist: PropTypes.bool.isRequired,
+    pedestrian: PropTypes.bool.isRequired,
+  }).isRequired,
+  injury: PropTypes.shape({
+    cyclist: PropTypes.bool.isRequired,
+    motorist: PropTypes.bool.isRequired,
+    pedestrian: PropTypes.bool.isRequired,
+  }).isRequired,
+  noInjuryFatality: PropTypes.bool.isRequired
 };
 
 export default FilterByType;
