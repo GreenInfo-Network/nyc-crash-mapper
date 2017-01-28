@@ -29,8 +29,17 @@ export const makeDefaultState = () => {
       latLons: q.latLons || [],
     },
     filterType: {
-      harm: q.harm || 'ALL',
-      persona: q.persona || 'ALL',
+      injury: {
+        cyclist: false,
+        motorist: false,
+        pedestrian: false,
+      },
+      fatality: {
+        cyclist: false,
+        motorist: false,
+        pedestrian: false,
+      },
+      noInjuryFatality: false
     },
     filterContributingFactor: q.contrFactor || 'ALL'
   };

@@ -1,14 +1,19 @@
 import {
-  FILTER_BY_TYPE_HARM,
-  FILTER_BY_TYPE_PERSONA
+  FILTER_BY_TYPE_INJURY,
+  FILTER_BY_TYPE_FATALITY,
+  FILTER_BY_NO_INJURY_FATALITY,
 } from '../constants/action_types';
 
-export const filterByTypePersona = (persona = 'ALL') => ({
-  type: FILTER_BY_TYPE_PERSONA,
-  persona
+export const filterByTypeInjury = personType => ({
+  type: FILTER_BY_TYPE_INJURY,
+  personType,
 });
 
-export const filterByTypeHarm = (harm = 'ALL') => ({
-  type: FILTER_BY_TYPE_HARM,
-  harm
+export const filterByTypeFatality = personType => ({
+  type: FILTER_BY_TYPE_FATALITY,
+  personType,
+});
+
+export const filterByNoInjFat = () => ({
+  type: FILTER_BY_NO_INJURY_FATALITY
 });
