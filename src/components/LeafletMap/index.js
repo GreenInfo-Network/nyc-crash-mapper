@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { isEqual } from 'lodash';
 
-// import { crashesByDate } from '../../constants/sql_queries';
+import { configureMapSQL } from '../../constants/sql_queries';
 import { basemapURL } from '../../constants/app_config';
-import { configureLayerSource, configureMapSQL } from '../../constants/api';
+import { configureLayerSource } from '../../constants/api';
 import ZoomControls from './ZoomControls';
 
 class LeafletMap extends Component {
