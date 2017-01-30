@@ -17,6 +17,7 @@ $ui-grey: rgba(#4d4d4d, 0.8) !default;
 $transparent: rgba(0,0,0,0) !default;
 
 $btn-hover: lighten($yellow-orange, 10) !default;
+$btn-active: $yellow-orange !default;
 $btn-bg: $off-white !default;
 
 $hr-border: $off-white !default;

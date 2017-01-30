@@ -12,9 +12,16 @@
 
   &:hover,
   &.active {
-    background-color: $btn-hover;
     color: $marine;
     border: none;
+  }
+
+  &:hover {
+    background-color: $btn-hover;
+  }
+
+  &.active {
+    background-color: $btn-active;
   }
 
   &.wide {
