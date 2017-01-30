@@ -50,39 +50,47 @@ export const configureLayerSource = (sql) => {
   return cartoLayerSource;
 };
 
-// determines part of the SQL WHERE clause tacked on after `WHERE date_val...`
-const crashTypeWhere = (harm, persona) => {
-  if (harm === 'Injury' && persona === 'ALL') {
-    return 'AND number_of_persons_injured > 0 ';
-  } else if (harm === 'Injury' && persona === 'Cyclist') {
-    return 'AND number_of_cyclist_injured > 0';
-  } else if (harm === 'Injury' && persona === 'Motorist') {
-    return 'AND number_of_motorist_injured > 0';
-  } else if (harm === 'Injury' && persona === 'Pedestrian') {
-    return 'AND number_of_pedestrians_injured > 0';
-  } else if (harm === 'Fatality' && persona === 'ALL') {
-    return 'AND number_of_persons_killed > 0';
-  } else if (harm === 'Fatality' && persona === 'Cyclist') {
-    return 'AND number_of_cyclist_killed > 0';
-  } else if (harm === 'Fatality' && persona === 'Motorist') {
-    return 'AND number_of_motorist_killed > 0';
-  } else if (harm === 'Fatality' && persona === 'Pedestrian') {
-    return 'AND number_of_pedestrians_killed > 0';
-  } else if (harm === 'No Inj/Fat' && persona === 'ALL') {
-    return 'AND number_of_persons_killed = 0 AND number_of_persons_injured = 0';
-  } else if (harm === 'No Inj/Fat' && persona === 'Cyclist') {
-    return 'AND number_of_cyclist_killed = 0 AND number_of_cyclist_injured = 0';
-  } else if (harm === 'No Inj/Fat' && persona === 'Motorist') {
-    return 'AND number_of_motorist_killed = 0 AND number_of_motorist_injured = 0';
-  } else if (harm === 'No Inj/Fat' && persona === 'Pedestrian') {
-    return 'AND number_of_pedestrians_killed = 0 AND number_of_pedestrians_injured = 0';
-  } else if (harm === 'ALL' && persona === 'Cyclist') {
-    // NOTE: this is where I ran into trouble, how to select all pedestrians
-    // not injured or killed?
-    return '';
+// Generates the SQL WHERE clause for "Filter by Type"
+// @param {object} the store.filterType piece of state
+export const filterByTypeWhereClause = (filterType) => {
+  const { injury, fatality, noInjuryFatality } = filterType;
+  let whereClause = '';
+
+  const mapTypes = (personTypes, harmType) =>
+    Object.keys(personTypes).filter((type) => {
+      const val = personTypes[type];
+      if (val) return type;
+      return false;
+    })
+    .map((type) => {
+      const hurtTerm = harmType === 'injury' ? 'injured' : 'killed';
+      return ` number_of_${type}_${hurtTerm} > 0 `;
+    })
+    .join('OR');
+
+  const typesInjuredMapped = mapTypes(injury, 'injury');
+  const typesKilledMapped = mapTypes(fatality, 'fatality');
+
+  if (typesInjuredMapped.length > 0 && typesKilledMapped.length > 0) {
+    whereClause += `AND (${typesInjuredMapped} OR ${typesKilledMapped})`;
+  } else if (typesInjuredMapped.length > 0) {
+    whereClause += `AND (${typesInjuredMapped})`;
+  } else if (typesKilledMapped.length > 0) {
+    whereClause += `AND (${typesKilledMapped})`;
+  } else if (noInjuryFatality) {
+    whereClause += sls`AND
+      number_of_cyclist_injured = 0 AND
+      number_of_cyclist_killed = 0 AND
+      number_of_motorist_injured = 0 AND
+      number_of_motorist_killed = 0 AND
+      number_of_pedestrian_injured = 0 AND
+      number_of_pedestrian_killed = 0 AND
+      number_of_persons_injured = 0 AND
+      number_of_persons_killed = 0
+    `;
   }
-  // if harm and persona equal 'ALL' return an empty string
-  return '';
+
+  return whereClause;
 };
 
 // Generates the SQL query for the Carto layer based on filter params & app element
@@ -92,7 +100,7 @@ const crashTypeWhere = (harm, persona) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, harm, persona } = params;
+  const { startDate, endDate, filterType } = params;
 
   return sls`
     SELECT
@@ -105,8 +113,8 @@ export const configureMapSQL = (params) => {
       SUM(c.number_of_cyclist_killed) as cyclist_killed,
       SUM(c.number_of_motorist_injured) as motorist_injured,
       SUM(c.number_of_motorist_killed) as motorist_killed,
-      SUM(c.number_of_pedestrians_injured) as pedestrians_injured,
-      SUM(c.number_of_pedestrians_killed) as pedestrians_killed,
+      SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
+      SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
       SUM(c.number_of_persons_injured) as persons_injured,
       SUM(c.number_of_persons_killed) as persons_killed,
       SUM(CASE WHEN c.number_of_persons_injured > 0 THEN 1 ELSE 0 END) AS total_crashes_with_injury,
@@ -117,7 +125,7 @@ export const configureMapSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
-    ${crashTypeWhere(harm, persona)}
+    ${filterByTypeWhereClause(filterType)}
     AND
       c.the_geom IS NOT NULL
     GROUP BY
@@ -126,7 +134,7 @@ export const configureMapSQL = (params) => {
 };
 
 export const configureStatsSQL = (params) => {
-  const { startDate, endDate, harm, persona } = params;
+  const { startDate, endDate, filterType } = params;
 
   return sls`
     SELECT
@@ -137,8 +145,8 @@ export const configureStatsSQL = (params) => {
       SUM(c.number_of_cyclist_killed) as cyclist_killed,
       SUM(c.number_of_motorist_injured) as motorist_injured,
       SUM(c.number_of_motorist_killed) as motorist_killed,
-      SUM(c.number_of_pedestrians_injured) as pedestrians_injured,
-      SUM(c.number_of_pedestrians_killed) as pedestrians_killed,
+      SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
+      SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
       SUM(c.number_of_persons_injured) as persons_injured,
       SUM(c.number_of_persons_killed) as persons_killed
     FROM
@@ -147,12 +155,12 @@ export const configureStatsSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
-    ${crashTypeWhere(harm, persona)}
+    ${filterByTypeWhereClause({ filterType })}
   `;
 };
 
 export const configureFactorsSQL = (params) => {
-  const { startDate, endDate, harm, persona } = params;
+  const { startDate, endDate, filterType } = params;
 
   return sls`
     WITH all_factors as (
@@ -164,7 +172,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${crashTypeWhere(harm, persona)}
+      ${filterByTypeWhereClause({ filterType })}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_2 as factor
@@ -174,7 +182,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${crashTypeWhere(harm, persona)}
+      ${filterByTypeWhereClause({ filterType })}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_3 as factor
@@ -184,7 +192,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${crashTypeWhere(harm, persona)}
+      ${filterByTypeWhereClause({ filterType })}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_4 as factor
@@ -194,7 +202,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${crashTypeWhere(harm, persona)}
+      ${filterByTypeWhereClause({ filterType })}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_5 as factor
@@ -204,7 +212,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${crashTypeWhere(harm, persona)}
+      ${filterByTypeWhereClause({ filterType })}
       )
     SELECT
      COUNT(af.factor) as count_factor,
