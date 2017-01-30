@@ -2,7 +2,7 @@ import { polyfill } from 'es6-promise';
 import fetch from 'isomorphic-fetch';
 import { cartoSQLQuery } from '../constants/app_config';
 import * as actions from '../constants/action_types';
-import { configureStatsSQL, configureFactorsSQL } from '../constants/api';
+import { configureStatsSQL, configureFactorsSQL } from '../constants/sql_queries';
 
 polyfill();
 
