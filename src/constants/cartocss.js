@@ -4,7 +4,6 @@ import sls from 'single-line-string';
 const nyc_crashes = 'export2016_07';
 
 const cartocss = sls`
-  /** simple visualization */
   @fatality: #f03b20;
   @injury: #fd8d3c;
   @nofatinj: #fecc5c;
@@ -20,11 +19,20 @@ const cartocss = sls`
     marker-fill: @nofatinj;
     marker-allow-overlap: true;
 
-    [persons_injured > 0] {
+    /* sometimes the data will have pedestrain marked as injured but
+     also have persons_injured = 0 (WTF data!!!) */
+    [persons_injured > 0],
+    [cyclist_injured > 0],
+    [pedestrian_injured > 0],
+    [motorist_injured > 0] {
       marker-fill: @injury;
     }
 
-    [persons_killed > 0] {
+    /* same goes for number_of_x_killed */
+    [persons_killed > 0],
+    [cyclist_killed > 0],
+    [pedestrian_killed > 0],
+    [motorist_killed > 0] {
       marker-fill: @fatality;
     }
 
