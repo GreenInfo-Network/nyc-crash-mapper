@@ -208,7 +208,7 @@ export const configureStatsSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
-    ${filterByTypeWhereClause({ filterType })}
+    ${filterByTypeWhereClause(filterType)}
   `;
 };
 
@@ -229,7 +229,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByTypeWhereClause({ filterType })}
+      ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_2 as factor
@@ -239,7 +239,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByTypeWhereClause({ filterType })}
+      ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_3 as factor
@@ -249,7 +249,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByTypeWhereClause({ filterType })}
+      ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_4 as factor
@@ -259,7 +259,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByTypeWhereClause({ filterType })}
+      ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
         c.contributing_factor_vehicle_5 as factor
@@ -269,7 +269,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByTypeWhereClause({ filterType })}
+      ${filterByTypeWhereClause(filterType)}
       )
     SELECT
      COUNT(af.factor) as count_factor,
