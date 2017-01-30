@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
+import { crashDataChanged } from '../../constants/api';
 import DateRange from './DateRange';
 import TotalCrashCounter from './TotalCrashCounter';
 import StatsCounter from './StatsCounter';
@@ -9,28 +10,17 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   componentWillMount() {
-    // const { startDate, endDate, harm, persona } = this.props;
-    // this.props.fetchCrashStatsData({ startDate, endDate, harm, persona });
-    // this.props.fetchContributingFactors({ startDate, endDate, harm, persona });
+    const { startDate, endDate, filterType } = this.props;
+    this.props.fetchCrashStatsData({ startDate, endDate, filterType });
+    this.props.fetchContributingFactors({ startDate, endDate, filterType });
   }
 
   componentWillReceiveProps(nextProps) {
-    // const { startDate, endDate, harm, persona } = nextProps;
-    if (this.shouldFetchNewData(nextProps)) {
-      // this.props.fetchCrashStatsData({ startDate, endDate, harm, persona });
-      // this.props.fetchContributingFactors({ startDate, endDate, harm, persona });
+    const { startDate, endDate, filterType } = nextProps;
+    if (crashDataChanged(this.props, nextProps)) {
+      this.props.fetchCrashStatsData({ startDate, endDate, filterType });
+      this.props.fetchContributingFactors({ startDate, endDate, filterType });
     }
-  }
-
-  shouldFetchNewData(nextProps) {
-    const { startDate, endDate } = nextProps;
-    if (
-      startDate !== this.props.startDate ||
-      endDate !== this.props.endDate
-    ) {
-      return true;
-    }
-    return false;
   }
 
   render() {
@@ -41,8 +31,8 @@ class StatsLegend extends Component {
       cyclist_killed,
       motorist_injured,
       motorist_killed,
-      pedestrians_injured,
-      pedestrians_killed,
+      pedestrian_injured,
+      pedestrian_killed,
       persons_injured,
       persons_killed,
       total_crashes, } = this.props;
@@ -68,14 +58,14 @@ class StatsLegend extends Component {
                 title={'Fatalities'}
                 cyclist={cyclist_killed}
                 driver={motorist_killed}
-                ped={pedestrians_killed}
+                ped={pedestrian_killed}
                 total={persons_killed}
               />
               <StatsCounter
                 title={'Injuries'}
                 cyclist={cyclist_injured}
                 driver={motorist_injured}
-                ped={pedestrians_injured}
+                ped={pedestrian_injured}
                 total={persons_injured}
               />
             </div>
@@ -98,8 +88,8 @@ StatsLegend.defaultProps = {
   cyclist_killed: 0,
   motorist_injured: 0,
   motorist_killed: 0,
-  pedestrians_injured: 0,
-  pedestrians_killed: 0,
+  pedestrian_injured: 0,
+  pedestrian_killed: 0,
   persons_injured: 0,
   persons_killed: 0,
   total_crashes: 0,
@@ -108,8 +98,8 @@ StatsLegend.defaultProps = {
 StatsLegend.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  // fetchContributingFactors: PropTypes.func.isRequired,
-  // fetchCrashStatsData: PropTypes.func.isRequired,
+  fetchContributingFactors: PropTypes.func.isRequired,
+  fetchCrashStatsData: PropTypes.func.isRequired,
   contributingFactors: PropTypes.arrayOf(PropTypes.shape({
     count_factor: PropTypes.number,
     factor: PropTypes.string
@@ -118,11 +108,24 @@ StatsLegend.propTypes = {
   cyclist_killed: PropTypes.number,
   motorist_injured: PropTypes.number,
   motorist_killed: PropTypes.number,
-  pedestrians_injured: PropTypes.number,
-  pedestrians_killed: PropTypes.number,
+  pedestrian_injured: PropTypes.number,
+  pedestrian_killed: PropTypes.number,
   persons_injured: PropTypes.number,
   persons_killed: PropTypes.number,
   total_crashes: PropTypes.number,
+  filterType: PropTypes.shape({
+    fatality: PropTypes.shape({
+      cyclist: PropTypes.bool.isRequired,
+      motorist: PropTypes.bool.isRequired,
+      pedestrian: PropTypes.bool.isRequired,
+    }).isRequired,
+    injury: PropTypes.shape({
+      cyclist: PropTypes.bool.isRequired,
+      motorist: PropTypes.bool.isRequired,
+      pedestrian: PropTypes.bool.isRequired,
+    }).isRequired,
+    noInjuryFatality: PropTypes.bool.isRequired
+  }).isRequired,
 };
 
 export default StatsLegend;
