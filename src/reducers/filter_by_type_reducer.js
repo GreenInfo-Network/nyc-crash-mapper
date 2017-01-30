@@ -33,7 +33,8 @@ export default (state = defaultState, action) => {
         injury: {
           ...injury,
           [personType]: !injury[personType]
-        }
+        },
+        noInjuryFatality: false
       };
     case FILTER_BY_TYPE_FATALITY:
       return {
@@ -41,7 +42,8 @@ export default (state = defaultState, action) => {
         fatality: {
           ...fatality,
           [personType]: !fatality[personType]
-        }
+        },
+        noInjuryFatality: false
       };
     case FILTER_BY_NO_INJURY_FATALITY:
       return {
