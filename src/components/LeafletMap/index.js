@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { isEqual } from 'lodash';
 
-import { crashesByDate } from '../../constants/sql_queries';
+// import { crashesByDate } from '../../constants/sql_queries';
 import { basemapURL } from '../../constants/app_config';
-import { configureLayerSource } from '../../constants/api';
+import { configureLayerSource, configureMapSQL } from '../../constants/api';
 import ZoomControls from './ZoomControls';
 
 class LeafletMap extends Component {
@@ -31,9 +32,14 @@ class LeafletMap extends Component {
   }
 
   shouldCartoLayerUpdate(nextProps) {
-    const { endDate, startDate } = nextProps;
+    const { endDate, startDate, filterType } = nextProps;
+    const { injury, fatality, noInjuryFatality } = filterType;
     if (this.cartoLayer !== null) {
-      if (startDate !== this.props.startDate || endDate !== this.props.endDate) {
+      if (startDate !== this.props.startDate ||
+          endDate !== this.props.endDate ||
+          !isEqual(injury, this.props.filterType.injury) ||
+          !isEqual(fatality, this.props.filterType.fatality) ||
+          noInjuryFatality !== this.props.filterType.noInjuryFatality) {
         return true;
       }
       return false;
@@ -72,9 +78,9 @@ class LeafletMap extends Component {
 
   initCartoLayer() {
     const self = this;
-    const { startDate, endDate } = this.props;
-    const sqlParams = { startDate, endDate };
-    const layerSource = configureLayerSource(crashesByDate(sqlParams));
+    const { startDate, endDate, filterType } = this.props;
+    const sqlParams = { startDate, endDate, filterType };
+    const layerSource = configureLayerSource(configureMapSQL(sqlParams));
     const options = {
       https: true,
       infowindow: false,
@@ -99,10 +105,10 @@ class LeafletMap extends Component {
   }
 
   updateCartoLayer(props) {
-    const { startDate, endDate, persona, harm } = props;
+    const { startDate, endDate, filterType } = props;
     // TO DO: Logic for determining SQL query based on app filters
     this.cartoLayer.setSQL(
-      crashesByDate({ startDate, endDate, persona, harm })
+      configureMapSQL({ startDate, endDate, filterType })
     );
   }
 
@@ -132,6 +138,19 @@ LeafletMap.propTypes = {
   zoom: PropTypes.number,
   lat: PropTypes.number,
   lng: PropTypes.number,
+  filterType: PropTypes.shape({
+    fatality: PropTypes.shape({
+      cyclist: PropTypes.bool.isRequired,
+      motorist: PropTypes.bool.isRequired,
+      pedestrian: PropTypes.bool.isRequired,
+    }).isRequired,
+    injury: PropTypes.shape({
+      cyclist: PropTypes.bool.isRequired,
+      motorist: PropTypes.bool.isRequired,
+      pedestrian: PropTypes.bool.isRequired,
+    }).isRequired,
+    noInjuryFatality: PropTypes.bool.isRequired
+  }).isRequired,
 };
 
 export default LeafletMap;
