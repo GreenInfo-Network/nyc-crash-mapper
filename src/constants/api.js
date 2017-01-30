@@ -1,5 +1,6 @@
 import moment from 'moment';
 import queryString from 'query-string';
+import { isEqual } from 'lodash';
 
 import { cartoLayerSource } from './app_config';
 
@@ -46,4 +47,20 @@ export const makeDefaultState = () => {
 export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;
+};
+
+// Should the component fetch new crash data?
+// @param {object} curProps; the component's this.props
+// @param {object} nextProps; the component's nextProps in componentWillReceiveProps
+export const crashDataChanged = (curProps, nextProps) => {
+  const { endDate, startDate, filterType } = nextProps;
+  const { injury, fatality, noInjuryFatality } = filterType;
+  if (startDate !== curProps.startDate ||
+      endDate !== curProps.endDate ||
+      !isEqual(injury, curProps.filterType.injury) ||
+      !isEqual(fatality, curProps.filterType.fatality) ||
+      noInjuryFatality !== curProps.filterType.noInjuryFatality) {
+    return true;
+  }
+  return false;
 };

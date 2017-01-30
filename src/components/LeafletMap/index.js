@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { isEqual } from 'lodash';
 
 import { configureMapSQL } from '../../constants/sql_queries';
 import { basemapURL } from '../../constants/app_config';
-import { configureLayerSource } from '../../constants/api';
+import { configureLayerSource, crashDataChanged } from '../../constants/api';
 import ZoomControls from './ZoomControls';
 
 class LeafletMap extends Component {
@@ -20,30 +19,14 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.shouldCartoLayerUpdate(nextProps)) {
-      // update the cartoLayer using new props, such as start and end dates
+    if (crashDataChanged(this.props, nextProps)) {
+      // update the cartoLayer SQL using new props, such as start and end dates
       this.updateCartoLayer(nextProps);
     }
   }
 
   shouldComponentUpdate() {
     // let Leaflet have control over this part of the DOM, not React.
-    return false;
-  }
-
-  shouldCartoLayerUpdate(nextProps) {
-    const { endDate, startDate, filterType } = nextProps;
-    const { injury, fatality, noInjuryFatality } = filterType;
-    if (this.cartoLayer !== null) {
-      if (startDate !== this.props.startDate ||
-          endDate !== this.props.endDate ||
-          !isEqual(injury, this.props.filterType.injury) ||
-          !isEqual(fatality, this.props.filterType.fatality) ||
-          noInjuryFatality !== this.props.filterType.noInjuryFatality) {
-        return true;
-      }
-      return false;
-    }
     return false;
   }
 
