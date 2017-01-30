@@ -9,14 +9,12 @@ const mapStateToProps = (state) => {
   const { startDate, endDate } = dateRange;
   const { typeStats } = crashStats;
   const { factors } = contributingFactors;
-  const { harm, persona } = filterType;
   return {
     startDate: startDate.format(dateStringFormatView),
     endDate: endDate.format(dateStringFormatView),
     ...typeStats,
     contributingFactors: factors,
-    harm,
-    persona
+    filterType
   };
 };
 
