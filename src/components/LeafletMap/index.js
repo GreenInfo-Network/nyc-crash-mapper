@@ -1,27 +1,39 @@
 import React, { Component, PropTypes } from 'react';
 
 import { configureMapSQL } from '../../constants/sql_queries';
-import { basemapURL } from '../../constants/app_config';
+import { basemapURL, cartoUser } from '../../constants/app_config';
 import { configureLayerSource, crashDataChanged } from '../../constants/api';
 import ZoomControls from './ZoomControls';
+
+// helper function to create map sql using currently applied filters
+const generateMapSQL = (props) => {
+  const { startDate, endDate, filterType } = props;
+  const params = { startDate, endDate, filterType };
+  return configureMapSQL(params);
+};
 
 class LeafletMap extends Component {
   constructor() {
     super();
     this.map = null;
     this.cartoLayer = null;
+    this.cartodbSQL = null;
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
 
   componentDidMount() {
+    this.cartodbSQL = new cartodb.SQL({ user: cartoUser });
     this.initMap();
   }
 
   componentWillReceiveProps(nextProps) {
     if (crashDataChanged(this.props, nextProps)) {
+      const sql = generateMapSQL(nextProps);
+      // fit the map extent to the queried data
+      this.fitMapBounds(sql);
       // update the cartoLayer SQL using new props, such as start and end dates
-      this.updateCartoLayer(nextProps);
+      this.cartoLayer.setSQL(sql);
     }
   }
 
@@ -36,6 +48,20 @@ class LeafletMap extends Component {
 
   handleZoomOut() {
     this.map.zoomOut();
+  }
+
+  fitMapBounds(sql) {
+    // sets the map center & zoom to bounding box of crash data
+    // returned by the current SQL query
+    const self = this;
+    self.cartodbSQL.getBounds(sql)
+      .done((bounds) => {
+        self.map.fitBounds(bounds, {
+          paddingTopLeft: [60, 100],
+          paddingBottomRight: [300, 120],
+          maxZoom: 18
+        });
+      });
   }
 
   initMap() {
@@ -61,9 +87,7 @@ class LeafletMap extends Component {
 
   initCartoLayer() {
     const self = this;
-    const { startDate, endDate, filterType } = this.props;
-    const sqlParams = { startDate, endDate, filterType };
-    const layerSource = configureLayerSource(configureMapSQL(sqlParams));
+    const layerSource = configureLayerSource(generateMapSQL(this.props));
     const options = {
       https: true,
       infowindow: false,
@@ -87,14 +111,6 @@ class LeafletMap extends Component {
       });
   }
 
-  updateCartoLayer(props) {
-    const { startDate, endDate, filterType } = props;
-    // TO DO: Logic for determining SQL query based on app filters
-    this.cartoLayer.setSQL(
-      configureMapSQL({ startDate, endDate, filterType })
-    );
-  }
-
   render() {
     return (
       <div className="leaflet-map">
@@ -116,24 +132,24 @@ LeafletMap.defaultProps = {
 
 LeafletMap.propTypes = {
   onMapMoved: PropTypes.func.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
   zoom: PropTypes.number,
   lat: PropTypes.number,
   lng: PropTypes.number,
-  filterType: PropTypes.shape({
-    fatality: PropTypes.shape({
-      cyclist: PropTypes.bool.isRequired,
-      motorist: PropTypes.bool.isRequired,
-      pedestrian: PropTypes.bool.isRequired,
-    }).isRequired,
-    injury: PropTypes.shape({
-      cyclist: PropTypes.bool.isRequired,
-      motorist: PropTypes.bool.isRequired,
-      pedestrian: PropTypes.bool.isRequired,
-    }).isRequired,
-    noInjuryFatality: PropTypes.bool.isRequired
-  }).isRequired,
+  // startDate: PropTypes.string.isRequired,
+  // endDate: PropTypes.string.isRequired,
+  // filterType: PropTypes.shape({
+  //   fatality: PropTypes.shape({
+  //     cyclist: PropTypes.bool.isRequired,
+  //     motorist: PropTypes.bool.isRequired,
+  //     pedestrian: PropTypes.bool.isRequired,
+  //   }).isRequired,
+  //   injury: PropTypes.shape({
+  //     cyclist: PropTypes.bool.isRequired,
+  //     motorist: PropTypes.bool.isRequired,
+  //     pedestrian: PropTypes.bool.isRequired,
+  //   }).isRequired,
+  //   noInjuryFatality: PropTypes.bool.isRequired
+  // }).isRequired,
 };
 
 export default LeafletMap;
