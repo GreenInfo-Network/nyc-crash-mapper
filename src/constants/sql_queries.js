@@ -10,13 +10,13 @@ const { nyc_borough,
   nyc_zip_code,
   nyc_crashes } = cartoTables;
 
+// Links each boundary filter name to a SQL query
 export const filterByAreaSQL = {
   Borough: sls`
     SELECT DISTINCT
       borough,
       identifier,
       cartodb_id,
-      the_geom,
       the_geom_webmercator
     FROM
       ${nyc_borough}
@@ -139,7 +139,7 @@ const filterByTypeWhereClause = (filterType) => {
   return whereClause;
 };
 
-// Maps the Filter by Boundary button name to a Carto table name
+// Links the Filter by Boundary button name to corresponding Carto table name
 export const filterAreaBtnTableMap = {
   Borough: nyc_borough,
   'Community Board': nyc_community_board,
@@ -150,6 +150,7 @@ export const filterAreaBtnTableMap = {
 };
 
 // Creates the spatial join clause with a boundary table geom
+// @param {string} areaName, name of boundary, eg 'Borough' or 'City Council Districts'
 const joinToGeoTableClause = (areaName) => {
   const geoTable = filterAreaBtnTableMap[areaName];
   if (geoTable) {
@@ -162,9 +163,11 @@ const joinToGeoTableClause = (areaName) => {
 };
 
 // Creates the WHERE clause for boundary table identifier
+// @param {number || string} identifier, unique id of boundary polygon
 const filterByIdentifierWhereClause = (identifier) => {
   if (identifier) {
-    return `AND a.identifier = ${identifier}`;
+    const val = typeof identifier === 'string' ? `'${identifier}'` : identifier;
+    return `AND a.identifier = ${val}`;
   }
   return '';
 };
@@ -220,7 +223,7 @@ export const configureMapSQL = (params) => {
  */
 
 export const configureStatsSQL = (params) => {
-  const { startDate, endDate, filterType } = params;
+  const { startDate, endDate, filterType, geo, identifier } = params;
 
   return sls`
     SELECT
@@ -237,11 +240,13 @@ export const configureStatsSQL = (params) => {
       SUM(c.number_of_persons_killed) as persons_killed
     FROM
       ${nyc_crashes} c
+    ${joinToGeoTableClause(geo)}
     WHERE
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
     ${filterByTypeWhereClause(filterType)}
+    ${filterByIdentifierWhereClause(identifier)}
   `;
 };
 
@@ -250,7 +255,7 @@ export const configureStatsSQL = (params) => {
 */
 
 export const configureFactorsSQL = (params) => {
-  const { startDate, endDate, filterType } = params;
+  const { startDate, endDate, filterType, geo, identifier } = params;
 
   return sls`
     WITH all_factors as (
@@ -258,6 +263,7 @@ export const configureFactorsSQL = (params) => {
         c.contributing_factor_vehicle_1 as factor
       FROM
         ${nyc_crashes} c
+      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
       WHERE
         (date_val <= date '${endDate}')
       AND
@@ -268,6 +274,7 @@ export const configureFactorsSQL = (params) => {
         c.contributing_factor_vehicle_2 as factor
       FROM
         ${nyc_crashes} c
+      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
       WHERE
         (date_val <= date '${endDate}')
       AND
@@ -278,6 +285,7 @@ export const configureFactorsSQL = (params) => {
         c.contributing_factor_vehicle_3 as factor
       FROM
         ${nyc_crashes} c
+      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
       WHERE
         (date_val <= date '${endDate}')
       AND
@@ -288,6 +296,7 @@ export const configureFactorsSQL = (params) => {
         c.contributing_factor_vehicle_4 as factor
       FROM
         ${nyc_crashes} c
+      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
       WHERE
         (date_val <= date '${endDate}')
       AND
@@ -298,6 +307,7 @@ export const configureFactorsSQL = (params) => {
         c.contributing_factor_vehicle_5 as factor
       FROM
         ${nyc_crashes} c
+      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
       WHERE
         (date_val <= date '${endDate}')
       AND
