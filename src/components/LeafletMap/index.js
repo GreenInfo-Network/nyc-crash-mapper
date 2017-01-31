@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-import { configureMapSQL } from '../../constants/sql_queries';
+import {
+  configureMapSQL,
+  filterAreaBtnTableMap,
+  filterByAreaSQL
+} from '../../constants/sql_queries';
 import { basemapURL, cartoUser } from '../../constants/app_config';
 import { configureLayerSource, crashDataChanged } from '../../constants/api';
+import { filterAreaCartocss } from '../../constants/cartocss';
 import ZoomControls from './ZoomControls';
 
 // helper function to create map sql using currently applied filters
@@ -17,6 +22,8 @@ class LeafletMap extends Component {
     super();
     this.map = null;
     this.cartoLayer = null;
+    this.cartoSubLayer = null;
+    this.cartoFilterSubLayer = null;
     this.cartodbSQL = null;
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
@@ -28,12 +35,16 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { geo } = nextProps;
     if (crashDataChanged(this.props, nextProps)) {
       const sql = generateMapSQL(nextProps);
       // fit the map extent to the queried data
       this.fitMapBounds(sql);
       // update the cartoLayer SQL using new props, such as start and end dates
-      this.cartoLayer.setSQL(sql);
+      this.cartoSubLayer.setSQL(sql);
+    }
+    if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
+      this.renderFilterArea(geo);
     }
   }
 
@@ -99,16 +110,45 @@ class LeafletMap extends Component {
     cartodb.createLayer(self.map, layerSource, options)
       .addTo(self.map)
       .on('done', (layer) => {
+        self.cartoLayer = layer;
         layer.on('error', error =>
           console.warn(`layer interaction error: ${error}`));
 
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
-        self.cartoLayer = layer.getSubLayer(0);
+        self.cartoSubLayer = layer.getSubLayer(0);
       })
       .on('error', (error) => {
         console.warn(`cartodb.createLayer error: ${error}`);
       });
+  }
+
+  renderFilterArea(geo) {
+    // renders the Carto subLayer for a boundary geometry which the user may
+    // click on to filter data by
+    const { filterByAreaIdentifier } = this.props;
+    const table = filterAreaBtnTableMap[geo];
+    const cartocss = filterAreaCartocss(table);
+    const sql = filterByAreaSQL[geo];
+    const interactivity = ['cartodb_id', 'identifier'];
+
+    this.fitMapBounds(sql);
+
+    this.cartoFilterSubLayer = this.cartoLayer.createSubLayer({
+      sql,
+      cartocss,
+      interactivity
+    });
+
+    // set up a click handler on the cartoFilterSubLayer to fire the filterByAreaIdentifier
+    // action with identifier of the polygon the user clicked on
+    // TO DO: first check if filter area sublayer already exists
+    // TO DO: remove / hide filter area sublayer if user selects another
+    this.cartoFilterSubLayer.setInteraction(true);
+    this.cartoFilterSubLayer.on('featureClick', (e, latlng, pos, data) => {
+      const { identifier } = data;
+      filterByAreaIdentifier(identifier);
+    });
   }
 
   render() {
@@ -132,9 +172,11 @@ LeafletMap.defaultProps = {
 
 LeafletMap.propTypes = {
   onMapMoved: PropTypes.func.isRequired,
+  filterByAreaIdentifier: PropTypes.func.isRequired,
   zoom: PropTypes.number,
   lat: PropTypes.number,
   lng: PropTypes.number,
+  geo: PropTypes.string.isRequired,
   // startDate: PropTypes.string.isRequired,
   // endDate: PropTypes.string.isRequired,
   // filterType: PropTypes.shape({
