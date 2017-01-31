@@ -6,6 +6,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 // vendor libs get bundled separately to take advantage of browser caching
 const VENDOR_LIBS = [
   'classnames',
+  'leaflet-draw',
   'query-string',
   'react',
   'react-collapse',
@@ -55,6 +56,16 @@ module.exports = {
           fallbackLoader: 'style-loader',
         }),
         test: /\.scss$/
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: { limit: 4000 }
+          },
+          'image-webpack-loader'
+        ]
       }
     ]
   },
