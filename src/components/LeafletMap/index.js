@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import sls from 'single-line-string';
 
 import {
   configureMapSQL,
@@ -113,10 +114,40 @@ class LeafletMap extends Component {
         self.cartoLayer = layer;
         layer.on('error', error =>
           console.warn(`layer interaction error: ${error}`));
-
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
+
+        const template = sls`
+          <div class="cartodb-tooltip-content-wrapper">
+            <p><span class="roboto-bold">Cyclists Injured</span>: {{cyclist_injured}}</p>
+            <p><span class="roboto-bold">Cyclists Killed</span>: {{cyclist_killed}}</p>
+            <p><span class="roboto-bold">Motorists Injured</span>: {{motorist_injured}}</p>
+            <p><span class="roboto-bold">Motorists Killed</span>: {{motorist_killed}}</p>
+            <p><span class="roboto-bold">Pedestrians Injured</span>: {{pedestrian_injured}}</p>
+            <p><span class="roboto-bold">Pedestrians Killed</span>: {{pedestrian_killed}}</p>
+            <p><span class="roboto-bold">On Street Name</span>: {{on_street_name}}</p>
+            <p><span class="roboto-bold">Cross Street Name</span>: {{cross_street_name}}</p>
+          </div>
+        `;
+
+        // add the tooltip
+        layer.leafletMap.viz.addOverlay({
+          type: 'tooltip',
+          layer: self.cartoSubLayer,
+          template,
+          position: 'bottom|right',
+          fields: [
+            { cyclist_injured: 'Cyclists Injured' },
+            { cyclist_killed: 'Cyclists Killed' },
+            { motorist_injured: 'Motorists Injured' },
+            { motorist_killed: 'Motorists Killed' },
+            { pedestrian_injured: 'pedestrian injured' },
+            { pedestrian_killed: 'pedestrian killed' },
+            { on_street_name: 'on street name' },
+            { cross_street_name: 'cross street name' },
+          ]
+        });
       })
       .on('error', (error) => {
         console.warn(`cartodb.createLayer error: ${error}`);

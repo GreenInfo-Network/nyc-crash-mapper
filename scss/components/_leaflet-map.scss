@@ -9,4 +9,13 @@
   #map {
     height: 100%;
   }
+
+  .cartodb-tooltip-content-wrapper {
+    @extend %roboto-regular;
+    padding: 10px;
+
+    span {
+      @extend %roboto-bold;
+    }
+  }
 }
