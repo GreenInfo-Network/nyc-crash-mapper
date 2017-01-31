@@ -95,6 +95,7 @@ StatsLegend.defaultProps = {
   persons_injured: 0,
   persons_killed: 0,
   total_crashes: 0,
+  identifier: '',
 };
 
 StatsLegend.propTypes = {

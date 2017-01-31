@@ -295,7 +295,7 @@ LeafletMap.defaultProps = {
   zoom: 12,
   lat: 40.687,
   lng: -73.982,
-  identifier: undefined,
+  identifier: '',
 };
 
 LeafletMap.propTypes = {
