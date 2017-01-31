@@ -10,8 +10,13 @@
     height: 100%;
   }
 
+  .cartodb-tooltip {
+    width: auto;
+  }
+
   .cartodb-tooltip-content-wrapper {
     @extend %roboto-regular;
+    width: auto;
     padding: 10px;
 
     span {

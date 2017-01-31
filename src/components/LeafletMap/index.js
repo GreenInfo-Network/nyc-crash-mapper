@@ -18,6 +18,20 @@ const generateMapSQL = (props) => {
   return configureMapSQL(params);
 };
 
+// helper to hide a carto sublayer's tooltip when switching from one sublayer to the next
+const hideCartoTooltips = (tooltipClassName) => {
+  if (tooltipClassName === 'crashes-layer') {
+    const tooltipNode = document.querySelector(`.cartodb-tooltip-content-wrapper.${tooltipClassName}`).parentNode;
+    tooltipNode.style.display = 'none';
+  } else {
+    const tooltipNodes = document.querySelectorAll(`.cartodb-tooltip-content-wrapper.${tooltipClassName}`);
+    tooltipNodes.forEach((node) => {
+      const parent = node.parentNode;
+      parent.style.display = 'none';
+    });
+  }
+};
+
 class LeafletMap extends Component {
   constructor() {
     super();
@@ -45,13 +59,7 @@ class LeafletMap extends Component {
     const { geo } = nextProps;
 
     if (crashDataChanged(this.props, nextProps)) {
-      const sql = generateMapSQL(nextProps);
-      // hide any visible filter sublayer
-      this.hideFilterSublayers();
-      // fit the map extent to the queried data
-      this.fitMapBounds(sql);
-      // update the cartoLayer SQL using new props, such as start and end dates
-      this.cartoSubLayer.setSQL(sql);
+      this.updateCartoSubLayer(nextProps);
     }
 
     if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
@@ -93,6 +101,7 @@ class LeafletMap extends Component {
     this.map = L.map(this.mapDiv, {
       center: [lat, lng],
       zoom,
+      maxZoom: 18,
       zoomControl: false,
       scrollWheelZoom: false
     });
@@ -129,23 +138,24 @@ class LeafletMap extends Component {
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
         // add tooltips to sublayer
-        self.initCartoTooltips();
+        self.initCartoSubLayerTooltips();
       })
       .on('error', (error) => {
         console.warn(`cartodb.createLayer error: ${error}`);
       });
   }
 
-  initCartoTooltips() {
+  initCartoSubLayerTooltips() {
     const self = this;
     const template = sls`
-      <div class="cartodb-tooltip-content-wrapper">
+      <div class="cartodb-tooltip-content-wrapper crashes-layer">
         <p><span class="roboto-bold">Cyclists Injured</span>: {{cyclist_injured}}</p>
         <p><span class="roboto-bold">Cyclists Killed</span>: {{cyclist_killed}}</p>
         <p><span class="roboto-bold">Motorists Injured</span>: {{motorist_injured}}</p>
         <p><span class="roboto-bold">Motorists Killed</span>: {{motorist_killed}}</p>
         <p><span class="roboto-bold">Pedestrians Injured</span>: {{pedestrian_injured}}</p>
-        <p><span class="roboto-bold">Pedestrians Killed</span>: {{pedestrian_killed}}</p>
+        <p><span class="roboto-bold">Persons Injured</span>: {{persons_injured}}</p>
+        <p><span class="roboto-bold">Persons Killed</span>: {{persons_killed}}</p>
         <p><span class="roboto-bold">On Street Name</span>: {{on_street_name}}</p>
         <p><span class="roboto-bold">Cross Street Name</span>: {{cross_street_name}}</p>
       </div>
@@ -164,15 +174,61 @@ class LeafletMap extends Component {
         { motorist_killed: 'Motorists Killed' },
         { pedestrian_injured: 'pedestrian injured' },
         { pedestrian_killed: 'pedestrian killed' },
+        { persons_injured: 'persons injured' },
+        { persons_killed: 'persons killed' },
         { on_street_name: 'on street name' },
         { cross_street_name: 'cross street name' },
       ]
     });
   }
 
+  updateCartoSubLayer(nextProps) {
+    // create the new sql query string
+    const sql = generateMapSQL(nextProps);
+    // hide any visible filter sublayer
+    this.hideFilterSublayers();
+    // hide any previously visible tooltips from filter sublayer
+    hideCartoTooltips('filter-layer');
+    // fit the map extent to the queried data
+    this.fitMapBounds(sql);
+    // set the cartoSubLayer to be interactive
+    this.cartoSubLayer.setInteraction(true);
+    // update the cartoLayer SQL using new props, such as start and end dates
+    this.cartoSubLayer.setSQL(sql);
+  }
+
   hideFilterSublayers() {
     Object.keys(this.cartoFilterSubLayers).forEach((sublayer) => {
       this.cartoFilterSubLayers[sublayer].hide();
+    });
+  }
+
+  initFilterLayerTooltips(geo) {
+    // geo comes from nextProps so must be passed as a parameter
+    const self = this;
+    const labelMappings = {
+      Borough: '{{borough}}',
+      'Community Board': '<span>CB</span> {{identifier}}',
+      'City Council District': '<span>CD</span> {{identifier}}',
+      'Neighborhood (NTA)': '{{identifier}}',
+      'NYPD Precinct': '<span>NYPD Precinct</span> {{identifier}}',
+      'Zipcode (ZCTA)': '<span>Zipcode</span> {{identifier}}'
+    };
+    const template = sls`
+      <div class="cartodb-tooltip-content-wrapper filter-layer">
+        <p>${labelMappings[geo]}</p>
+      </div>
+    `;
+
+    this.cartoLayer.leafletMap.viz.addOverlay({
+      type: 'tooltip',
+      layer: self.cartoFilterSubLayers[geo],
+      template,
+      position: 'bottom|right',
+      fields: [
+        { borough: 'borough' },
+        { identifier: 'identifier' }
+      ]
     });
   }
 
@@ -184,11 +240,13 @@ class LeafletMap extends Component {
     const table = filterAreaBtnTableMap[geo];
     const cartocss = filterAreaCartocss(table);
     const sql = filterByAreaSQL[geo];
-    const interactivity = ['cartodb_id', 'identifier'];
+    const interactivity = sql.indexOf('borough') > -1 ? ['cartodb_id', 'borough', 'identifier'] : ['cartodb_id', 'identifier'];
 
     // hide any visible filter sublayer
     this.hideFilterSublayers();
-    // temporarily disable tooltips
+    // temporarily disable cartoSubLayer tooltips
+    hideCartoTooltips('crashes-layer');
+    // temporarily disable cartoSubLayer interactivity
     this.cartoSubLayer.setInteraction(false);
 
     if (geo !== 'Custom') {
@@ -199,6 +257,7 @@ class LeafletMap extends Component {
     if (this.cartoFilterSubLayers[geo]) {
       // if the filter sublayer is already stored then show it
       this.cartoFilterSubLayers[geo].show();
+      this.cartoFilterSubLayers[geo].setInteraction(true);
     } else {
       // store the filter sublayer
       this.cartoFilterSubLayers[geo] = this.cartoLayer.createSubLayer({
@@ -207,9 +266,10 @@ class LeafletMap extends Component {
         interactivity
       });
 
-      // set up a click handler on the cartoFilterSubLayer to fire the filterByAreaIdentifier
-      // action with identifier of the polygon the user clicked on
       this.cartoFilterSubLayers[geo].setInteraction(true);
+      // add tooltips for filter layer
+      this.initFilterLayerTooltips(geo);
+      // set up a click handler on the cartoFilterSubLayer
       this.cartoFilterSubLayers[geo].on('featureClick', (e, latlng, pos, data) => {
         const { identifier } = data;
         self.cartoSubLayer.setInteraction(true);
