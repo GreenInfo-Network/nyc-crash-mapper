@@ -16,6 +16,7 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         geo: action.geo,
+        identifier: undefined,
       };
 
     case FILTER_BY_AREA_IDENTIFIER:
