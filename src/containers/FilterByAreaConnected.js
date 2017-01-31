@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
-
-import { filterByArea } from '../actions/';
+import {
+  filterByAreaType,
+  filterByAreaIdentifier,
+  filterByAreaCustom,
+} from '../actions/';
 import FilterByArea from '../components/OptionsFilters/FilterByArea';
 
 const mapStateToProps = ({ filterArea: { geo } }) => ({
@@ -8,5 +11,7 @@ const mapStateToProps = ({ filterArea: { geo } }) => ({
 });
 
 export default connect(mapStateToProps, {
-  filterByArea
+  filterByAreaType,
+  filterByAreaIdentifier,
+  filterByAreaCustom,
 })(FilterByArea);
