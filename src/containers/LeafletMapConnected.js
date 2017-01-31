@@ -8,7 +8,7 @@ const mapStateToProps = ({ dateRange, filterType, filterArea }, ownProps) => {
   const { startDate, endDate } = dateRange;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
-  const { geo } = filterArea;
+  const { geo, identifier } = filterArea;
   return {
     zoom: zoom ? Number(zoom) : undefined,
     lat: lat ? Number(lat) : undefined,
@@ -16,7 +16,8 @@ const mapStateToProps = ({ dateRange, filterType, filterArea }, ownProps) => {
     startDate: startDate.format(dateStringFormatModel),
     endDate: endDate.format(dateStringFormatModel),
     filterType,
-    geo
+    geo,
+    identifier
   };
 };
 
