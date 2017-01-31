@@ -53,13 +53,15 @@ export const configureLayerSource = (sql) => {
 // @param {object} curProps; the component's this.props
 // @param {object} nextProps; the component's nextProps in componentWillReceiveProps
 export const crashDataChanged = (curProps, nextProps) => {
-  const { endDate, startDate, filterType } = nextProps;
+  const { endDate, startDate, filterType, identifier, geo } = nextProps;
   const { injury, fatality, noInjuryFatality } = filterType;
   if (startDate !== curProps.startDate ||
       endDate !== curProps.endDate ||
       !isEqual(injury, curProps.filterType.injury) ||
       !isEqual(fatality, curProps.filterType.fatality) ||
-      noInjuryFatality !== curProps.filterType.noInjuryFatality) {
+      noInjuryFatality !== curProps.filterType.noInjuryFatality ||
+      (geo === 'Citywide' && curProps.geo !== 'Citywide') ||
+      identifier !== curProps.identifier) {
     return true;
   }
   return false;
