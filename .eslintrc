@@ -19,14 +19,15 @@
     "babel"
   ],
   "rules": {
+    "arrow-body-style": ["error", "as-needed"],
     "camelcase": 0,
-    "indent": [1, 2, { "SwitchCase": 1 }],
-    "semi": [2, "always"],
-    "react/jsx-filename-extension": 0,
-    "react/prefer-stateless-function": 0,
-    "jsx-a11y/no-static-element-interactions": 0,
-    "space-before-function-paren": 0,
     "comma-dangle": 0,
-    "arrow-body-style": ["error", "as-needed"]
+    "indent": [1, 2, { "SwitchCase": 1 }],
+    "jsx-a11y/no-static-element-interactions": 0,
+    "react/jsx-filename-extension": 0,
+    "react/no-unused-prop-types": 1,
+    "react/prefer-stateless-function": 0,
+    "semi": [2, "always"],
+    "space-before-function-paren": 0
   }
 }
