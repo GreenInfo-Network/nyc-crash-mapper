@@ -7,80 +7,81 @@ const { nyc_borough,
   nyc_community_board,
   nyc_neighborhood,
   nyc_nypd_precinct,
-  nyc_zip_codes,
+  nyc_zip_code,
   nyc_crashes } = cartoTables;
 
-// Selects distinct boroughs
-export const distinctBorough = () => sls`
-  SELECT DISTINCT
-    borough,
-    identifier,
-    cartodb_id,
-    the_geom_webmercator
-  FROM
-    ${nyc_borough}
-  ORDER BY
-    identifier
-`;
+export const filterByAreaSQL = {
+  Borough: sls`
+    SELECT DISTINCT
+      borough,
+      identifier,
+      cartodb_id,
+      the_geom,
+      the_geom_webmercator
+    FROM
+      ${nyc_borough}
+    ORDER BY
+      identifier
+  `,
 
-// Selects distinct city council districts
-export const distinctCouncil = () => sls`
-  SELECT DISTINCT
-    identifier,
-    cartodb_id,
-    the_geom_webmercator
-  FROM
-    ${nyc_city_council}
-  ORDER BY
-    identifier
-`;
+  'City Council District': sls`
+    SELECT DISTINCT
+      identifier,
+      cartodb_id,
+      the_geom_webmercator
+    FROM
+      ${nyc_city_council}
+    ORDER BY
+      identifier
+  `,
 
-export const distinctCommBoards = () => sls`
-  SELECT DISTINCT
-    identifier,
-    cartodb_id,
-    the_geom_webmercator
-  FROM
-    ${nyc_community_board}
-  ORDER BY
-    identifier
-`;
+  'Community Board': sls`
+    SELECT DISTINCT
+      identifier,
+      cartodb_id,
+      the_geom_webmercator
+    FROM
+      ${nyc_community_board}
+    ORDER BY
+      identifier
+  `,
 
-export const distinctNeighborhoods = () => sls`
-  SELECT DISTINCT
-    borough,
-    identifier,
-    cartodb_id,
-    the_geom_webmercator
-  FROM
-    ${nyc_neighborhood}
-  ORDER BY
-    borough, identifier
-`;
+  'Neighborhood (NTA)': sls`
+    SELECT DISTINCT
+      borough,
+      identifier,
+      cartodb_id,
+      the_geom_webmercator
+    FROM
+      ${nyc_neighborhood}
+    ORDER BY
+      borough, identifier
+  `,
 
-export const distinctPrecincts = () => sls`
-  SELECT DISTINCT
-    borough,
-    identifier,
-    cartodb_id,
-    the_geom_webmercator
-  FROM
-    ${nyc_nypd_precinct}
-  ORDER BY
-    borough, identifier
-`;
+  'NYPD Precinct': sls`
+    SELECT DISTINCT
+      borough,
+      identifier,
+      cartodb_id,
+      the_geom_webmercator
+    FROM
+      ${nyc_nypd_precinct}
+    ORDER BY
+      borough, identifier
+  `,
 
-export const distinctZipcodes = () => sls`
-  SELECT DISTINCT
-    borough,
-    identifier,
-    cartodb_id,
-    the_geom_webmercator
-  FROM
-    ${nyc_zip_codes}
-  ORDER BY
-    borough, identifier
-`;
+  'Zipcode (ZCTA)': sls`
+    SELECT DISTINCT
+      borough,
+      identifier,
+      cartodb_id,
+      the_geom_webmercator
+    FROM
+      ${nyc_zip_code}
+    ORDER BY
+      borough, identifier
+  `,
+};
 
 // Selects max and min date from all crashes
 export const dateBounds = () => sls`
@@ -97,7 +98,7 @@ export const dateBounds = () => sls`
 
 // Generates the SQL WHERE clause for "Filter by Type"
 // @param {object} the store.filterType piece of state
-export const filterByTypeWhereClause = (filterType) => {
+const filterByTypeWhereClause = (filterType) => {
   const { injury, fatality, noInjuryFatality } = filterType;
   let whereClause = '';
 
@@ -138,6 +139,36 @@ export const filterByTypeWhereClause = (filterType) => {
   return whereClause;
 };
 
+// Maps the Filter by Boundary button name to a Carto table name
+export const filterAreaBtnTableMap = {
+  Borough: nyc_borough,
+  'Community Board': nyc_community_board,
+  'City Council District': nyc_city_council,
+  'Neighborhood (NTA)': nyc_neighborhood,
+  'NYPD Precinct': nyc_nypd_precinct,
+  'Zipcode (ZCTA)': nyc_zip_code,
+};
+
+// Creates the spatial join clause with a boundary table geom
+const joinToGeoTableClause = (areaName) => {
+  const geoTable = filterAreaBtnTableMap[areaName];
+  if (geoTable) {
+    return sls`
+      JOIN ${geoTable} a
+      ON ST_Within(c.the_geom, a.the_geom)
+    `;
+  }
+  return '';
+};
+
+// Creates the WHERE clause for boundary table identifier
+const filterByIdentifierWhereClause = (identifier) => {
+  if (identifier) {
+    return `AND a.identifier = ${identifier}`;
+  }
+  return '';
+};
+
 /*
  ********************************** MAP ****************************************
  */
@@ -149,7 +180,7 @@ export const filterByTypeWhereClause = (filterType) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, filterType } = params;
+  const { startDate, endDate, filterType, geo, identifier } = params;
 
   return sls`
     SELECT
@@ -170,11 +201,13 @@ export const configureMapSQL = (params) => {
       SUM(CASE WHEN c.number_of_persons_killed > 0 THEN 1 ELSE 0 END) AS total_crashes_with_death
     FROM
       ${nyc_crashes} c
+    ${joinToGeoTableClause(geo)}
     WHERE
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
     ${filterByTypeWhereClause(filterType)}
+    ${filterByIdentifierWhereClause(identifier)}
     AND
       c.the_geom IS NOT NULL
     GROUP BY
