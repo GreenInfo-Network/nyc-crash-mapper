@@ -61,7 +61,7 @@ export const crashDataChanged = (curProps, nextProps) => {
       !isEqual(fatality, curProps.filterType.fatality) ||
       noInjuryFatality !== curProps.filterType.noInjuryFatality ||
       (geo === 'Citywide' && curProps.geo !== 'Citywide') ||
-      identifier !== curProps.identifier) {
+      (identifier && identifier !== curProps.identifier)) {
     return true;
   }
   return false;
