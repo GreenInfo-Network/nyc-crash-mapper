@@ -5,16 +5,20 @@ import { fetchCrashStatsData, fetchContributingFactors } from '../actions/';
 import StatsLegend from '../components/StatsLegend/';
 
 const mapStateToProps = (state) => {
-  const { dateRange, crashStats, contributingFactors, filterType } = state;
+  const { dateRange, crashStats, contributingFactors, filterType,
+    filterArea } = state;
   const { startDate, endDate } = dateRange;
   const { typeStats } = crashStats;
   const { factors } = contributingFactors;
+  const { identifier, geo } = filterArea;
   return {
     startDate: startDate.format(dateStringFormatView),
     endDate: endDate.format(dateStringFormatView),
     ...typeStats,
     contributingFactors: factors,
-    filterType
+    filterType,
+    identifier,
+    geo
   };
 };
 

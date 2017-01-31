@@ -10,16 +10,18 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   componentWillMount() {
-    const { startDate, endDate, filterType } = this.props;
-    this.props.fetchCrashStatsData({ startDate, endDate, filterType });
-    this.props.fetchContributingFactors({ startDate, endDate, filterType });
+    const { startDate, endDate, filterType, geo, identifier } = this.props;
+    const params = { startDate, endDate, filterType, geo, identifier };
+    this.props.fetchCrashStatsData(params);
+    this.props.fetchContributingFactors(params);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startDate, endDate, filterType } = nextProps;
+    const { startDate, endDate, filterType, geo, identifier } = nextProps;
+    const params = { startDate, endDate, filterType, geo, identifier };
     if (crashDataChanged(this.props, nextProps)) {
-      this.props.fetchCrashStatsData({ startDate, endDate, filterType });
-      this.props.fetchContributingFactors({ startDate, endDate, filterType });
+      this.props.fetchCrashStatsData(params);
+      this.props.fetchContributingFactors(params);
     }
   }
 
@@ -126,6 +128,11 @@ StatsLegend.propTypes = {
     }).isRequired,
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
+  geo: PropTypes.string.isRequired,
+  identifier: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
 };
 
 export default StatsLegend;
