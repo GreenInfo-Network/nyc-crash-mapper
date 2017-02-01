@@ -10,3 +10,4 @@ export {
   filterByAreaIdentifier,
   filterByAreaCustom } from './filter_by_area_actions';
 export filterByContributingFactor from './filter_contributing_factor_actions';
+export { openModal, closeModal } from './modal_actions';
