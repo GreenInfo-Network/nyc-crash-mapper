@@ -38,9 +38,13 @@ export const makeDefaultState = () => {
         motorist: false,
         pedestrian: false,
       },
-      noInjuryFatality: false
+      noInjuryFatality: false,
     },
-    filterContributingFactor: q.contrFactor || 'ALL'
+    filterContributingFactor: q.contrFactor || 'ALL',
+    modal: {
+      showModal: false,
+      modalType: '',
+    }
   };
 };
 

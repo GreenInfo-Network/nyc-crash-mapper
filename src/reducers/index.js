@@ -8,6 +8,7 @@ import filterType from './filter_by_type_reducer';
 import filterContributingFactor from './filter_contributing_factor_reducer';
 import contributingFactors from './stats_contributing_factors_reducer';
 import crashStats from './crash_stats_reducer';
+import modal from './modal_reducer';
 
 // breakpoints for redux-responsive store
 // taken from scss/skeleton/base/variables
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   filterArea,
   filterContributingFactor,
   filterType,
+  modal,
   routing: routerReducer,
 });
 

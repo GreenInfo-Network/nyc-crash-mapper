@@ -5,6 +5,7 @@ import AppHeader from './AppHeader';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import StatsLegendConnected from '../containers/StatsLegendConnected';
 import OptionsFiltersConnected from '../containers/OptionsFiltersConnected';
+import ModalConnected from '../containers/ModalConnected';
 
 class App extends Component {
   constructor() {
@@ -60,6 +61,7 @@ class App extends Component {
         />
         <StatsLegendConnected />
         <OptionsFiltersConnected />
+        <ModalConnected />
       </div>
     );
   }
