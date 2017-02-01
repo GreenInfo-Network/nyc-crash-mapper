@@ -51,10 +51,10 @@ class App extends Component {
   }
 
   render() {
-    const { location } = this.props;
+    const { location, openModal } = this.props;
     return (
       <div className="App">
-        <AppHeader />
+        <AppHeader openModal={openModal} />
         <LeafletMapConnected
           location={location}
           onMapMoved={this.onMapMoved}
@@ -71,6 +71,7 @@ App.propTypes = {
   location: PropTypes.shape({
     query: PropTypes.object.isRequired
   }).isRequired,
+  openModal: PropTypes.func.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired
 };

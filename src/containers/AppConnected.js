@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { dateStringFormatModel } from '../constants/api';
+import { openModal } from '../actions/';
 import App from '../components/App';
 
 const mapStateToProps = ({ dateRange }) => {
@@ -12,4 +13,4 @@ const mapStateToProps = ({ dateRange }) => {
   };
 };
 
-export default connect(mapStateToProps, {})(App);
+export default connect(mapStateToProps, { openModal })(App);
