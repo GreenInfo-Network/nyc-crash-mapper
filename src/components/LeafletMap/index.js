@@ -56,6 +56,7 @@ class LeafletMap extends Component {
   componentDidMount() {
     this.cartodbSQL = new cartodb.SQL({ user: cartoUser });
     this.initMap();
+    this.initCustomFilter();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,7 +72,7 @@ class LeafletMap extends Component {
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
-      this.beginCustomDraw();
+      this.customFilterDraw();
     }
 
     if (lngLats && lngLats.length) {
@@ -84,36 +85,12 @@ class LeafletMap extends Component {
     return false;
   }
 
-  beginCustomDraw() {
-    const { filterByAreaCustom } = this.props;
-
-    this.cartoSubLayer.setInteraction(false);
-    hideCartoTooltips('crashes-layer');
-
-    this.customDraw = new CustomFilter();
-    this.customDraw.mapInstance = this.map;
-    this.customDraw.layerCreatedCallback = filterByAreaCustom;
-    this.customDraw.onLayerCreated();
-    this.customDraw.initCustomFilterLayer();
-    this.customDraw.initDraw();
-  }
-
   handleZoomIn() {
     this.map.zoomIn();
   }
 
   handleZoomOut() {
     this.map.zoomOut();
-  }
-
-  fitMapBounds(sql) {
-    // sets the map center & zoom to bounding box of crash data
-    // returned by the current SQL query
-    const self = this;
-    self.cartodbSQL.getBounds(sql)
-      .done((bounds) => {
-        self.map.fitBounds(bounds, self.fitBoundsOptions);
-      });
   }
 
   initMap() {
@@ -204,6 +181,16 @@ class LeafletMap extends Component {
     });
   }
 
+  fitMapBounds(sql) {
+    // sets the map center & zoom to bounding box of crash data
+    // returned by the current SQL query
+    const self = this;
+    self.cartodbSQL.getBounds(sql)
+      .done((bounds) => {
+        self.map.fitBounds(bounds, self.fitBoundsOptions);
+      });
+  }
+
   updateCartoSubLayer(nextProps) {
     // create the new sql query string
     const sql = generateMapSQL(nextProps);
@@ -252,6 +239,21 @@ class LeafletMap extends Component {
         { identifier: 'identifier' }
       ]
     });
+  }
+
+  initCustomFilter() {
+    const { filterByAreaCustom } = this.props;
+    this.customDraw = new CustomFilter();
+    this.customDraw.mapInstance = this.map;
+    this.customDraw.layerCreatedCallback = filterByAreaCustom;
+    this.customDraw.onLayerCreated();
+    this.customDraw.initCustomFilterLayer();
+  }
+
+  customFilterDraw() {
+    this.cartoSubLayer.setInteraction(false);
+    hideCartoTooltips('crashes-layer');
+    this.customDraw.initDraw();
   }
 
   renderFilterArea(geo) {
