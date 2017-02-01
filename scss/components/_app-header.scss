@@ -20,4 +20,13 @@
   .header-about {
     @extend .roboto-bold;
   }
+
+  a {
+    cursor: pointer;
+    color: rgba($marine-light, 0.7);
+
+    &:hover {
+      background-color: $btn-hover;
+    }
+  }
 }
