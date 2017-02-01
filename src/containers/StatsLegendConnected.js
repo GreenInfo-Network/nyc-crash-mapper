@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
   const { startDate, endDate } = dateRange;
   const { typeStats } = crashStats;
   const { factors } = contributingFactors;
-  const { identifier, geo } = filterArea;
+  const { identifier, geo, latLons } = filterArea;
   return {
     startDate: startDate.format(dateStringFormatView),
     endDate: endDate.format(dateStringFormatView),
@@ -18,7 +18,8 @@ const mapStateToProps = (state) => {
     contributingFactors: factors,
     filterType,
     identifier,
-    geo
+    geo,
+    latLons
   };
 };
 

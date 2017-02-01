@@ -10,15 +10,15 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   componentWillMount() {
-    const { startDate, endDate, filterType, geo, identifier } = this.props;
-    const params = { startDate, endDate, filterType, geo, identifier };
+    const { startDate, endDate, filterType, geo, identifier, latLons } = this.props;
+    const params = { startDate, endDate, filterType, geo, identifier, latLons };
     this.props.fetchCrashStatsData(params);
     this.props.fetchContributingFactors(params);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startDate, endDate, filterType, geo, identifier } = nextProps;
-    const params = { startDate, endDate, filterType, geo, identifier };
+    const { startDate, endDate, filterType, geo, identifier, latLons } = nextProps;
+    const params = { startDate, endDate, filterType, geo, identifier, latLons };
     if (crashDataChanged(this.props, nextProps)) {
       this.props.fetchCrashStatsData(params);
       this.props.fetchContributingFactors(params);
@@ -96,6 +96,7 @@ StatsLegend.defaultProps = {
   persons_killed: 0,
   total_crashes: 0,
   identifier: '',
+  latLons: [],
 };
 
 StatsLegend.propTypes = {
@@ -133,6 +134,9 @@ StatsLegend.propTypes = {
   identifier: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
+  ]),
+  latLons: PropTypes.arrayOf([
+    PropTypes.arrayOf(PropTypes.number)
   ]),
 };
 
