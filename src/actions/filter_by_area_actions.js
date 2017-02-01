@@ -14,7 +14,7 @@ export const filterByAreaIdentifier = identifier => ({
   identifier
 });
 
-export const filterByAreaCustom = latLons => ({
+export const filterByAreaCustom = lngLats => ({
   type: FILTER_BY_AREA_CUSTOM,
-  latLons
+  lngLats
 });

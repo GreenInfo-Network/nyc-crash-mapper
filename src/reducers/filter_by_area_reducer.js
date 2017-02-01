@@ -17,6 +17,7 @@ export default (state = defaultState, action) => {
         ...state,
         geo: action.geo,
         identifier: undefined,
+        lngLats: []
       };
 
     case FILTER_BY_AREA_IDENTIFIER:
@@ -28,7 +29,7 @@ export default (state = defaultState, action) => {
     case FILTER_BY_AREA_CUSTOM:
       return {
         ...state,
-        latLons: action.latLons
+        lngLats: action.lngLats
       };
 
     default:

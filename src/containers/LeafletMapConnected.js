@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
 import { dateStringFormatModel } from '../constants/api';
-import { filterByAreaIdentifier } from '../actions/';
+import { filterByAreaIdentifier, filterByAreaCustom } from '../actions/';
 import LeafletMap from '../components/LeafletMap/';
 
 const mapStateToProps = ({ dateRange, filterType, filterArea }, ownProps) => {
   const { startDate, endDate } = dateRange;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
-  const { geo, identifier } = filterArea;
+  const { geo, identifier, lngLats } = filterArea;
   return {
     zoom: zoom ? Number(zoom) : undefined,
     lat: lat ? Number(lat) : undefined,
@@ -17,10 +17,12 @@ const mapStateToProps = ({ dateRange, filterType, filterArea }, ownProps) => {
     endDate: endDate.format(dateStringFormatModel),
     filterType,
     geo,
-    identifier
+    identifier,
+    lngLats
   };
 };
 
 export default connect(mapStateToProps, {
-  filterByAreaIdentifier
+  filterByAreaIdentifier,
+  filterByAreaCustom,
 })(LeafletMap);

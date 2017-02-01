@@ -25,7 +25,7 @@ export const makeDefaultState = () => {
     filterArea: {
       geo: q.geo || 'Citywide',
       identifier: q.identifier || undefined,
-      latLons: q.latLons || [],
+      lngLats: q.lonLats || [],
     },
     filterType: {
       injury: {
@@ -53,7 +53,7 @@ export const configureLayerSource = (sql) => {
 // @param {object} curProps; the component's this.props
 // @param {object} nextProps; the component's nextProps in componentWillReceiveProps
 export const crashDataChanged = (curProps, nextProps) => {
-  const { endDate, startDate, filterType, identifier, geo } = nextProps;
+  const { endDate, startDate, filterType, identifier, geo, lngLats } = nextProps;
   const { injury, fatality, noInjuryFatality } = filterType;
   if (startDate !== curProps.startDate ||
       endDate !== curProps.endDate ||
@@ -61,7 +61,8 @@ export const crashDataChanged = (curProps, nextProps) => {
       !isEqual(fatality, curProps.filterType.fatality) ||
       noInjuryFatality !== curProps.filterType.noInjuryFatality ||
       (geo === 'Citywide' && curProps.geo !== 'Citywide') ||
-      (identifier && identifier !== curProps.identifier)) {
+      (identifier && identifier !== curProps.identifier) ||
+      (lngLats && lngLats.length && !isEqual(lngLats, curProps.lngLats))) {
     return true;
   }
   return false;

@@ -10,11 +10,12 @@ import { basemapURL, cartoUser } from '../../constants/app_config';
 import { configureLayerSource, crashDataChanged } from '../../constants/api';
 import { filterAreaCartocss } from '../../constants/cartocss';
 import ZoomControls from './ZoomControls';
+import CustomFilter from './customFilter';
 
 // helper function to create map sql using currently applied filters
 const generateMapSQL = (props) => {
-  const { startDate, endDate, filterType, geo, identifier } = props;
-  const params = { startDate, endDate, filterType, geo, identifier };
+  const { startDate, endDate, filterType, geo, identifier, lngLats } = props;
+  const params = { startDate, endDate, filterType, geo, identifier, lngLats };
   return configureMapSQL(params);
 };
 
@@ -32,6 +33,7 @@ const hideCartoTooltips = (tooltipClassName) => {
   }
 };
 
+
 class LeafletMap extends Component {
   constructor() {
     super();
@@ -41,11 +43,12 @@ class LeafletMap extends Component {
       paddingBottomRight: [300, 120],
       maxZoom: 18
     };
-    this.map = null;
-    this.cartoLayer = null;
-    this.cartoSubLayer = null;
+    this.map = undefined;
+    this.customDraw = undefined;
+    this.cartoLayer = undefined;
+    this.cartoSubLayer = undefined;
     this.cartoFilterSubLayers = {};
-    this.cartodbSQL = null;
+    this.cartodbSQL = undefined;
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
@@ -56,7 +59,7 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo } = nextProps;
+    const { geo, lngLats } = nextProps;
 
     if (crashDataChanged(this.props, nextProps)) {
       this.updateCartoSubLayer(nextProps);
@@ -67,14 +70,32 @@ class LeafletMap extends Component {
       this.renderFilterArea(geo);
     }
 
-    if (geo === 'Custom') {
-      // TO DO...
+    if (geo === 'Custom' && this.props.geo !== 'Custom') {
+      this.beginCustomDraw();
+    }
+
+    if (lngLats && lngLats.length) {
+      this.customDraw.drawLayer.clearLayers();
     }
   }
 
   shouldComponentUpdate() {
     // let Leaflet have control over this part of the DOM, not React.
     return false;
+  }
+
+  beginCustomDraw() {
+    const { filterByAreaCustom } = this.props;
+
+    this.cartoSubLayer.setInteraction(false);
+    hideCartoTooltips('crashes-layer');
+
+    this.customDraw = new CustomFilter();
+    this.customDraw.mapInstance = this.map;
+    this.customDraw.layerCreatedCallback = filterByAreaCustom;
+    this.customDraw.onLayerCreated();
+    this.customDraw.initCustomFilterLayer();
+    this.customDraw.initDraw();
   }
 
   handleZoomIn() {
@@ -99,6 +120,7 @@ class LeafletMap extends Component {
     const self = this;
     const { zoom, lat, lng, onMapMoved } = this.props;
     this.map = L.map(this.mapDiv, {
+      doubleClickZoom: false,
       center: [lat, lng],
       zoom,
       maxZoom: 18,
@@ -296,11 +318,13 @@ LeafletMap.defaultProps = {
   lat: 40.687,
   lng: -73.982,
   identifier: '',
+  lngLats: [],
 };
 
 LeafletMap.propTypes = {
   onMapMoved: PropTypes.func.isRequired,
   filterByAreaIdentifier: PropTypes.func.isRequired,
+  filterByAreaCustom: PropTypes.func.isRequired,
   zoom: PropTypes.number,
   lat: PropTypes.number,
   lng: PropTypes.number,
@@ -324,6 +348,9 @@ LeafletMap.propTypes = {
     }).isRequired,
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
+  lngLats: PropTypes.arrayOf([
+    PropTypes.arrayOf(PropTypes.number)
+  ]),
 };
 
 export default LeafletMap;

@@ -202,8 +202,8 @@ const filterByCustomAreaClause = (lonLatArray) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, latLons } = params;
-  // TO DO: rename latLons to lonLats in reducer, action, components, etc.
+  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
+
   return sls`
     SELECT
       c.the_geom,
@@ -228,7 +228,7 @@ export const configureMapSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
-    ${filterByCustomAreaClause(latLons)}
+    ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
     AND
@@ -243,7 +243,7 @@ export const configureMapSQL = (params) => {
  */
 
 export const configureStatsSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, latLons } = params;
+  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
   return sls`
     SELECT
@@ -265,7 +265,7 @@ export const configureStatsSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
-    ${filterByCustomAreaClause(latLons)}
+    ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
   `;
@@ -276,7 +276,7 @@ export const configureStatsSQL = (params) => {
 */
 
 export const configureFactorsSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, latLons } = params;
+  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
   return sls`
     WITH all_factors as (
@@ -289,7 +289,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(latLons)}
+      ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -301,7 +301,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(latLons)}
+      ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -313,7 +313,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(latLons)}
+      ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -325,7 +325,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(latLons)}
+      ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -337,7 +337,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(latLons)}
+      ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       )
     SELECT
