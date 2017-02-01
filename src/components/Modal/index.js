@@ -9,23 +9,29 @@ import ShareFB from './ShareFB';
 import ShareTwitter from './ShareTwitter';
 
 class ModalWrapper extends Component {
+  constructor() {
+    super();
+    this.handleModalType = this.handleModalType.bind(this);
+  }
 
   handleModalType() {
     const { modalType, closeModal } = this.props;
     const modalTypes = {
-      about: (<About />),
-      'download-data': (<DownloadData />),
-      'share-url': (<ShareURL />),
-      'share-fb': (<ShareFB />),
-      'share-tw': (<ShareTwitter />),
+      about: About,
+      'download-data': DownloadData,
+      'share-url': ShareURL,
+      'share-fb': ShareFB,
+      'share-tw': ShareTwitter,
     };
+    const HOC = ModalContent(modalTypes[modalType], closeModal);
 
-    return ModalContent(modalTypes[modalType], closeModal);
+    return (<HOC />);
   }
 
   render() {
     const { showModal, modalType } = this.props;
     const contentLabel = `${modalType} modal`;
+
     return (
       <ReactModal
         isOpen={showModal}
