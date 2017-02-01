@@ -348,9 +348,9 @@ LeafletMap.propTypes = {
     }).isRequired,
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
-  lngLats: PropTypes.arrayOf([
+  lngLats: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.number)
-  ]),
+  ),
 };
 
 export default LeafletMap;

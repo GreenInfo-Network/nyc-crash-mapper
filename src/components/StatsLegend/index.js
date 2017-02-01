@@ -135,9 +135,9 @@ StatsLegend.propTypes = {
     PropTypes.string,
     PropTypes.number
   ]),
-  lngLats: PropTypes.arrayOf([
+  lngLats: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.number)
-  ]),
+  ),
 };
 
 export default StatsLegend;
