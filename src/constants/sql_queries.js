@@ -172,6 +172,25 @@ const filterByIdentifierWhereClause = (identifier) => {
   return '';
 };
 
+// Creates the PostGIS query for selecting crash data by custom area created by Leaflet.Draw
+// @param {array} lonLatArray, an array of longitude, latitude arrays that form an enclosed polygon
+const filterByCustomAreaClause = (lonLatArray) => {
+  if (lonLatArray && lonLatArray.length) {
+    // PostGIS GeomFromText expects lon lat coords like (-73.91 40.74, -73.89 40.73, ...)
+    const coordinates = lonLatArray.map(lonLat => lonLat.join(' '));
+    return sls`
+      AND
+        ST_Contains(
+          ST_GeomFromText(
+            'POLYGON(( ${coordinates} ))',
+          4326),
+          c.the_geom
+        )
+    `;
+  }
+  return '';
+};
+
 /*
  ********************************** MAP ****************************************
  */
@@ -183,8 +202,8 @@ const filterByIdentifierWhereClause = (identifier) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier } = params;
-
+  const { startDate, endDate, filterType, geo, identifier, latLons } = params;
+  // TO DO: rename latLons to lonLats in reducer, action, components, etc.
   return sls`
     SELECT
       c.the_geom,
@@ -209,6 +228,7 @@ export const configureMapSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
+    ${filterByCustomAreaClause(latLons)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
     AND
@@ -223,7 +243,7 @@ export const configureMapSQL = (params) => {
  */
 
 export const configureStatsSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier } = params;
+  const { startDate, endDate, filterType, geo, identifier, latLons } = params;
 
   return sls`
     SELECT
@@ -245,6 +265,7 @@ export const configureStatsSQL = (params) => {
       (date_val <= date '${endDate}')
     AND
       (date_val >= date '${startDate}')
+    ${filterByCustomAreaClause(latLons)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
   `;
@@ -255,7 +276,7 @@ export const configureStatsSQL = (params) => {
 */
 
 export const configureFactorsSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier } = params;
+  const { startDate, endDate, filterType, geo, identifier, latLons } = params;
 
   return sls`
     WITH all_factors as (
@@ -268,6 +289,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
+      ${filterByCustomAreaClause(latLons)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -279,6 +301,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
+      ${filterByCustomAreaClause(latLons)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -290,6 +313,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
+      ${filterByCustomAreaClause(latLons)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -301,6 +325,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
+      ${filterByCustomAreaClause(latLons)}
       ${filterByTypeWhereClause(filterType)}
       UNION ALL
       SELECT
@@ -312,6 +337,7 @@ export const configureFactorsSQL = (params) => {
         (date_val <= date '${endDate}')
       AND
         (date_val >= date '${startDate}')
+      ${filterByCustomAreaClause(latLons)}
       ${filterByTypeWhereClause(filterType)}
       )
     SELECT
