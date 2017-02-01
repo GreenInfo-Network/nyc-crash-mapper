@@ -1,0 +1,48 @@
+// For use with node_modules/ReactModal Component
+.ReactModalPortal {
+  position: relative;
+
+  .Modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid $medium-grey;
+    border-radius: $border-radius;
+    padding: $padding-25;
+    outline: none;
+  }
+
+  .Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .btn-modal-close {
+    height: 25px;
+    width: 25px;
+    float: right;
+    margin-top: -38px;
+    margin-right: -38px;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 50%;
+    background: $medium-grey;
+    font-size: 2rem;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 0;
+    z-index: 6;
+
+    &:before {
+      content: "×";
+    }
+  }
+}
