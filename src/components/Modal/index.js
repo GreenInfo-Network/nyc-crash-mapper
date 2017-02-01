@@ -17,17 +17,18 @@ class ModalWrapper extends Component {
   }
 
   handleModalType() {
-    const { modalType } = this.props;
+    const { modalType, closeModal } = this.props;
     const modalTypes = {
       about: About,
+      copyright: Copyright,
+      disclaimer: Disclaimer,
       'download-data': DownloadData,
-      'share-url': ShareURL,
       'share-fb': ShareFB,
       'share-tw': ShareTwitter,
-      disclaimer: Disclaimer,
-      copyright: Copyright,
+      'share-url': ShareURL,
     };
-    const HOC = ModalContent(modalTypes[modalType]);
+    const hocConfig = { modalType, closeModal };
+    const HOC = ModalContent(modalTypes[modalType], hocConfig);
 
     return (<HOC />);
   }
@@ -44,7 +45,6 @@ class ModalWrapper extends Component {
         className="Modal"
         overlayClassName="Overlay"
       >
-        <button className="btn-modal-close" onClick={() => closeModal()} />
         { this.handleModalType() }
       </ReactModal>
     );
