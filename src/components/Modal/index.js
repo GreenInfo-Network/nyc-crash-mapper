@@ -7,6 +7,8 @@ import DownloadData from './DownloadData';
 import ShareURL from './ShareURL';
 import ShareFB from './ShareFB';
 import ShareTwitter from './ShareTwitter';
+import Disclaimer from './Disclaimer';
+import Copyright from './Copyright';
 
 class ModalWrapper extends Component {
   constructor() {
@@ -15,28 +17,34 @@ class ModalWrapper extends Component {
   }
 
   handleModalType() {
-    const { modalType, closeModal } = this.props;
+    const { modalType } = this.props;
     const modalTypes = {
       about: About,
       'download-data': DownloadData,
       'share-url': ShareURL,
       'share-fb': ShareFB,
       'share-tw': ShareTwitter,
+      disclaimer: Disclaimer,
+      copyright: Copyright,
     };
-    const HOC = ModalContent(modalTypes[modalType], closeModal);
+    const HOC = ModalContent(modalTypes[modalType]);
 
     return (<HOC />);
   }
 
   render() {
-    const { showModal, modalType } = this.props;
+    const { closeModal, showModal, modalType } = this.props;
     const contentLabel = `${modalType} modal`;
 
     return (
       <ReactModal
         isOpen={showModal}
+        onRequestClose={() => closeModal()}
         contentLabel={contentLabel}
+        className="Modal"
+        overlayClassName="Overlay"
       >
+        <button className="btn-modal-close" onClick={() => closeModal()} />
         { this.handleModalType() }
       </ReactModal>
     );
