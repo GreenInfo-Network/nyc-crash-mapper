@@ -1,18 +1,18 @@
 import {
-  MODAL_OPEN,
-  MODAL_CLOSE,
+  MODAL_OPENED,
+  MODAL_CLOSED,
 } from '../constants/action_types';
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case MODAL_OPEN:
+    case MODAL_OPENED:
       return {
         ...state,
         modalType: action.modalType,
         showModal: true,
       };
 
-    case MODAL_CLOSE:
+    case MODAL_CLOSED:
       return {
         ...state,
         modalType: '',
