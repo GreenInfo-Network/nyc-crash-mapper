@@ -4,6 +4,7 @@ import sls from 'single-line-string';
 const nyc_crashes = 'export2016_07';
 
 const cartocss = sls`
+  /* color values match those ./scss/_variables.scss */
   @fatality: #f03b20;
   @injury: #fd8d3c;
   @nofatinj: #fecc5c;
@@ -70,8 +71,11 @@ const cartocss = sls`
 `;
 
 export const filterAreaCartocss = layer => sls`
+  /* color values match those ./scss/_variables.scss */
+  @marine: #105b63;
+
   #${layer} {
-    polygon-fill: #2167ab;
+    polygon-fill: lighten(@marine, 10);
     polygon-opacity: 0.7;
     line-color: #fff;
     line-width: 1;
