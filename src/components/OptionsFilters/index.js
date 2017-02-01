@@ -10,7 +10,7 @@ import FooterOptions from './FooterOptions';
 
 class OptionsFilters extends Component {
   render() {
-    const { height } = this.props;
+    const { height, openModal } = this.props;
 
     return (
       <div className="ui right app-options-filters">
@@ -34,7 +34,10 @@ class OptionsFilters extends Component {
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Data'}>
-            <DownloadData lastUpdated="12/31/2016" />
+            <DownloadData
+              openModal={openModal}
+              lastUpdated="12/31/2016"
+            />
           </OptionsContainer>
         </OptionsContainer>
         <hr />
@@ -44,9 +47,9 @@ class OptionsFilters extends Component {
           collapsable={false}
           optionsContainerHeight={93}
         >
-          <ShareOptions />
+          <ShareOptions openModal={openModal} />
         </OptionsContainer>
-        <FooterOptions />
+        <FooterOptions openModal={openModal} />
       </div>
     );
   }
@@ -55,7 +58,9 @@ class OptionsFilters extends Component {
 OptionsFilters.defaultProps = {
   height: 120
 };
+
 OptionsFilters.propTypes = {
+  openModal: PropTypes.func.isRequired,
   height: PropTypes.number
 };
 

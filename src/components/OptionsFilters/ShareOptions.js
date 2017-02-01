@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import FilterButton from './FilterButton';
 
-const ShareOptions = () => {
-  // TO DO: replace noops with actual function calls
-  const noop = () => {};
+const ShareOptions = (props) => {
+  const { openModal } = props;
 
   return (
     <div className="share-options">
       <FilterButton
         filterName={'URL'}
-        callback={noop}
+        callback={() => openModal('share-url')}
         btnType={'auto'}
       />
       <FilterButton
         filterName={'Facebook'}
-        callback={noop}
+        callback={() => openModal('share-fb')}
         btnType={'auto'}
       />
       <FilterButton
         filterName={'Twitter'}
-        callback={noop}
+        callback={() => openModal('share-tw')}
         btnType={'auto'}
       />
     </div>
   );
+};
+
+ShareOptions.propTypes = {
+  openModal: PropTypes.func.isRequired
 };
 
 export default ShareOptions;
