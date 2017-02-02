@@ -217,10 +217,8 @@ export const configureMapSQL = (params) => {
       SUM(c.number_of_motorist_killed) as motorist_killed,
       SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
       SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
-      SUM(c.number_of_persons_injured) as persons_injured,
-      SUM(c.number_of_persons_killed) as persons_killed,
-      SUM(CASE WHEN c.number_of_persons_injured > 0 THEN 1 ELSE 0 END) AS total_crashes_with_injury,
-      SUM(CASE WHEN c.number_of_persons_killed > 0 THEN 1 ELSE 0 END) AS total_crashes_with_death
+      SUM(c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured) as persons_injured,
+      SUM(c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed) as persons_killed
     FROM
       ${nyc_crashes} c
     ${joinToGeoTableClause(geo)}
@@ -248,16 +246,14 @@ export const configureStatsSQL = (params) => {
   return sls`
     SELECT
       COUNT(c.cartodb_id) as total_crashes,
-      SUM(CASE WHEN c.number_of_persons_injured > 0 THEN 1 ELSE 0 END) AS total_crashes_with_injury,
-      SUM(CASE WHEN c.number_of_persons_killed > 0 THEN 1 ELSE 0 END) AS total_crashes_with_death,
       SUM(c.number_of_cyclist_injured) as cyclist_injured,
       SUM(c.number_of_cyclist_killed) as cyclist_killed,
       SUM(c.number_of_motorist_injured) as motorist_injured,
       SUM(c.number_of_motorist_killed) as motorist_killed,
       SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
       SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
-      SUM(c.number_of_persons_injured) as persons_injured,
-      SUM(c.number_of_persons_killed) as persons_killed
+      SUM(c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured) as persons_injured,
+      SUM(c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed) as persons_killed
     FROM
       ${nyc_crashes} c
     ${joinToGeoTableClause(geo)}

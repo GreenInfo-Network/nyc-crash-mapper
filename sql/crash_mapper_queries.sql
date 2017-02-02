@@ -86,6 +86,41 @@ SELECT
 FROM
   table_20k_crashes
 
+---------------------
+--- Download Data ---
+---------------------
+
+-- basic select query, used by download data
+SELECT
+  c.on_street_name,
+  c.cross_street_name,
+  c.cartodb_id,
+  c.unique_key,
+  c.date_val as date,
+  c.latitude,
+  c.longitude,
+  c.borough,
+  c.zip_code,
+  c.number_of_cyclist_injured,
+  c.number_of_cyclist_killed,
+  c.number_of_motorist_injured,
+  c.number_of_motorist_killed,
+  c.number_of_pedestrian_injured,
+  c.number_of_pedestrian_killed,
+  c.number_of_persons_injured,
+  c.number_of_persons_killed,
+  c.contributing_factor_vehicle_1,
+  c.contributing_factor_vehicle_2,
+  c.contributing_factor_vehicle_3,
+  c.contributing_factor_vehicle_4,
+  c.contributing_factor_vehicle_5,
+  c.vehicle_type_code_1,
+  c.vehicle_type_code_2,
+  c.vehicle_type_code_3,
+  c.vehicle_type_code_4,
+  c.vehicle_type_code_5
+FROM table_20k_crashes c
+
 --------------
 --- Stats ----
 --------------
