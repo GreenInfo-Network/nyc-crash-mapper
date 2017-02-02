@@ -25,8 +25,8 @@ export const crashDataFieldNames = [
   'motorist_killed',
   'pedestrian_injured',
   'pedestrian_killed',
-  'persons_injured',
   'persons_killed',
+  'persons_injured',
   'on_street_name',
   'cross_street_name'
 ];
@@ -37,7 +37,7 @@ export const cartoLayerSource = {
   sublayers: [{
     sql: '',
     cartocss,
-    interactivity: crashDataFieldNames,
+    interactivity: crashDataFieldNames.join(','),
   }]
 };
 
