@@ -17,7 +17,7 @@ class ModalWrapper extends Component {
   }
 
   handleModalType() {
-    const { modalType, closeModal } = this.props;
+    const { modalType, closeModal, filterType, filterArea, startDate, endDate } = this.props;
     const modalTypes = {
       about: About,
       copyright: Copyright,
@@ -30,7 +30,9 @@ class ModalWrapper extends Component {
     const hocConfig = { modalType, closeModal };
     const HOC = ModalContent(modalTypes[modalType], hocConfig);
 
-    return (<HOC />);
+    return (
+      <HOC {...{ filterType, filterArea, startDate, endDate }} />
+    );
   }
 
   render() {
@@ -59,6 +61,10 @@ ModalWrapper.propTypes = {
   closeModal: PropTypes.func.isRequired,
   showModal: PropTypes.bool.isRequired,
   modalType: PropTypes.string,
+  filterType: PropTypes.shape({}).isRequired,
+  filterArea: PropTypes.shape({}).isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
 };
 
 export default ModalWrapper;

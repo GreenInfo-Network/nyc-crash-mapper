@@ -45,4 +45,20 @@
       content: "×";
     }
   }
+
+  .modal-download-data {
+
+  }
+
+  .download-data-btns {
+    margin-top: $margin-25;
+  }
+
+  .dl-data-btn {
+    // @extend .filter-options-button;
+
+    &:not(:first-of-type) {
+      margin-left: $margin-10;
+    }
+  }
 }
