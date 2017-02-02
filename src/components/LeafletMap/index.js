@@ -119,6 +119,7 @@ class LeafletMap extends Component {
   initCartoLayer() {
     const self = this;
     const layerSource = configureLayerSource(generateMapSQL(this.props));
+    // const layerSource = 'https://chekpeds.carto.com/api/v2/viz/acf2c4f6-e987-11e6-bfb2-0e233c30368f/viz.json';
     const options = {
       https: true,
       infowindow: false,
@@ -152,10 +153,13 @@ class LeafletMap extends Component {
         <p><span class="roboto-bold">Motorists Injured</span>: {{motorist_injured}}</p>
         <p><span class="roboto-bold">Motorists Killed</span>: {{motorist_killed}}</p>
         <p><span class="roboto-bold">Pedestrians Injured</span>: {{pedestrian_injured}}</p>
-        <p><span class="roboto-bold">Persons Injured</span>: {{persons_injured}}</p>
-        <p><span class="roboto-bold">Persons Killed</span>: {{persons_killed}}</p>
-        <p><span class="roboto-bold">On Street Name</span>: {{on_street_name}}</p>
-        <p><span class="roboto-bold">Cross Street Name</span>: {{cross_street_name}}</p>
+        <p><span class="roboto-bold">Pedestrians Killed</span>: {{pedestrian_killed}}</p>
+        <p><span class="roboto-bold">Total Persons Injured</span>: {{persons_injured}}</p>
+        <p><span class="roboto-bold">Total Persons Killed</span>: {{persons_killed}}</p>
+        <p><span class="roboto-bold">On Street Name</span>:</p>
+        <p>{{on_street_name}}</p>
+        <p><span class="roboto-bold">Cross Street Name</span>:</p>
+        <p>{{cross_street_name}}</p>
       </div>
     `;
 
