@@ -21,7 +21,7 @@ const receiveCrashStatsError = error => ({
 });
 
 export const fetchCrashStatsData = (params) => {
-  const query = configureStatsSQL(params);
+  const query = encodeURIComponent(configureStatsSQL(params));
   const url = cartoSQLQuery(query);
   return (dispatch) => {
     dispatch(requestCrashStatsData());
@@ -47,7 +47,7 @@ const receiveContributingFactorsError = error => ({
 });
 
 export const fetchContributingFactors = (params) => {
-  const query = configureFactorsSQL(params);
+  const query = encodeURIComponent(configureFactorsSQL(params));
   const url = cartoSQLQuery(query);
   return (dispatch) => {
     dispatch(requestContributingFactors());
