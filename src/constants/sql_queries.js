@@ -351,3 +351,56 @@ export const configureFactorsSQL = (params) => {
       count_factor desc
   `;
 };
+
+/*
+ ******************************* Download Data *********************************
+*/
+
+// Creates the SQL query for "Download Data" buttons
+export const configureDownloadDataSQL = (params) => {
+  const { startDate, endDate, filterArea, filterType } = params;
+  const { geo, lngLats, identifier } = filterArea;
+
+  return sls`
+    SELECT
+      c.cartodb_id,
+      c.unique_key,
+      c.the_geom,
+      c.on_street_name,
+      c.cross_street_name,
+      c.date_val AS date,
+      c.latitude,
+      c.longitude,
+      c.borough,
+      c.zip_code,
+      c.number_of_cyclist_injured,
+      c.number_of_cyclist_killed,
+      c.number_of_motorist_injured,
+      c.number_of_motorist_killed,
+      c.number_of_pedestrian_injured,
+      c.number_of_pedestrian_killed,
+      c.number_of_persons_injured,
+      c.number_of_persons_killed,
+      c.contributing_factor_vehicle_1,
+      c.contributing_factor_vehicle_2,
+      c.contributing_factor_vehicle_3,
+      c.contributing_factor_vehicle_4,
+      c.contributing_factor_vehicle_5,
+      c.vehicle_type_code_1,
+      c.vehicle_type_code_2,
+      c.vehicle_type_code_3,
+      c.vehicle_type_code_4,
+      c.vehicle_type_code_5
+    FROM ${nyc_crashes} c
+    ${joinToGeoTableClause(geo)}
+    WHERE
+      (date_val <= date '${endDate}')
+    AND
+      (date_val >= date '${startDate}')
+    ${filterByCustomAreaClause(lngLats)}
+    ${filterByTypeWhereClause(filterType)}
+    ${filterByIdentifierWhereClause(identifier)}
+    AND
+      c.the_geom IS NOT NULL
+  `;
+};
