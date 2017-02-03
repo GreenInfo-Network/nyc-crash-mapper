@@ -26,7 +26,7 @@ const hideCartoTooltips = (tooltipClassName) => {
     tooltipNode.style.display = 'none';
   } else {
     const tooltipNodes = document.querySelectorAll(`.cartodb-tooltip-content-wrapper.${tooltipClassName}`);
-    tooltipNodes.forEach((node) => {
+    Array.prototype.forEach.call(tooltipNodes, (node) => {
       const parent = node.parentNode;
       parent.style.display = 'none';
     });
