@@ -166,8 +166,7 @@ const joinToGeoTableClause = (areaName) => {
 // @param {number || string} identifier, unique id of boundary polygon
 const filterByIdentifierWhereClause = (identifier) => {
   if (identifier) {
-    const val = typeof identifier === 'string' ? `'${identifier}'` : identifier;
-    return `AND a.identifier = ${val}`;
+    return `AND a.identifier = $$${identifier}$$`;
   }
   return '';
 };
