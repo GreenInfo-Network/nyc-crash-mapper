@@ -286,55 +286,7 @@ export const configureFactorsSQL = (params) => {
         (date_val >= date '${startDate}')
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
-      UNION ALL
-      SELECT
-        c.contributing_factor_vehicle_2 as factor
-      FROM
-        ${nyc_crashes} c
-      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
-      WHERE
-        (date_val <= date '${endDate}')
-      AND
-        (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(lngLats)}
-      ${filterByTypeWhereClause(filterType)}
-      UNION ALL
-      SELECT
-        c.contributing_factor_vehicle_3 as factor
-      FROM
-        ${nyc_crashes} c
-      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
-      WHERE
-        (date_val <= date '${endDate}')
-      AND
-        (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(lngLats)}
-      ${filterByTypeWhereClause(filterType)}
-      UNION ALL
-      SELECT
-        c.contributing_factor_vehicle_4 as factor
-      FROM
-        ${nyc_crashes} c
-      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
-      WHERE
-        (date_val <= date '${endDate}')
-      AND
-        (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(lngLats)}
-      ${filterByTypeWhereClause(filterType)}
-      UNION ALL
-      SELECT
-        c.contributing_factor_vehicle_5 as factor
-      FROM
-        ${nyc_crashes} c
-      ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
-      WHERE
-        (date_val <= date '${endDate}')
-      AND
-        (date_val >= date '${startDate}')
-      ${filterByCustomAreaClause(lngLats)}
-      ${filterByTypeWhereClause(filterType)}
-      )
+    )
     SELECT
      COUNT(af.factor) as count_factor,
      af.factor
