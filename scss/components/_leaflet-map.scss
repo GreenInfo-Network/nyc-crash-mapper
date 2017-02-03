@@ -17,10 +17,98 @@
   .cartodb-tooltip-content-wrapper {
     @extend %roboto-regular;
     width: auto;
-    padding: 10px;
+    padding: $padding-5;
+    color: $off-white;
+    background: $ui-grey;
 
     span {
       @extend %roboto-bold;
+    }
+  }
+
+  // infowindow custom styles
+  div.cartodb-popup.customized {
+    width: $infowindowWidthOuter;
+    max-width: $infowindowWidthOuter;
+  }
+
+  div.cartodb-popup.customized .cartodb-popup-content-wrapper,
+  div.jspContainer,
+  div.jspPane {
+    width: $infowindowWidthInner !important;
+    max-width: $infowindowWidthInner !important;
+    &:before,
+    &:after {
+      background: none;
+    }
+  }
+
+  div.cartodb-popup.customized {
+    @extend %roboto-regular;
+    background: none;
+    padding: $padding-10;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+      color: $off-white;
+      letter-spacing: 0.01rem;
+    }
+
+    p {
+      @extend %roboto-regular;
+      font-size: 1.1rem;
+    }
+
+    h4 {
+      @extend %roboto-bold;
+      font-size: 1.2rem;
+    }
+
+    .cartodb-popup-close-button.close {
+      @extend %roboto-bold;
+      right: -17px;
+      background: lighten($grey, 10);
+      border-radius: 50%;
+      font-size: 2rem;
+      text-indent: 7.5px;
+      line-height: 26px;
+      text-decoration: none;
+      color: $btn-bg;
+
+      &:hover {
+        color: $btn-hover;
+      }
+    }
+
+    div.cartodb-popup-content-wrapper {
+      width: $infowindowWidthInner;
+      max-width: $infowindowWidthInner;
+      background: $ui-grey;
+      padding: $padding-10 $padding-5 $padding-5 $padding-10;
+      border-radius: $border-radius;
+    }
+
+    .jspContainer {
+      &:before,
+      &:after {
+        background: none;
+      }
+    }
+
+    div.cartodb-popup-tip-container {
+      position: relative;
+      left: 18px;
+      background: none;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 25px 25px 0 0;
+      border-color: $ui-grey transparent transparent transparent;
     }
   }
 }

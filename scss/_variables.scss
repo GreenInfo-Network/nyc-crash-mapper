@@ -12,8 +12,9 @@ $marine: #105b63 !default;
 $marine-light: lighten($marine, 10) !default;
 
 $off-white: #FFFAD5 !default;
+$grey: #4d4d4d !default;
 $medium-grey: lighten($dark-grey, 50) !default;
-$ui-grey: rgba(#4d4d4d, 0.8) !default;
+$ui-grey: rgba($grey, 0.8) !default;
 $transparent: rgba(0,0,0,0) !default;
 
 $btn-hover: lighten($yellow-orange, 10) !default;
@@ -57,6 +58,10 @@ $options-footer-height: 27px;
 
 $stats-header-height: 30px !default;
 $stats-content-height: calc(100% - 30px) !default;
+
+$infowindowWidth: 105px !default;
+$infowindowWidthOuter: 155px !default;
+$infowindowWidthInner: 155px !default;
 
 // margins
 $margin-25: 25px !default;
