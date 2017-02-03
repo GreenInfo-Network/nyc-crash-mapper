@@ -14,33 +14,53 @@ export const makeDefaultState = () => {
   const hash = window.location.hash;
   const qString = hash.substring(3, hash.length);
   const q = queryString.parse(qString);
-  const startDate = q.startDate ? momentize(q.startDate) : momentize('2016-07-01');
-  const endDate = q.endDate ? momentize(q.endDate) : momentize('2016-07-31');
+  const p = {};
+
+  const isJsonString = (str) => {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  };
+
+  Object.keys(q).forEach((key) => {
+    const decoded = decodeURIComponent(q[key]);
+    if (isJsonString(decoded)) {
+      p[key] = JSON.parse(decoded);
+    } else if (decoded.indexOf('-') !== -1 && moment(decoded).isValid()) {
+      console.log(decoded);
+      p[key] = momentize(decoded);
+    } else {
+      p[key] = decoded;
+    }
+  });
 
   return {
     dateRange: {
-      startDate,
-      endDate,
+      startDate: p.startDate || momentize('2016-07-01'),
+      endDate: p.endDate || momentize('2016-07-31'),
     },
     filterArea: {
-      geo: q.geo || 'Citywide',
-      identifier: q.identifier || undefined,
-      lngLats: q.lonLats || [],
+      geo: p.geo || 'Citywide',
+      identifier: p.identifier || undefined,
+      lngLats: p.lngLats || []
     },
     filterType: {
       injury: {
-        cyclist: false,
-        motorist: false,
-        pedestrian: false,
+        cyclist: p.cinj || false,
+        motorist: p.minj || false,
+        pedestrian: p.pinj || false,
       },
       fatality: {
-        cyclist: false,
-        motorist: false,
-        pedestrian: false,
+        cyclist: p.cfat || false,
+        motorist: p.mfat || false,
+        pedestrian: p.pfat || false,
       },
-      noInjuryFatality: false,
+      noInjuryFatality: p.noInjFat || false,
     },
-    filterContributingFactor: q.contrFactor || 'ALL',
+    filterContributingFactor: p.contrFactor || 'ALL',
     modal: {
       showModal: false,
       modalType: '',
