@@ -25,7 +25,11 @@
     "comma-dangle": 0,
     "indent": [1, 2, { "SwitchCase": 1 }],
     "jsx-a11y/no-static-element-interactions": 0,
-    "import/no-extranenous-dependencies": 0,
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": true,
+      "optionalDependencies": false,
+      "peerDependencies": false
+      }],
     "react/jsx-filename-extension": 0,
     "react/no-unused-prop-types": 0,
     "react/prefer-stateless-function": 0,
