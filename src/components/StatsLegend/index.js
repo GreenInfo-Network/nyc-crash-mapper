@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import momentPropTypes from 'react-moment-proptypes';
 
-import { crashDataChanged } from '../../constants/api';
+import { crashDataChanged, dateStringFormatView, dateStringFormatModel } from '../../constants/api';
 import DateRange from './DateRange';
 import TotalCrashCounter from './TotalCrashCounter';
 import StatsCounter from './StatsCounter';
@@ -12,16 +13,36 @@ class StatsLegend extends Component {
   componentWillMount() {
     const { startDate, endDate, filterType, geo, identifier, lngLats } = this.props;
     const params = { startDate, endDate, filterType, geo, identifier, lngLats };
-    this.props.fetchCrashStatsData(params);
-    this.props.fetchContributingFactors(params);
+    const startDateFormatted = startDate.format(dateStringFormatModel);
+    const endDateFormatted = endDate.format(dateStringFormatModel);
+    this.props.fetchCrashStatsData({
+      ...params,
+      startDate: startDateFormatted,
+      endDate: endDateFormatted,
+    });
+    this.props.fetchContributingFactors({
+      ...params,
+      startDate: startDateFormatted,
+      endDate: endDateFormatted,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     const { startDate, endDate, filterType, geo, identifier, lngLats } = nextProps;
     const params = { startDate, endDate, filterType, geo, identifier, lngLats };
+    const startDateFormatted = startDate.format(dateStringFormatModel);
+    const endDateFormatted = endDate.format(dateStringFormatModel);
     if (crashDataChanged(this.props, nextProps)) {
-      this.props.fetchCrashStatsData(params);
-      this.props.fetchContributingFactors(params);
+      this.props.fetchCrashStatsData({
+        ...params,
+        startDate: startDateFormatted,
+        endDate: endDateFormatted,
+      });
+      this.props.fetchContributingFactors({
+        ...params,
+        startDate: startDateFormatted,
+        endDate: endDateFormatted,
+      });
     }
   }
 
@@ -44,7 +65,10 @@ class StatsLegend extends Component {
         <div className="container">
           <div className="row stats-header">
             <div className="seven columns">
-              <DateRange startDate={startDate} endDate={endDate} />
+              <DateRange
+                startDate={startDate.format(dateStringFormatView)}
+                endDate={endDate.format(dateStringFormatView)}
+              />
               <TotalCrashCounter totalCount={total_crashes} />
             </div>
             <div className="three columns">
@@ -100,8 +124,8 @@ StatsLegend.defaultProps = {
 };
 
 StatsLegend.propTypes = {
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
+  startDate: momentPropTypes.momentObj.isRequired,
+  endDate: momentPropTypes.momentObj.isRequired,
   fetchContributingFactors: PropTypes.func.isRequired,
   fetchCrashStatsData: PropTypes.func.isRequired,
   contributingFactors: PropTypes.arrayOf(PropTypes.shape({
