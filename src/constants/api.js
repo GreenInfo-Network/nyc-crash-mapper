@@ -30,7 +30,6 @@ export const makeDefaultState = () => {
     if (isJsonString(decoded)) {
       p[key] = JSON.parse(decoded);
     } else if (decoded.indexOf('-') !== -1 && moment(decoded).isValid()) {
-      console.log(decoded);
       p[key] = momentize(decoded);
     } else {
       p[key] = decoded;
