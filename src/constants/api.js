@@ -67,6 +67,7 @@ export const makeDefaultState = () => {
   };
 };
 
+// configures Carto crashes map layer's SQL
 export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;

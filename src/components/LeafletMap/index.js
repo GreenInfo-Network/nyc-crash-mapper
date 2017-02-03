@@ -6,7 +6,7 @@ import {
   filterAreaBtnTableMap,
   filterByAreaSQL
 } from '../../constants/sql_queries';
-import { basemapURL, cartoUser } from '../../constants/app_config';
+import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
 import { configureLayerSource, crashDataChanged } from '../../constants/api';
 import { filterAreaCartocss } from '../../constants/cartocss';
 import ZoomControls from './ZoomControls';
@@ -49,6 +49,7 @@ class LeafletMap extends Component {
     this.cartoSubLayer = undefined;
     this.cartoFilterSubLayers = {};
     this.cartodbSQL = undefined;
+    this.cartoInfowindow = undefined;
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
@@ -122,7 +123,7 @@ class LeafletMap extends Component {
     // const layerSource = 'https://chekpeds.carto.com/api/v2/viz/acf2c4f6-e987-11e6-bfb2-0e233c30368f/viz.json';
     const options = {
       https: true,
-      infowindow: false,
+      infowindow: true,
       legends: false,
     };
 
@@ -138,6 +139,8 @@ class LeafletMap extends Component {
         self.cartoSubLayer = layer.getSubLayer(0);
         // add tooltips to sublayer
         self.initCartoSubLayerTooltips();
+        // add infowindows to sublayer
+        self.initCartoSubLayerInfowindows();
       })
       .on('error', (error) => { throw error; });
   }
@@ -146,18 +149,10 @@ class LeafletMap extends Component {
     const self = this;
     const template = sls`
       <div class="cartodb-tooltip-content-wrapper crashes-layer">
-        <p><span class="roboto-bold">Cyclists Injured</span>: {{cyclist_injured}}</p>
-        <p><span class="roboto-bold">Cyclists Killed</span>: {{cyclist_killed}}</p>
-        <p><span class="roboto-bold">Motorists Injured</span>: {{motorist_injured}}</p>
-        <p><span class="roboto-bold">Motorists Killed</span>: {{motorist_killed}}</p>
-        <p><span class="roboto-bold">Pedestrians Injured</span>: {{pedestrian_injured}}</p>
-        <p><span class="roboto-bold">Pedestrians Killed</span>: {{pedestrian_killed}}</p>
+        <p><span class="roboto-bold">Total Crashes</span>: {{total_crashes}}</p>
         <p><span class="roboto-bold">Total Persons Injured</span>: {{persons_injured}}</p>
         <p><span class="roboto-bold">Total Persons Killed</span>: {{persons_killed}}</p>
-        <p><span class="roboto-bold">On Street Name</span>:</p>
-        <p>{{on_street_name}}</p>
-        <p><span class="roboto-bold">Cross Street Name</span>:</p>
-        <p>{{cross_street_name}}</p>
+        <p>(Click for details)</p>
       </div>
     `;
 
@@ -168,18 +163,31 @@ class LeafletMap extends Component {
       template,
       position: 'bottom|right',
       fields: [
-        { cyclist_injured: 'Cyclists Injured' },
-        { cyclist_killed: 'Cyclists Killed' },
-        { motorist_injured: 'Motorists Injured' },
-        { motorist_killed: 'Motorists Killed' },
-        { pedestrian_injured: 'pedestrian injured' },
-        { pedestrian_killed: 'pedestrian killed' },
+        { total_crashes: 'Total Crashes' },
         { persons_injured: 'persons injured' },
-        { persons_killed: 'persons killed' },
-        { on_street_name: 'on street name' },
-        { cross_street_name: 'cross street name' },
+        { persons_killed: 'persons killed' }
       ]
     });
+  }
+
+  initCartoSubLayerInfowindows() {
+    const self = this;
+    const infowindowTemplate = document.getElementById('infowindow_template').innerHTML;
+    self.cartoInfowindow = cdb.vis.Vis.addInfowindow(
+      self.map,
+      self.cartoSubLayer,
+      crashDataFieldNames,
+      {
+        infowindowTemplate,
+        templateType: 'mustache',
+      }
+    );
+  }
+
+  hideShowCartoInfowindow() {
+    // const self = this;
+    // this.cartoInfowindow.trigger('change:visibility', self.cartoInfowindow.toggle, {});
+    this.cartoInfowindow.$el.hide();
   }
 
   fitMapBounds(sql) {
@@ -189,6 +197,7 @@ class LeafletMap extends Component {
     self.cartodbSQL.getBounds(sql)
       .done((bounds) => {
         self.map.fitBounds(bounds, self.fitBoundsOptions);
+        self.hideShowCartoInfowindow();
       });
   }
 
@@ -199,6 +208,8 @@ class LeafletMap extends Component {
     this.hideFilterSublayers();
     // hide any previously visible tooltips from filter sublayer
     hideCartoTooltips('filter-layer');
+    // hide any open infowindow
+    this.hideShowCartoInfowindow();
     // fit the map extent to the queried data
     this.fitMapBounds(sql);
     // set the cartoSubLayer to be interactive
@@ -271,6 +282,8 @@ class LeafletMap extends Component {
     this.hideFilterSublayers();
     // temporarily disable cartoSubLayer tooltips
     hideCartoTooltips('crashes-layer');
+    // temporarily disable cartoSubLayer infowindow
+    this.hideShowCartoInfowindow();
     // temporarily disable cartoSubLayer interactivity
     this.cartoSubLayer.setInteraction(false);
 

@@ -19,6 +19,7 @@ export const cartoTables = {
 };
 
 export const crashDataFieldNames = [
+  'total_crashes',
   'cyclist_injured',
   'cyclist_killed',
   'motorist_injured',

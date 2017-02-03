@@ -12,5 +12,36 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- HTML template for custom infowindow -->
+    <script type="infowindow/html" id="infowindow_template">
+    <div class="cartodb-popup customized">
+      <a href="#close" class="cartodb-popup-close-button close">x</a>
+      <div class="cartodb-popup-content-wrapper">
+        <div class="cartodb-popup-content">
+          <!-- content.data contains the field info -->
+          <h4>Total Crashes</h4>
+          <p>{{content.data.total_crashes}}</p>
+          <h4>On Street Name</h4>
+          <p>{{content.data.on_street_name}}</p>
+          <h4>Cross Street Name</h4>
+          <p>{{content.data.cross_street_name}}</p>
+          <h4>Cyclists Injured</h4>
+          <p>{{content.data.cyclist_injured}}</p>
+          <h4>Cyclists Killed</h4>
+          <p>{{content.data.cyclist_killed}}</p>
+          <h4>Motorists Injured</h4>
+          <p>{{content.data.motorist_injured}}</p>
+          <h4>Motorists Killed</h4>
+          <p>{{content.data.motorist_killed}}</p>
+          <h4>Pedestrians Injured</h4>
+          <p>{{content.data.pedestrian_injured}}</p>
+          <h4>Pedestrians Killed</h4>
+          <p>{{content.data.pedestrian_killed}}</p>
+        </div>
+      </div>
+      <div class="cartodb-popup-tip-container"></div>
+    </div>
+    </script>
   </body>
 </html>
