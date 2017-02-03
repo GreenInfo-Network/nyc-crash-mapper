@@ -132,16 +132,14 @@ class LeafletMap extends Component {
       .addTo(self.map)
       .on('done', (layer) => {
         self.cartoLayer = layer;
-        layer.on('error', error => console.warn(`layer interaction error: ${error}`));
+        layer.on('error', (error) => { throw error; });
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
         // add tooltips to sublayer
         self.initCartoSubLayerTooltips();
       })
-      .on('error', (error) => {
-        console.warn(`cartodb.createLayer error: ${error}`);
-      });
+      .on('error', (error) => { throw error; });
   }
 
   initCartoSubLayerTooltips() {
