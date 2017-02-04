@@ -265,6 +265,7 @@ class LeafletMap extends Component {
   customFilterDraw() {
     this.cartoSubLayer.setInteraction(false);
     hideCartoTooltips('crashes-layer');
+    this.hideShowCartoInfowindow();
     this.customDraw.initDraw();
   }
 
