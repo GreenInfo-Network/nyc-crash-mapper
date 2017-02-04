@@ -55,7 +55,16 @@
   }
 
   .dl-data-btn {
-    // @extend .filter-options-button;
+    @extend .filter-options-button;
+    background-color: #fff;
+    border: 1px solid $medium-grey;
+    color: $marine-light;
+
+    &:hover {
+      color: $marine;
+      background-color: #eee;
+      border: 1px solid #333;
+    }
 
     &:not(:first-of-type) {
       margin-left: $margin-10;
