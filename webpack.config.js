@@ -6,10 +6,15 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 // vendor libs get bundled separately to take advantage of browser caching
 const VENDOR_LIBS = [
   'classnames',
+  'es6-promise',
+  'isomorphic-fetch',
   'leaflet-draw',
+  'moment',
+  'normalize-scss',
   'query-string',
   'react',
   'react-collapse',
+  'react-copy-to-clipboard',
   'react-datepicker',
   'react-dom',
   'react-height',
