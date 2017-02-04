@@ -1,6 +1,6 @@
 import moment from 'moment';
 import queryString from 'query-string';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 
 import { cartoLayerSource } from './app_config';
 

@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { calculateResponsiveState } from 'redux-responsive';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 import makeStore from './store';
 import { makeDefaultState } from './constants/api';
