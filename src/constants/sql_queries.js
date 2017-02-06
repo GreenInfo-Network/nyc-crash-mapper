@@ -347,7 +347,5 @@ export const configureDownloadDataSQL = (params) => {
     ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
-    AND
-      c.the_geom IS NOT NULL
   `;
 };
