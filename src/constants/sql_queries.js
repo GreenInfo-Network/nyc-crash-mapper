@@ -204,34 +204,42 @@ export const configureMapSQL = (params) => {
   const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
   return sls`
-    SELECT
-      c.the_geom,
-      c.the_geom_webmercator,
-      c.on_street_name,
-      c.cross_street_name,
-      COUNT(c.cartodb_id) as total_crashes,
-      SUM(c.number_of_cyclist_injured) as cyclist_injured,
-      SUM(c.number_of_cyclist_killed) as cyclist_killed,
-      SUM(c.number_of_motorist_injured) as motorist_injured,
-      SUM(c.number_of_motorist_killed) as motorist_killed,
-      SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
-      SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
-      SUM(c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured) as persons_injured,
-      SUM(c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed) as persons_killed
-    FROM
-      ${nyc_crashes} c
-    ${joinToGeoTableClause(geo)}
-    WHERE
-      (date_val <= date '${endDate}')
-    AND
-      (date_val >= date '${startDate}')
-    ${filterByCustomAreaClause(lngLats)}
-    ${filterByTypeWhereClause(filterType)}
-    ${filterByIdentifierWhereClause(identifier)}
-    AND
-      c.the_geom IS NOT NULL
-    GROUP BY
-      c.the_geom, c.the_geom_webmercator, c.on_street_name, c.cross_street_name
+    SELECT * FROM
+    (
+      SELECT
+        c.the_geom as the_geom,
+        c.the_geom_webmercator as the_geom_webmercator,
+        c.on_street_name as on_street_name,
+        c.cross_street_name as cross_street_name,
+        COUNT(c.cartodb_id) as total_crashes,
+        SUM(c.number_of_cyclist_injured) as cyclist_injured,
+        SUM(c.number_of_cyclist_killed) as cyclist_killed,
+        SUM(c.number_of_motorist_injured) as motorist_injured,
+        SUM(c.number_of_motorist_killed) as motorist_killed,
+        SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
+        SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
+        SUM(c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured) as persons_injured,
+        SUM(c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed) as persons_killed
+      FROM
+        ${nyc_crashes} c
+      ${joinToGeoTableClause(geo)}
+      WHERE
+        (date_val <= date '${endDate}')
+      AND
+        (date_val >= date '${startDate}')
+      ${filterByCustomAreaClause(lngLats)}
+      ${filterByTypeWhereClause(filterType)}
+      ${filterByIdentifierWhereClause(identifier)}
+      AND
+        c.the_geom IS NOT NULL
+      GROUP BY
+        c.the_geom, c.the_geom_webmercator, c.on_street_name, c.cross_street_name
+    ) _
+    ORDER BY
+    CASE WHEN (persons_killed > 0) THEN 3
+    WHEN (persons_injured > 0) THEN 2
+    ELSE 1
+    END
   `;
 };
 
