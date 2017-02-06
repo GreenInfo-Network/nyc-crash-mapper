@@ -75,7 +75,7 @@ class StatsLegend extends Component {
               <h6 className="stats-title">Contributing Factors</h6>
             </div>
             <div className="two columns">
-              <h6 className="stats-title">Legend</h6>
+              <h6 className="stats-title" style={{ marginLeft: '10px' }}>Legend</h6>
             </div>
           </div>
           <div className="row stats-content">

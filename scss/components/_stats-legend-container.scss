@@ -1,7 +1,7 @@
 .legend-container {
   position: relative;
   padding-left: $padding-10;
-  width: calc(100% - $padding-10);
+  width: calc(100% - #{$padding-10});
   height: 100%;
 
   .legend-crash-types,
@@ -15,12 +15,8 @@
   .legend-crash-count {
     width: 40%;
     position: absolute;
-    top: -$stats-header-height;
+    top: -$stats-header-height - 3px;
     right: 0;
-
-    li {
-      margin-left: 0;
-    }
   }
 
   ul, li {
@@ -42,8 +38,8 @@
 
   // TO DO: adjust the size of dots to match size of map dots
   span {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     display: inline-block;
     border: 0.7px solid $off-white;
     border-radius: 50%;
@@ -62,47 +58,15 @@
     }
   }
 
-  .count-size-1 {
-    margin-top: -6px;
-
-    span {
-      margin-left: 5px;
-    }
-    p {
-      padding-left: 7.5px;
-    }
+  circle {
+    fill: rgba(0,0,0,0);
+    stroke: $off-white;
+    stroke-width: 1px;
   }
 
-  .count-size-2 {
-    span {
-      width: 14px;
-      height: 14px;
-      margin-left: 1.5px;
-    }
-    p {
-      padding-left: 4.8px;
-    }
-  }
-
-  .count-size-3 {
-    span {
-      width: 17px;
-      height: 17px;
-      margin-left: 0;
-    }
-    p {
-      padding-left: 4px;
-    }
-  }
-
-  .count-size-4 {
-    span {
-      width: 25px;
-      height: 25px;
-      margin-left: -4px;
-    }
-    p {
-      padding-left: 1.5px;
-    }
+  text {
+    @extend %roboto-regular;
+    fill: $off-white;
+    font-size: 1.2rem;
   }
 }
