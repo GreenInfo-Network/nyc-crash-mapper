@@ -238,7 +238,8 @@ export const configureMapSQL = (params) => {
     ORDER BY
     CASE WHEN (persons_killed > 0) THEN 3
     WHEN (persons_injured > 0) THEN 2
-    ELSE 1
+    WHEN (total_crashes > 11) THEN 1
+    ELSE 0
     END
   `;
 };

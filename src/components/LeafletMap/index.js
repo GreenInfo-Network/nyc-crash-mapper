@@ -61,20 +61,30 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, lngLats } = nextProps;
+    const { geo, lngLats, drawEnabeled } = nextProps;
 
     if (crashDataChanged(this.props, nextProps)) {
+      // if boundary filters were changed by user, update map data
       this.updateCartoSubLayer(nextProps);
     }
 
     if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
-      // cancel custom draw in case its enabled
+      // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
-      // show the user polygons for a filter Area
+      // show the user polygons for filter by area / boundary
       this.renderFilterArea(geo);
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
+      // hide / disable any visible filter area polygon
+      this.hideFilterSublayers();
+      // enable Leaflet Draw
+      this.customFilterDraw();
+    }
+
+    if (!drawEnabeled && this.props.drawEnabeled) {
+      this.customFilterCancelDraw();
+    } else if (drawEnabeled && !this.props.drawEnabeled) {
       this.customFilterDraw();
     }
 
@@ -358,6 +368,10 @@ LeafletMap.propTypes = {
     PropTypes.string,
     PropTypes.number
   ]),
+  lngLats: PropTypes.arrayOf(
+    PropTypes.arrayOf(PropTypes.number)
+  ),
+  drawEnabeled: PropTypes.bool.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   filterType: PropTypes.shape({
@@ -373,9 +387,6 @@ LeafletMap.propTypes = {
     }).isRequired,
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
-  lngLats: PropTypes.arrayOf(
-    PropTypes.arrayOf(PropTypes.number)
-  ),
 };
 
 export default LeafletMap;

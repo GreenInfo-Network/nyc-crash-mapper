@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import FilterButton from './FilterButton';
 
 const FilterByBoundary = (props) => {
-  const { filterByAreaType, geo } = props;
+  const { filterByAreaType, toggleCustomAreaDraw, drawEnabeled, geo } = props;
 
   return (
     <ul className="filter-by-boundary filter-list">
@@ -70,13 +70,29 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'Custom'}
           handleClick={filterByAreaType}
         />
+        { geo === 'Custom' && !drawEnabeled ?
+          <button className="draw-again" onClick={() => toggleCustomAreaDraw()}>
+            Draw Again
+          </button> : null
+        }
+        { geo === 'Custom' && drawEnabeled ?
+          <button className="cancel-drawing" onClick={() => toggleCustomAreaDraw()}>
+            Cancel Draw
+          </button> : null
+        }
       </li>
     </ul>
   );
 };
 
+FilterByBoundary.defaultProps = {
+  lngLats: [],
+};
+
 FilterByBoundary.propTypes = {
   filterByAreaType: PropTypes.func.isRequired,
+  toggleCustomAreaDraw: PropTypes.func.isRequired,
+  drawEnabeled: PropTypes.bool.isRequired,
   geo: PropTypes.string.isRequired,
 };
 

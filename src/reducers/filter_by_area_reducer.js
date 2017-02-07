@@ -2,12 +2,14 @@ import {
   FILTER_BY_AREA_TYPE,
   FILTER_BY_AREA_IDENTIFIER,
   FILTER_BY_AREA_CUSTOM,
+  TOGGLE_CUSTOM_AREA_DRAW,
 } from '../constants/action_types';
 
 const defaultState = {
   area: 'Citywide',
   identifier: undefined,
-  latLons: []
+  latLons: [],
+  drawEnabeled: false,
 };
 
 export default (state = defaultState, action) => {
@@ -17,7 +19,8 @@ export default (state = defaultState, action) => {
         ...state,
         geo: action.geo,
         identifier: undefined,
-        lngLats: []
+        lngLats: [],
+        drawEnabeled: action.geo === 'Custom',
       };
 
     case FILTER_BY_AREA_IDENTIFIER:
@@ -29,7 +32,14 @@ export default (state = defaultState, action) => {
     case FILTER_BY_AREA_CUSTOM:
       return {
         ...state,
-        lngLats: action.lngLats
+        lngLats: action.lngLats,
+        drawEnabeled: false,
+      };
+
+    case TOGGLE_CUSTOM_AREA_DRAW:
+      return {
+        ...state,
+        drawEnabeled: !state.drawEnabeled,
       };
 
     default:

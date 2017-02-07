@@ -44,7 +44,8 @@ export const makeDefaultState = () => {
     filterArea: {
       geo: p.geo || 'Citywide',
       identifier: p.identifier || undefined,
-      lngLats: p.lngLats || []
+      lngLats: p.lngLats || [],
+      drawEnabeled: false,
     },
     filterType: {
       injury: {
