@@ -4,9 +4,10 @@ import { dateStringFormatModel } from '../constants/api';
 import { openModal } from '../actions/';
 import App from '../components/App';
 
-const mapStateToProps = ({ dateRange, filterType, filterArea }) => {
+const mapStateToProps = ({ browser, dateRange, filterType, filterArea }) => {
   const { startDate, endDate } = dateRange;
   const { identifier, geo, lngLats } = filterArea;
+  const { width } = browser;
   return {
     startDate: startDate.format(dateStringFormatModel),
     endDate: endDate.format(dateStringFormatModel),
@@ -14,6 +15,7 @@ const mapStateToProps = ({ dateRange, filterType, filterArea }) => {
     identifier,
     geo,
     lngLats,
+    width,
   };
 };
 

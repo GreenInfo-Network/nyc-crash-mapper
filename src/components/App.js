@@ -7,6 +7,7 @@ import LeafletMapConnected from '../containers/LeafletMapConnected';
 import StatsLegendConnected from '../containers/StatsLegendConnected';
 import OptionsFiltersConnected from '../containers/OptionsFiltersConnected';
 import ModalConnected from '../containers/ModalConnected';
+import SmallDeviceMessage from './SmallDeviceMessage';
 
 class App extends Component {
   constructor() {
@@ -62,17 +63,23 @@ class App extends Component {
   }
 
   render() {
-    const { location, openModal } = this.props;
+    const { location, openModal, width } = this.props;
     return (
       <div className="App">
-        <AppHeader openModal={openModal} />
-        <LeafletMapConnected
-          location={location}
-          onMapMoved={this.onMapMoved}
-        />
-        <StatsLegendConnected />
-        <OptionsFiltersConnected />
-        <ModalConnected />
+        { /* hide app to mobile users for now */
+          width < 550 ?
+            <SmallDeviceMessage /> :
+          [
+            <AppHeader openModal={openModal} />,
+            <LeafletMapConnected
+              location={location}
+              onMapMoved={this.onMapMoved}
+            />,
+            <StatsLegendConnected />,
+            <OptionsFiltersConnected />,
+            <ModalConnected />
+          ]
+        }
       </div>
     );
   }
@@ -112,6 +119,7 @@ App.propTypes = {
   lngLats: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.number)
   ),
+  width: PropTypes.number.isRequired,
 };
 
 App.contextTypes = {
