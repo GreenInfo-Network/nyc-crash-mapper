@@ -7,9 +7,10 @@ import {
 } from '../actions/';
 import FilterByArea from '../components/OptionsFilters/FilterByArea';
 
-const mapStateToProps = ({ filterArea: { geo, drawEnabeled } }) => ({
+const mapStateToProps = ({ filterArea: { geo, identifier, drawEnabeled } }) => ({
   drawEnabeled,
   geo,
+  identifier,
 });
 
 export default connect(mapStateToProps, {

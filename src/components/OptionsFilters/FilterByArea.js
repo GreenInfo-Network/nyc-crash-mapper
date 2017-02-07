@@ -3,7 +3,32 @@ import React, { PropTypes } from 'react';
 import FilterButton from './FilterButton';
 
 const FilterByBoundary = (props) => {
-  const { filterByAreaType, toggleCustomAreaDraw, drawEnabeled, geo } = props;
+  const { filterByAreaType, toggleCustomAreaDraw, drawEnabeled, geo, identifier } = props;
+
+  const boroughLookUp = {
+    1: 'Manhattan',
+    2: 'Bronx',
+    3: 'Brooklyn',
+    4: 'Queens',
+    5: 'Staten Island',
+  };
+
+  const showIdentifier = (name) => {
+    if (geo === name && identifier) {
+      let label = name === 'Borough' ? boroughLookUp[identifier] : identifier;
+
+      if (label.length > 16) {
+        label = `${label.substring(0, 16)}...`;
+      }
+
+      return (
+        <span style={{ marginLeft: '10px', fontSize: '11px' }}>
+          {label}
+        </span>
+      );
+    }
+    return null;
+  };
 
   return (
     <ul className="filter-by-boundary filter-list">
@@ -22,6 +47,7 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'Borough'}
           handleClick={filterByAreaType}
         />
+        { showIdentifier('Borough') }
       </li>
       <li>
         <FilterButton
@@ -30,6 +56,7 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'Community Board'}
           handleClick={filterByAreaType}
         />
+        { showIdentifier('Community Board') }
       </li>
       <li>
         <FilterButton
@@ -38,6 +65,7 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'City Council District'}
           handleClick={filterByAreaType}
         />
+        { showIdentifier('City Council District') }
       </li>
       <li>
         <FilterButton
@@ -46,6 +74,7 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'Neighborhood (NTA)'}
           handleClick={filterByAreaType}
         />
+        { showIdentifier('Neighborhood (NTA)') }
       </li>
       <li>
         <FilterButton
@@ -54,6 +83,7 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'NYPD Precinct'}
           handleClick={filterByAreaType}
         />
+        { showIdentifier('NYPD Precinct') }
       </li>
       <li>
         <FilterButton
@@ -62,6 +92,7 @@ const FilterByBoundary = (props) => {
           isActive={geo === 'Zipcode (ZCTA)'}
           handleClick={filterByAreaType}
         />
+        { showIdentifier('Zipcode (ZCTA)') }
       </li>
       <li>
         <FilterButton
@@ -86,6 +117,7 @@ const FilterByBoundary = (props) => {
 };
 
 FilterByBoundary.defaultProps = {
+  identifier: '',
   lngLats: [],
 };
 
@@ -94,6 +126,10 @@ FilterByBoundary.propTypes = {
   toggleCustomAreaDraw: PropTypes.func.isRequired,
   drawEnabeled: PropTypes.bool.isRequired,
   geo: PropTypes.string.isRequired,
+  identifier: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string
+  ]),
 };
 
 export default FilterByBoundary;
