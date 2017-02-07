@@ -1,58 +1,36 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import cx from 'classnames';
 
-class FilterButton extends Component {
-  constructor(props) {
-    super(props);
+const FilterButton = (props) => {
+  const { label, btnSize, id, handleClick, isActive } = props;
 
-    this.state = {
-      active: props.btnVal
-    };
+  const btnClasses = cx(btnSize, {
+    'filter-options-button': true,
+    'roboto-medium': true,
+    active: isActive
+  });
 
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      active: nextProps.btnVal
-    });
-  }
-
-  handleClick() {
-    this.props.callback(this.props.filterName);
-  }
-
-  render() {
-    const { filterName, btnType } = this.props;
-    const { active } = this.state;
-
-    const btnClasses = cx(btnType, {
-      'filter-options-button': true,
-      'roboto-medium': true,
-      active
-    });
-
-    return (
-      <button
-        className={btnClasses}
-        onClick={this.handleClick}
-      >
-        { filterName }
-      </button>
-    );
-  }
-}
+  return (
+    <button
+      className={btnClasses}
+      onClick={() => handleClick(id)}
+    >
+      { label }
+    </button>
+  );
+};
 
 FilterButton.defaultProps = {
-  btnType: 'wide',
-  btnVal: false,
+  btnSize: 'wide',
+  isActive: false,
 };
 
 FilterButton.propTypes = {
-  btnType: PropTypes.string,
-  filterName: PropTypes.string.isRequired,
-  callback: PropTypes.func.isRequired,
-  btnVal: PropTypes.bool
+  btnSize: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  isActive: PropTypes.bool,
 };
 
 export default FilterButton;

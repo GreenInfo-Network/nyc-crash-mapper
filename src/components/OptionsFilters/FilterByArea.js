@@ -9,58 +9,66 @@ const FilterByBoundary = (props) => {
     <ul className="filter-by-boundary filter-list">
       <li>
         <FilterButton
-          filterName={'Citywide'}
-          btnVal={geo === 'Citywide'}
-          callback={filterByAreaType}
+          label={'Citywide'}
+          id={'Citywide'}
+          isActive={geo === 'Citywide'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'Borough'}
-          btnVal={geo === 'Borough'}
-          callback={filterByAreaType}
+          label={'Borough'}
+          id={'Borough'}
+          isActive={geo === 'Borough'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'Community Board'}
-          btnVal={geo === 'Community Board'}
-          callback={filterByAreaType}
+          label={'Community Board'}
+          id={'Community Board'}
+          isActive={geo === 'Community Board'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'City Council District'}
-          btnVal={geo === 'City Council District'}
-          callback={filterByAreaType}
+          label={'City Council District'}
+          id={'City Council District'}
+          isActive={geo === 'City Council District'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'Neighborhood (NTA)'}
-          btnVal={geo === 'Neighborhood (NTA)'}
-          callback={filterByAreaType}
+          label={'Neighborhood (NTA)'}
+          id={'Neighborhood (NTA)'}
+          isActive={geo === 'Neighborhood (NTA)'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'NYPD Precinct'}
-          btnVal={geo === 'NYPD Precinct'}
-          callback={filterByAreaType}
+          label={'NYPD Precinct'}
+          id={'NYPD Precinct'}
+          isActive={geo === 'NYPD Precinct'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'Zipcode (ZCTA)'}
-          btnVal={geo === 'Zipcode (ZCTA)'}
-          callback={filterByAreaType}
+          label={'Zipcode (ZCTA)'}
+          id={'Zipcode (ZCTA)'}
+          isActive={geo === 'Zipcode (ZCTA)'}
+          handleClick={filterByAreaType}
         />
       </li>
       <li>
         <FilterButton
-          filterName={'Custom'}
-          btnVal={geo === 'Custom'}
-          callback={filterByAreaType}
+          label={'Custom'}
+          id={'Custom'}
+          isActive={geo === 'Custom'}
+          handleClick={filterByAreaType}
         />
       </li>
     </ul>

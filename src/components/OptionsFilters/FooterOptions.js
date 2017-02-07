@@ -8,19 +8,22 @@ const FooterOptions = (props) => {
   return (
     <div className="options-filters-footer">
       <FilterButton
-        filterName={'Disclaimer'}
-        callback={() => openModal('disclaimer')}
-        btnType={'link'}
+        label={'Disclaimer'}
+        id={'disclaimer'}
+        handleClick={openModal}
+        btnSize={'link'}
       />
       <FilterButton
-        filterName={'About'}
-        callback={() => openModal('about')}
-        btnType={'link'}
+        label={'About'}
+        id={'about'}
+        handleClick={openModal}
+        btnSize={'link'}
       />
       <FilterButton
-        filterName={'Copyright'}
-        callback={() => openModal('copyright')}
-        btnType={'link'}
+        label={'Copyright'}
+        id={'copyright'}
+        handleClick={openModal}
+        btnSize={'link'}
       />
     </div>
   );

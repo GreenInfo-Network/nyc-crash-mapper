@@ -12,58 +12,65 @@ class FilterByType extends Component {
         <ul className="filter-list">
           <li>
             <FilterButton
-              filterName={'cyclist fatality'}
-              callback={filterByTypeFatality}
-              btnType={'med'}
-              btnVal={fatality.cyclist}
+              label={'cyclist fatality'}
+              id={'cyclist fatality'}
+              handleClick={filterByTypeFatality}
+              btnSize={'med'}
+              isActive={fatality.cyclist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'motorist fatality'}
-              callback={filterByTypeFatality}
-              btnType={'med'}
-              btnVal={fatality.motorist}
+              label={'driver fatality'}
+              id={'motorist fatality'}
+              handleClick={filterByTypeFatality}
+              btnSize={'med'}
+              isActive={fatality.motorist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'pedestrian fatality'}
-              callback={filterByTypeFatality}
-              btnType={'med'}
-              btnVal={fatality.pedestrian}
+              label={'pedestrian fatality'}
+              id={'pedestrian fatality'}
+              handleClick={filterByTypeFatality}
+              btnSize={'med'}
+              isActive={fatality.pedestrian}
             />
             <FilterButton
-              filterName={'No Injury / Fatality'}
-              callback={filterByNoInjFat}
-              btnType={'med'}
-              btnVal={noInjuryFatality}
+              label={'No Injury / Fatality'}
+              id={'No Injury / Fatality'}
+              handleClick={filterByNoInjFat}
+              btnSize={'med'}
+              isActive={noInjuryFatality}
             />
           </li>
         </ul>
         <ul className="filter-list">
           <li>
             <FilterButton
-              filterName={'cyclist injury'}
-              callback={filterByTypeInjury}
-              btnType={'med'}
-              btnVal={injury.cyclist}
+              label={'cyclist injury'}
+              id={'cyclist injury'}
+              handleClick={filterByTypeInjury}
+              btnSize={'med'}
+              isActive={injury.cyclist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'motorist injury'}
-              callback={filterByTypeInjury}
-              btnType={'med'}
-              btnVal={injury.motorist}
+              label={'driver injury'}
+              id={'motorist injury'}
+              handleClick={filterByTypeInjury}
+              btnSize={'med'}
+              isActive={injury.motorist}
             />
           </li>
           <li>
             <FilterButton
-              filterName={'pedestrian injury'}
-              callback={filterByTypeInjury}
-              btnType={'med'}
-              btnVal={injury.pedestrian}
+              label={'pedestrian injury'}
+              id={'pedestrian injury'}
+              handleClick={filterByTypeInjury}
+              btnSize={'med'}
+              isActive={injury.pedestrian}
             />
           </li>
         </ul>

@@ -8,19 +8,22 @@ const ShareOptions = (props) => {
   return (
     <div className="share-options">
       <FilterButton
-        filterName={'URL'}
-        callback={() => openModal('share-url')}
-        btnType={'auto'}
+        label={'URL'}
+        id={'share-url'}
+        handleClick={openModal}
+        btnSize={'auto'}
       />
       <FilterButton
-        filterName={'Facebook'}
-        callback={() => openModal('share-fb')}
-        btnType={'auto'}
+        label={'Facebook'}
+        id={'share-fb'}
+        handleClick={openModal}
+        btnSize={'auto'}
       />
       <FilterButton
-        filterName={'Twitter'}
-        callback={() => openModal('share-tw')}
-        btnType={'auto'}
+        label={'Twitter'}
+        id={'share-tw'}
+        handleClick={openModal}
+        btnSize={'auto'}
       />
     </div>
   );

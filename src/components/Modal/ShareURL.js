@@ -19,7 +19,7 @@ class ShareURL extends Component {
     return (
       <div className="modal-share-url">
         <p>The current map view and any active filters may be shared using this URL:</p>
-        <input type="text" value={value} onFocus={e => e.target.select()} />
+        <input type="text" value={value} onFocus={e => e.target.select()} readOnly />
         <CopyToClipboard text={value} onCopy={() => this.setState({ copied: true })}>
           <button>Copy</button>
         </CopyToClipboard>

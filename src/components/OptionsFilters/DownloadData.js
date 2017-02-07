@@ -8,9 +8,10 @@ const DownloadData = (props) => {
   return (
     <div className="download-data">
       <FilterButton
-        filterName={'Download Data'}
-        btnType={'auto'}
-        callback={() => openModal('download-data')}
+        label={'Download Data'}
+        id={'download-data'}
+        btnSize={'auto'}
+        handleClick={openModal}
       />
       <div className="data-last-updated">
         <p>{`Map data last updated ${lastUpdated}`}</p>
