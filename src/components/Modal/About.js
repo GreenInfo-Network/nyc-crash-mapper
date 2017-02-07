@@ -1,9 +1,8 @@
 import React from 'react';
+import AboutCopy from '../AboutCopy';
 
 export default () => (
   <div className="modal-about">
-    <p>
-      To Do: add project description, link to Chekpeds, etc...
-    </p>
+    <AboutCopy />
   </div>
 );

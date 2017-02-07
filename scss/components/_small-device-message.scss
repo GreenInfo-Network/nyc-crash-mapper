@@ -10,11 +10,38 @@
   right: 0;
   bottom: 0;
   z-index: 10;
-  color: $marine;
 
   .centered {
+    height: 100%;
     position: relative;
     margin: 0 auto;
     padding: $padding-25;
+    overflow-y: auto;
+  }
+
+  .centered * {
+    color: $marine-light;
+  }
+
+  .title,
+  .sub-title,
+  p {
+    color: $marine-light;
+  }
+
+  .title {
+    @extend %roboto-medium;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h4 {
+    // margin-top: $margin-25;
+  }
+
+  p {
+    padding-bottom: $padding-25;
   }
 }
