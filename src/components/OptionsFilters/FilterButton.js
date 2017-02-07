@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import cx from 'classnames';
 
 const FilterButton = (props) => {
-  const { label, btnSize, id, handleClick, isActive } = props;
+  const { label, btnSize, id, handleClick, isActive, preventRetrigger } = props;
 
   const btnClasses = cx(btnSize, {
     'filter-options-button': true,
@@ -10,10 +10,20 @@ const FilterButton = (props) => {
     active: isActive
   });
 
+  function a() {
+    if (preventRetrigger) {
+      if (!isActive) {
+        handleClick(id);
+      }
+    } else {
+      handleClick(id);
+    }
+  }
+
   return (
     <button
       className={btnClasses}
-      onClick={() => { if (!isActive) handleClick(id); }}
+      onClick={() => a()}
     >
       { label }
     </button>
@@ -23,6 +33,7 @@ const FilterButton = (props) => {
 FilterButton.defaultProps = {
   btnSize: 'wide',
   isActive: false,
+  preventRetrigger: false,
 };
 
 FilterButton.propTypes = {
@@ -31,6 +42,7 @@ FilterButton.propTypes = {
   handleClick: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
+  preventRetrigger: PropTypes.bool,
 };
 
 export default FilterButton;

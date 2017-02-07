@@ -38,6 +38,7 @@ const FilterByBoundary = (props) => {
           id={'Citywide'}
           isActive={geo === 'Citywide'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
       </li>
       <li>
@@ -46,6 +47,7 @@ const FilterByBoundary = (props) => {
           id={'Borough'}
           isActive={geo === 'Borough'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { showIdentifier('Borough') }
       </li>
@@ -55,6 +57,7 @@ const FilterByBoundary = (props) => {
           id={'Community Board'}
           isActive={geo === 'Community Board'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { showIdentifier('Community Board') }
       </li>
@@ -64,6 +67,7 @@ const FilterByBoundary = (props) => {
           id={'City Council District'}
           isActive={geo === 'City Council District'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { showIdentifier('City Council District') }
       </li>
@@ -73,6 +77,7 @@ const FilterByBoundary = (props) => {
           id={'Neighborhood (NTA)'}
           isActive={geo === 'Neighborhood (NTA)'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { showIdentifier('Neighborhood (NTA)') }
       </li>
@@ -82,6 +87,7 @@ const FilterByBoundary = (props) => {
           id={'NYPD Precinct'}
           isActive={geo === 'NYPD Precinct'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { showIdentifier('NYPD Precinct') }
       </li>
@@ -91,6 +97,7 @@ const FilterByBoundary = (props) => {
           id={'Zipcode (ZCTA)'}
           isActive={geo === 'Zipcode (ZCTA)'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { showIdentifier('Zipcode (ZCTA)') }
       </li>
@@ -100,6 +107,7 @@ const FilterByBoundary = (props) => {
           id={'Custom'}
           isActive={geo === 'Custom'}
           handleClick={filterByAreaType}
+          preventRetrigger
         />
         { geo === 'Custom' && !drawEnabeled ?
           <button className="draw-again" onClick={() => toggleCustomAreaDraw()}>
