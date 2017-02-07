@@ -13,7 +13,7 @@ class FilterByType extends Component {
           <li>
             <FilterButton
               label={'cyclist fatality'}
-              id={'cyclist fatality'}
+              id={'cyclist'}
               handleClick={filterByTypeFatality}
               btnSize={'med'}
               isActive={fatality.cyclist}
@@ -22,7 +22,7 @@ class FilterByType extends Component {
           <li>
             <FilterButton
               label={'driver fatality'}
-              id={'motorist fatality'}
+              id={'motorist'}
               handleClick={filterByTypeFatality}
               btnSize={'med'}
               isActive={fatality.motorist}
@@ -31,14 +31,14 @@ class FilterByType extends Component {
           <li>
             <FilterButton
               label={'pedestrian fatality'}
-              id={'pedestrian fatality'}
+              id={'pedestrian'}
               handleClick={filterByTypeFatality}
               btnSize={'med'}
               isActive={fatality.pedestrian}
             />
             <FilterButton
               label={'No Injury / Fatality'}
-              id={'No Injury / Fatality'}
+              id={''}
               handleClick={filterByNoInjFat}
               btnSize={'med'}
               isActive={noInjuryFatality}
@@ -49,7 +49,7 @@ class FilterByType extends Component {
           <li>
             <FilterButton
               label={'cyclist injury'}
-              id={'cyclist injury'}
+              id={'cyclist'}
               handleClick={filterByTypeInjury}
               btnSize={'med'}
               isActive={injury.cyclist}
@@ -58,7 +58,7 @@ class FilterByType extends Component {
           <li>
             <FilterButton
               label={'driver injury'}
-              id={'motorist injury'}
+              id={'motorist'}
               handleClick={filterByTypeInjury}
               btnSize={'med'}
               isActive={injury.motorist}
@@ -67,7 +67,7 @@ class FilterByType extends Component {
           <li>
             <FilterButton
               label={'pedestrian injury'}
-              id={'pedestrian injury'}
+              id={'pedestrian'}
               handleClick={filterByTypeInjury}
               btnSize={'med'}
               isActive={injury.pedestrian}

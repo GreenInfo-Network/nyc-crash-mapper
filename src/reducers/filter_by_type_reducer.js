@@ -19,12 +19,8 @@ const defaultState = {
 };
 
 export default (state = defaultState, action) => {
-  let { personType } = action;
+  const { personType } = action;
   const { injury, fatality } = state;
-
-  if (personType) {
-    personType = personType.split(' ')[0];
-  }
 
   switch (action.type) {
     case FILTER_BY_TYPE_INJURY:
