@@ -68,6 +68,8 @@ class LeafletMap extends Component {
     }
 
     if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
+      // cancel custom draw in case its enabled
+      this.customFilterCancelDraw();
       // show the user polygons for a filter Area
       this.renderFilterArea(geo);
     }
@@ -77,6 +79,7 @@ class LeafletMap extends Component {
     }
 
     if (lngLats && lngLats.length) {
+      // clear the custom overlay after user finishes drawing
       this.customDraw.drawLayer.clearLayers();
     }
   }
@@ -260,13 +263,18 @@ class LeafletMap extends Component {
     this.customDraw.layerCreatedCallback = filterByAreaCustom;
     this.customDraw.onLayerCreated();
     this.customDraw.initCustomFilterLayer();
+    this.customDraw.initDrawPolygon();
   }
 
   customFilterDraw() {
     this.cartoSubLayer.setInteraction(false);
     hideCartoTooltips('crashes-layer');
     this.hideShowCartoInfowindow();
-    this.customDraw.initDraw();
+    this.customDraw.startDraw();
+  }
+
+  customFilterCancelDraw() {
+    this.customDraw.cancelDraw();
   }
 
   renderFilterArea(geo) {

@@ -26,6 +26,11 @@ class CustomFilter {
     this.customLayer = this.map.addLayer(self.drawnItems);
   }
 
+  initDrawPolygon() {
+    const self = this;
+    this.poly = new L.Draw.Polygon(self.map);
+  }
+
   onLayerCreated() {
     const self = this;
 
@@ -43,11 +48,12 @@ class CustomFilter {
     });
   }
 
-  initDraw() {
-    const self = this;
-    this.poly = L.Draw.Polygon;
-    this.poly.prototype.initialize(self.map);
-    this.poly.prototype.enable();
+  startDraw() {
+    this.poly.enable();
+  }
+
+  cancelDraw() {
+    this.poly.disable();
   }
 
 }
