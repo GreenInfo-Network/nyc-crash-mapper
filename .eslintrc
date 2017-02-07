@@ -32,9 +32,19 @@
       }],
     "no-underscore-dangle": 0,
     "react/jsx-filename-extension": 0,
+    "react/no-array-index-key": 0,
+    "react/no-unescaped-entities": 0,
     "react/no-unused-prop-types": 0,
     "react/prefer-stateless-function": 0,
     "semi": [2, "always"],
     "space-before-function-paren": 0
+  },
+  "settings": {
+    "import/extensions": [".js"],
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
   }
 }
