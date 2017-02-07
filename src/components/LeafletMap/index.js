@@ -19,21 +19,6 @@ const generateMapSQL = (props) => {
   return configureMapSQL(params);
 };
 
-// helper to hide a carto sublayer's tooltip when switching from one sublayer to the next
-const hideCartoTooltips = (tooltipClassName) => {
-  if (tooltipClassName === 'crashes-layer') {
-    const tooltipNode = document.querySelector(`.cartodb-tooltip-content-wrapper.${tooltipClassName}`).parentNode;
-    tooltipNode.style.display = 'none';
-  } else {
-    const tooltipNodes = document.querySelectorAll(`.cartodb-tooltip-content-wrapper.${tooltipClassName}`);
-    Array.prototype.forEach.call(tooltipNodes, (node) => {
-      const parent = node.parentNode;
-      parent.style.display = 'none';
-    });
-  }
-};
-
-
 class LeafletMap extends Component {
   constructor() {
     super();
@@ -49,7 +34,9 @@ class LeafletMap extends Component {
     this.cartoSubLayer = undefined;
     this.cartoFilterSubLayers = {};
     this.cartodbSQL = undefined;
+    this.cartoSubLayerTooltip = undefined;
     this.cartoInfowindow = undefined;
+    this.filterLayerTooltips = {};
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
@@ -170,7 +157,7 @@ class LeafletMap extends Component {
     `;
 
     // add the tooltip to the crashes sublayer
-    this.cartoLayer.leafletMap.viz.addOverlay({
+    self.cartoSubLayerTooltip = this.cartoLayer.leafletMap.viz.addOverlay({
       type: 'tooltip',
       layer: self.cartoSubLayer,
       template,
@@ -197,10 +184,15 @@ class LeafletMap extends Component {
     );
   }
 
-  hideShowCartoInfowindow() {
-    // const self = this;
-    // this.cartoInfowindow.trigger('change:visibility', self.cartoInfowindow.toggle, {});
-    this.cartoInfowindow.$el.hide();
+  hideCartoTooltips() {
+    this.cartoSubLayerTooltip.hide();
+    Object.keys(this.filterLayerTooltips).forEach((key) => {
+      this.filterLayerTooltips[key].hide();
+    });
+  }
+
+  hideCartoInfowindow() {
+    this.cartoInfowindow._closeInfowindow();
   }
 
   fitMapBounds(sql) {
@@ -210,7 +202,6 @@ class LeafletMap extends Component {
     self.cartodbSQL.getBounds(sql)
       .done((bounds) => {
         self.map.fitBounds(bounds, self.fitBoundsOptions);
-        self.hideShowCartoInfowindow();
       });
   }
 
@@ -220,9 +211,10 @@ class LeafletMap extends Component {
     // hide any visible filter sublayer
     this.hideFilterSublayers();
     // hide any previously visible tooltips from filter sublayer
-    hideCartoTooltips('filter-layer');
+    // hideCartoTooltips('filter-layer');
+    this.hideCartoTooltips();
     // hide any open infowindow
-    this.hideShowCartoInfowindow();
+    this.hideCartoInfowindow();
     // fit the map extent to the queried data
     this.fitMapBounds(sql);
     // set the cartoSubLayer to be interactive
@@ -254,7 +246,7 @@ class LeafletMap extends Component {
       </div>
     `;
 
-    this.cartoLayer.leafletMap.viz.addOverlay({
+    this.filterLayerTooltips[geo] = this.cartoLayer.leafletMap.viz.addOverlay({
       type: 'tooltip',
       layer: self.cartoFilterSubLayers[geo],
       template,
@@ -278,8 +270,8 @@ class LeafletMap extends Component {
 
   customFilterDraw() {
     this.cartoSubLayer.setInteraction(false);
-    hideCartoTooltips('crashes-layer');
-    this.hideShowCartoInfowindow();
+    this.hideCartoTooltips();
+    this.hideCartoInfowindow();
     this.customDraw.startDraw();
   }
 
@@ -300,9 +292,9 @@ class LeafletMap extends Component {
     // hide any visible filter sublayer
     this.hideFilterSublayers();
     // temporarily disable cartoSubLayer tooltips
-    hideCartoTooltips('crashes-layer');
+    this.hideCartoTooltips();
     // temporarily disable cartoSubLayer infowindow
-    this.hideShowCartoInfowindow();
+    this.hideCartoInfowindow();
     // temporarily disable cartoSubLayer interactivity
     this.cartoSubLayer.setInteraction(false);
 
