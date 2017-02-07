@@ -13,7 +13,7 @@ const FilterButton = (props) => {
   return (
     <button
       className={btnClasses}
-      onClick={() => handleClick(id)}
+      onClick={() => { if (!isActive) handleClick(id); }}
     >
       { label }
     </button>
