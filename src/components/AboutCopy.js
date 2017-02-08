@@ -29,7 +29,7 @@ const AboutCopy = () => (
       <a href="http://chekpeds.com" rel="noopener noreferrer" target="_blank">{' CHECKPEDS '}</a>
       is a 501(c)(3) non-profit organization that was founded in 2005 and advocates
       for Pedestrian Safety, primarily focusing on the west side of Manhattan.
-      We feel that what we have learned is applicable other areas of New York city.
+      We feel that what we have learned is applicable to other areas of New York City.
       Data has played a critical role in the coalition's success in highlighting the
       concentration of fatalities and injuries to the authorities. Our work has resulted
       in the DOT installing traffic calming features in the area, including bike lanes,

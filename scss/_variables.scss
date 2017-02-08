@@ -24,6 +24,9 @@ $btn-bg: $off-white !default;
 $hr-border: $off-white !default;
 $border-radius: 4px !default;
 
+// Additional Breakpoints
+$bp-taller-than-mobile-landscape: "min-height: 415px" !default;
+
 // Typography
 //––––––––––––––––––––––––––––––––––––––––––––––––––
 $roboto: "Roboto", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif !default;

@@ -6,7 +6,7 @@ const SmallDeviceMessage = () => (
     <div className="centered">
       <h1 className="title">NYC CRASH MAPPER</h1>
       <h2 style={{ marginTop: 10 }}>
-        Mobile version under devlopment. Please come back on your laptop!
+        Mobile version under development. Please come back on your laptop!
       </h2>
       <AboutCopy />
     </div>

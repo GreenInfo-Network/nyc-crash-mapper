@@ -1,15 +1,13 @@
 .small-device-message {
-  @media (#{$bp-larger-than-phablet}) {
+  @media (#{$bp-larger-than-phablet}) and (orientation: portrait),
+  (#{$bp-taller-than-mobile-landscape}) and (orientation: landscape) {
     display: none;
   }
 
   display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 
   .centered {
     height: 100%;

@@ -63,11 +63,11 @@ class App extends Component {
   }
 
   render() {
-    const { location, openModal, width } = this.props;
+    const { location, openModal, height, width } = this.props;
     return (
       <div className="App">
         { /* hide app to mobile users for now */
-          width < 550 ?
+          (width < 550 || height < 416) ?
             <SmallDeviceMessage /> :
           [
             <AppHeader key="app-header" openModal={openModal} />,
@@ -120,6 +120,7 @@ App.propTypes = {
   lngLats: PropTypes.arrayOf(
     PropTypes.arrayOf(PropTypes.number)
   ),
+  height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
 };
 

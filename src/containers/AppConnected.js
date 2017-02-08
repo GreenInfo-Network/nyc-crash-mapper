@@ -7,7 +7,7 @@ import App from '../components/App';
 const mapStateToProps = ({ browser, dateRange, filterType, filterArea }) => {
   const { startDate, endDate } = dateRange;
   const { identifier, geo, lngLats } = filterArea;
-  const { width } = browser;
+  const { height, width } = browser;
   return {
     startDate: startDate.format(dateStringFormatModel),
     endDate: endDate.format(dateStringFormatModel),
@@ -15,6 +15,7 @@ const mapStateToProps = ({ browser, dateRange, filterType, filterArea }) => {
     identifier,
     geo,
     lngLats,
+    height,
     width,
   };
 };
