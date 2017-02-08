@@ -1,9 +1,9 @@
 import React from 'react';
 
 export default () => (
-  <div className="modal-about">
+  <div className="modal-copyright">
     <p>
-      To Do: add copyright
+      NYC Crash Mapper &copy; CHECKPEDS 2017
     </p>
   </div>
 );

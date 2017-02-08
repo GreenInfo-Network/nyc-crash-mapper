@@ -70,14 +70,15 @@ class App extends Component {
           width < 550 ?
             <SmallDeviceMessage /> :
           [
-            <AppHeader openModal={openModal} />,
+            <AppHeader key="app-header" openModal={openModal} />,
             <LeafletMapConnected
+              key="leaflet-map"
               location={location}
               onMapMoved={this.onMapMoved}
             />,
-            <StatsLegendConnected />,
-            <OptionsFiltersConnected />,
-            <ModalConnected />
+            <StatsLegendConnected key="stats-legend" />,
+            <OptionsFiltersConnected key="options-filters" />,
+            <ModalConnected key="modal" />
           ]
         }
       </div>

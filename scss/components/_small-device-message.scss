@@ -17,20 +17,22 @@
     margin: 0 auto;
     padding: $padding-25;
     overflow-y: auto;
+
+    h1, h2, h3, h4, h5, h6, p {
+      color: $marine;
+    }
   }
 
-  .centered * {
-    color: $marine-light;
-  }
-
-  .title,
-  .sub-title,
-  p {
-    color: $marine-light;
+  .title, h2 {
+    text-align: center;
   }
 
   .title {
     @extend %roboto-medium;
+  }
+
+  h2 {
+    margin: 25px 0;
   }
 
   a {

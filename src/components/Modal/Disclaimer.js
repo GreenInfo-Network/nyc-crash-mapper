@@ -1,9 +1,9 @@
 import React from 'react';
 
 export default () => (
-  <div className="modal-about">
+  <div className="modal-disclaimer">
     <p>
-      To Do: legal disclaimer.
+      Crash Mapper has no legal bearing and is intended for informational purposes only.
     </p>
   </div>
 );

@@ -14,6 +14,16 @@
     outline: none;
   }
 
+  .Modal {
+    h1, h2, h3, h4, h5, h6, p {
+      color: $marine;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
   .Overlay {
     position: fixed;
     top: 0;
@@ -44,6 +54,22 @@
     &:before {
       content: "×";
     }
+  }
+
+  .modal-about,
+  .modal-copyright,
+  .modal-disclaimer,
+  .modal-download-data,
+  .modal-share-fb,
+  .modal-share-twitter,
+  .modal-share-url {
+    max-width: 550px;
+  }
+
+  .modal-about {
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
   }
 
   .modal-download-data {

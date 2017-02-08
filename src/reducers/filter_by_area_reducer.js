@@ -6,7 +6,7 @@ import {
 } from '../constants/action_types';
 
 const defaultState = {
-  area: 'Citywide',
+  geo: 'Citywide',
   identifier: undefined,
   latLons: [],
   drawEnabeled: false,
