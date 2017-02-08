@@ -10,6 +10,21 @@
     height: 100%;
   }
 
+  // attribution stuff
+  .leaflet-bottom.leaflet-right {
+    left: 0;
+    right: initial;
+    bottom: 120px;
+
+    * {
+      color: $marine;
+    }
+
+    a {
+      color: $marine-light;
+    }
+  }
+
   .cartodb-tooltip {
     width: auto;
     padding: $padding-15 0 0 $padding-15;

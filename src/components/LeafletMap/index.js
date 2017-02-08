@@ -108,7 +108,7 @@ class LeafletMap extends Component {
 
     L.tileLayer(basemapURL, {
       maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>'
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(self.map);
 
     // update the URL query params with map zoom & center
