@@ -36,6 +36,8 @@ class FilterByType extends Component {
               btnSize={'med'}
               isActive={fatality.pedestrian}
             />
+          </li>
+          <li>
             <FilterButton
               label={'No Injury / Fatality'}
               id={''}
