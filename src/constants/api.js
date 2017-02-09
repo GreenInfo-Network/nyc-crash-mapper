@@ -2,12 +2,16 @@ import moment from 'moment';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 
-import { cartoLayerSource } from './app_config';
+import { cartoLayerSource, defaultYearMonth } from './app_config';
 
-export const dateStringFormatModel = 'YYYY-MM-DD';
-export const dateStringFormatView = 'MMM D, YYYY';
+export const dateStringFormatModel = 'YYYY-MM';
+export const dateStringFormatView = 'MMM, YYYY';
 
 const momentize = dateString => moment(dateString, dateStringFormatModel, true);
+
+// Names for Filter by Boundary
+export const geos = ['Citywide', 'Borough', 'Community Board', 'City Council District',
+  'Neighborhood (NTA)', 'NYPD Precinct', 'Zipcode (ZCTA)', 'Custom'];
 
 // creates default app state using any available params from window.location.hash
 export const makeDefaultState = () => {
@@ -25,12 +29,33 @@ export const makeDefaultState = () => {
     return true;
   };
 
+  const isBool = (val) => {
+    if (val && typeof val === 'boolean') {
+      return val;
+    }
+    return false;
+  };
+
+  const isValidMomentObj = (dateString) => {
+    const m = dateString ? momentize(dateString) : undefined;
+    if (m && m.isValid()) {
+      return m;
+    }
+    return momentize(defaultYearMonth);
+  };
+
+  const isValidGeo = (geo) => {
+    if (geos.indexOf(geo) !== -1) {
+      return geo;
+    }
+    return geos[0];
+  };
+
+  // parse query params
   Object.keys(q).forEach((key) => {
     const decoded = decodeURIComponent(q[key]);
     if (isJsonString(decoded)) {
       p[key] = JSON.parse(decoded);
-    } else if (decoded.indexOf('-') !== -1 && moment(decoded).isValid()) {
-      p[key] = momentize(decoded);
     } else {
       p[key] = decoded;
     }
@@ -38,27 +63,27 @@ export const makeDefaultState = () => {
 
   return {
     dateRange: {
-      startDate: p.startDate || momentize('2016-07-01'),
-      endDate: p.endDate || momentize('2016-07-31'),
+      startDate: isValidMomentObj(p.startDate),
+      endDate: isValidMomentObj(p.endDate),
     },
     filterArea: {
-      geo: p.geo || 'Citywide',
+      geo: isValidGeo(p.geo),
       identifier: p.identifier || undefined,
       lngLats: p.lngLats || [],
       drawEnabeled: false,
     },
     filterType: {
       injury: {
-        cyclist: p.cinj || false,
-        motorist: p.minj || false,
-        pedestrian: p.pinj || false,
+        cyclist: isBool(p.cinj),
+        motorist: isBool(p.minj),
+        pedestrian: isBool(p.pinj),
       },
       fatality: {
-        cyclist: p.cfat || false,
-        motorist: p.mfat || false,
-        pedestrian: p.pfat || false,
+        cyclist: isBool(p.cfat),
+        motorist: isBool(p.mfat),
+        pedestrian: isBool(p.pfat),
       },
-      noInjuryFatality: p.noInjFat || false,
+      noInjuryFatality: isBool(p.noInjFat),
     },
     filterContributingFactor: p.contrFactor || 'ALL',
     modal: {
@@ -80,8 +105,9 @@ export const configureLayerSource = (sql) => {
 export const crashDataChanged = (curProps, nextProps) => {
   const { endDate, startDate, filterType, identifier, geo, lngLats } = nextProps;
   const { injury, fatality, noInjuryFatality } = filterType;
-  if (startDate !== curProps.startDate ||
-      endDate !== curProps.endDate ||
+
+  if (!startDate.isSame(curProps.startDate) ||
+      !endDate.isSame(curProps.endDate) ||
       !isEqual(injury, curProps.filterType.injury) ||
       !isEqual(fatality, curProps.filterType.fatality) ||
       noInjuryFatality !== curProps.filterType.noInjuryFatality ||
