@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import momentPropTypes from 'react-moment-proptypes';
-import moment from 'moment';
 
+import { momentize } from '../../constants/api';
 import MonthYearSelector from './MonthYearSelector';
 
 class FilterByDate extends Component {
@@ -13,9 +13,8 @@ class FilterByDate extends Component {
 
   handleStartDateChange(year, month) {
     const { endDate } = this.props;
-    const startMoment = moment()
-      .year(year)
-      .month(month - 1);
+    const mm = month < 10 ? `0${month}` : month;
+    const startMoment = momentize(`${year}-${mm}`);
 
     if (startMoment.isSameOrBefore(endDate)) {
       this.props.startDateChange(startMoment);
@@ -24,9 +23,8 @@ class FilterByDate extends Component {
 
   handleEndDateChange(year, month) {
     const { startDate } = this.props;
-    const endMoment = moment()
-      .year(year)
-      .month(month - 1);
+    const mm = month < 10 ? `0${month}` : month;
+    const endMoment = momentize(`${year}-${mm}`);
 
     if (endMoment.isSameOrAfter(startDate)) {
       this.props.endDateChange(endMoment);
@@ -41,21 +39,27 @@ class FilterByDate extends Component {
     const endYear = endDate.year();
 
     return (
-      <div>
-        <MonthYearSelector
-          handleChange={this.handleStartDateChange}
-          years={[2011, 2012]}
-          curMonth={startMonth}
-          curYear={startYear}
-          prefix="Start"
-        />
-        <MonthYearSelector
-          handleChange={this.handleEndDateChange}
-          years={[2011, 2012]}
-          curMonth={endMonth}
-          curYear={endYear}
-          prefix="End"
-        />
+      <div className="filter-by-date">
+        <ul className="filter-list">
+          <li>
+            <MonthYearSelector
+              handleChange={this.handleStartDateChange}
+              years={[2011, 2012]}
+              curMonth={startMonth}
+              curYear={startYear}
+              prefix="Start"
+            />
+          </li>
+          <li>
+            <MonthYearSelector
+              handleChange={this.handleEndDateChange}
+              years={[2011, 2012]}
+              curMonth={endMonth}
+              curYear={endYear}
+              prefix="End"
+            />
+          </li>
+        </ul>
       </div>
     );
   }

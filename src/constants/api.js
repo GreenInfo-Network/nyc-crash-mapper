@@ -7,7 +7,7 @@ import { cartoLayerSource, defaultYearMonth } from './app_config';
 export const dateStringFormatModel = 'YYYY-MM';
 export const dateStringFormatView = 'MMM, YYYY';
 
-const momentize = dateString => moment(dateString, dateStringFormatModel, true);
+export const momentize = dateString => moment(dateString, dateStringFormatModel, true);
 
 // Names for Filter by Boundary
 export const geos = ['Citywide', 'Borough', 'Community Board', 'City Council District',
