@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import momentPropTypes from 'react-moment-proptypes';
 
-import { crashDataChanged, dateStringFormatView, dateStringFormatModel } from '../../constants/api';
+import { crashDataChanged, dateStringFormatView, } from '../../constants/api';
 import DateRange from './DateRange';
 import TotalCrashCounter from './TotalCrashCounter';
 import StatsCounter from './StatsCounter';
@@ -11,38 +11,14 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   componentWillMount() {
-    const { startDate, endDate, filterType, geo, identifier, lngLats } = this.props;
-    const params = { startDate, endDate, filterType, geo, identifier, lngLats };
-    const startDateFormatted = startDate.format(dateStringFormatModel);
-    const endDateFormatted = endDate.format(dateStringFormatModel);
-    this.props.fetchCrashStatsData({
-      ...params,
-      startDate: startDateFormatted,
-      endDate: endDateFormatted,
-    });
-    this.props.fetchContributingFactors({
-      ...params,
-      startDate: startDateFormatted,
-      endDate: endDateFormatted,
-    });
+    this.props.fetchCrashStatsData(this.props);
+    this.props.fetchContributingFactors(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startDate, endDate, filterType, geo, identifier, lngLats } = nextProps;
-    const params = { startDate, endDate, filterType, geo, identifier, lngLats };
-    const startDateFormatted = startDate.format(dateStringFormatModel);
-    const endDateFormatted = endDate.format(dateStringFormatModel);
     if (crashDataChanged(this.props, nextProps)) {
-      this.props.fetchCrashStatsData({
-        ...params,
-        startDate: startDateFormatted,
-        endDate: endDateFormatted,
-      });
-      this.props.fetchContributingFactors({
-        ...params,
-        startDate: startDateFormatted,
-        endDate: endDateFormatted,
-      });
+      this.props.fetchCrashStatsData(nextProps);
+      this.props.fetchContributingFactors(nextProps);
     }
   }
 

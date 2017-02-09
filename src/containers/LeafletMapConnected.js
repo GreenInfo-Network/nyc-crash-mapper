@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { dateStringFormatModel } from '../constants/api';
 import { filterByAreaIdentifier, filterByAreaCustom } from '../actions/';
 import LeafletMap from '../components/LeafletMap/';
 
@@ -13,8 +12,8 @@ const mapStateToProps = ({ dateRange, filterType, filterArea }, ownProps) => {
     zoom: zoom ? Number(zoom) : undefined,
     lat: lat ? Number(lat) : undefined,
     lng: lng ? Number(lng) : undefined,
-    startDate: startDate.format(dateStringFormatModel),
-    endDate: endDate.format(dateStringFormatModel),
+    startDate,
+    endDate,
     filterType,
     drawEnabeled,
     geo,

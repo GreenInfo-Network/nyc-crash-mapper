@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import momentPropTypes from 'react-moment-proptypes';
 import sls from 'single-line-string';
 
 import {
@@ -11,13 +12,6 @@ import { configureLayerSource, crashDataChanged } from '../../constants/api';
 import { filterAreaCartocss } from '../../constants/cartocss';
 import ZoomControls from './ZoomControls';
 import CustomFilter from './customFilter';
-
-// helper function to create map sql using currently applied filters
-const generateMapSQL = (props) => {
-  const { startDate, endDate, filterType, geo, identifier, lngLats } = props;
-  const params = { startDate, endDate, filterType, geo, identifier, lngLats };
-  return configureMapSQL(params);
-};
 
 class LeafletMap extends Component {
   constructor() {
@@ -119,7 +113,7 @@ class LeafletMap extends Component {
 
   initCartoLayer() {
     const self = this;
-    const layerSource = configureLayerSource(generateMapSQL(this.props));
+    const layerSource = configureLayerSource(configureMapSQL(this.props));
     // const layerSource = 'https://chekpeds.carto.com/api/v2/viz/acf2c4f6-e987-11e6-bfb2-0e233c30368f/viz.json';
     const options = {
       https: true,
@@ -207,7 +201,7 @@ class LeafletMap extends Component {
 
   updateCartoSubLayer(nextProps) {
     // create the new sql query string
-    const sql = generateMapSQL(nextProps);
+    const sql = configureMapSQL(nextProps);
     // hide any visible filter sublayer
     this.hideFilterSublayers();
     // hide any previously visible tooltips from filter sublayer
@@ -364,8 +358,8 @@ LeafletMap.propTypes = {
     PropTypes.arrayOf(PropTypes.number)
   ),
   drawEnabeled: PropTypes.bool.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
+  startDate: momentPropTypes.momentObj.isRequired,
+  endDate: momentPropTypes.momentObj.isRequired,
   filterType: PropTypes.shape({
     fatality: PropTypes.shape({
       cyclist: PropTypes.bool.isRequired,

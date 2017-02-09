@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { dateStringFormatModel } from '../constants/api';
 import { openModal } from '../actions/';
 import App from '../components/App';
 
@@ -9,8 +8,8 @@ const mapStateToProps = ({ browser, dateRange, filterType, filterArea }) => {
   const { identifier, geo, lngLats } = filterArea;
   const { height, width } = browser;
   return {
-    startDate: startDate.format(dateStringFormatModel),
-    endDate: endDate.format(dateStringFormatModel),
+    startDate,
+    endDate,
     filterType,
     identifier,
     geo,

@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import momentPropTypes from 'react-moment-proptypes';
 import queryString from 'query-string';
 
-import { crashDataChanged } from '../constants/api';
+import { dateStringFormatModel, crashDataChanged } from '../constants/api';
 import AppHeader from './AppHeader';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import StatsLegendConnected from '../containers/StatsLegendConnected';
@@ -45,8 +46,8 @@ class App extends Component {
       lat,
       lng,
       zoom,
-      startDate,
-      endDate,
+      startDate: startDate.format(dateStringFormatModel),
+      endDate: endDate.format(dateStringFormatModel),
       identifier,
       geo,
       lngLats: encodeURIComponent(JSON.stringify(lngLats)),
@@ -97,8 +98,8 @@ App.propTypes = {
     query: PropTypes.object.isRequired
   }).isRequired,
   openModal: PropTypes.func.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
+  startDate: momentPropTypes.momentObj.isRequired,
+  endDate: momentPropTypes.momentObj.isRequired,
   filterType: PropTypes.shape({
     noInjuryFatality: PropTypes.bool,
     injury: PropTypes.shape({
