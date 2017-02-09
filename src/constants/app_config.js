@@ -15,7 +15,7 @@ export const cartoTables = {
   nyc_neighborhood: 'nyc_neighborhood',
   nyc_nypd_precinct: 'nyc_nypd_precinct',
   nyc_zip_code: 'nyc_zip_code',
-  nyc_crashes: 'export2016_07'
+  nyc_crashes: 'dump_2011_2012'
 };
 
 export const crashDataFieldNames = [
@@ -45,3 +45,6 @@ export const cartoLayerSource = {
 // basemap for Leaflet
 export const basemapURL =
   'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+
+// default start year and month for filter by date range
+export const defaultYearMonth = '2012-07';
