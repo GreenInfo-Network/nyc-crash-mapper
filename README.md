@@ -1,9 +1,11 @@
 # NYC CRASH MAPPER
+![](img/crash-mapper-lg.jpg)
+
 Web application that geographically maps, filters, aggregates, & provides trends of NYC automobile collision data that is published by the NYPD.
 
 ## Install
 Requires NodeJS@^6 and NPM to be accessible globally. It is recommended to use Node
-version Manager to ensure compatibility with Node and dependencies in `project.json`.
+Version Manager (`nvm`) to ensure compatibility with Node and dependencies in `project.json`.
 
 Assuming [`nvm`](https://github.com/creationix/nvm) is available globally, do:
 
