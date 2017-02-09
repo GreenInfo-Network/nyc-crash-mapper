@@ -96,6 +96,22 @@ export const dateBounds = () => sls`
 ***************************** SQL HELPERS **************************************
 */
 
+// Generates the SQL WHERE clause for "Filter by Date Range"
+// @param {object} startDate, a moment.js object
+// @param {object} endDate, a moment.js object
+const filterByDateWhereClause = (startDate, endDate) =>
+  sls`
+      (
+        '${endDate.year()}' || LPAD(${endDate.month() + 1}::text, 2, '0') <=
+        year::text || LPAD(month::text, 2, '0')
+      )
+    AND
+      (
+        year::text || LPAD(month::text, 2, '0') >=
+        '${startDate.year()}' || LPAD(${startDate.month() + 1}::text, 2, '0')
+      )
+  `;
+
 // Generates the SQL WHERE clause for "Filter by Type"
 // @param {object} the store.filterType piece of state
 const filterByTypeWhereClause = (filterType) => {
@@ -211,7 +227,7 @@ export const configureMapSQL = (params) => {
         c.the_geom_webmercator as the_geom_webmercator,
         c.on_street_name as on_street_name,
         c.cross_street_name as cross_street_name,
-        COUNT(c.cartodb_id) as total_crashes,
+        COUNT(c.crash_count) as total_crashes,
         SUM(c.number_of_cyclist_injured) as cyclist_injured,
         SUM(c.number_of_cyclist_killed) as cyclist_killed,
         SUM(c.number_of_motorist_injured) as motorist_injured,
@@ -224,9 +240,7 @@ export const configureMapSQL = (params) => {
         ${nyc_crashes} c
       ${joinToGeoTableClause(geo)}
       WHERE
-        (date_val <= date '${endDate}')
-      AND
-        (date_val >= date '${startDate}')
+      ${filterByDateWhereClause(startDate, endDate)}
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       ${filterByIdentifierWhereClause(identifier)}
@@ -266,9 +280,7 @@ export const configureStatsSQL = (params) => {
       ${nyc_crashes} c
     ${joinToGeoTableClause(geo)}
     WHERE
-      (date_val <= date '${endDate}')
-    AND
-      (date_val >= date '${startDate}')
+    ${filterByDateWhereClause(startDate, endDate)}
     ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
@@ -285,14 +297,12 @@ export const configureFactorsSQL = (params) => {
   return sls`
     WITH all_factors as (
       SELECT
-        c.contributing_factor_vehicle_1 as factor
+        unnest(c.contributing_factor) as factor
       FROM
-        ${nyc_crashes} c
+      ${nyc_crashes} c
       ${joinToGeoTableClause(geo)} ${filterByIdentifierWhereClause(identifier)}
       WHERE
-        (date_val <= date '${endDate}')
-      AND
-        (date_val >= date '${startDate}')
+      ${filterByDateWhereClause(startDate, endDate)}
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
     )
@@ -350,9 +360,7 @@ export const configureDownloadDataSQL = (params) => {
     FROM ${nyc_crashes} c
     ${joinToGeoTableClause(geo)}
     WHERE
-      (date_val <= date '${endDate}')
-    AND
-      (date_val >= date '${startDate}')
+    ${filterByDateWhereClause(startDate, endDate)}
     ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
     ${filterByIdentifierWhereClause(identifier)}
