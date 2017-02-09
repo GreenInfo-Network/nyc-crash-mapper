@@ -10,6 +10,7 @@ import {
 import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
 import { configureLayerSource, crashDataChanged } from '../../constants/api';
 import { filterAreaCartocss } from '../../constants/cartocss';
+
 import ZoomControls from './ZoomControls';
 import CustomFilter from './customFilter';
 
@@ -128,6 +129,8 @@ class LeafletMap extends Component {
       .on('done', (layer) => {
         self.cartoLayer = layer;
         layer.on('error', (error) => { throw error; });
+        layer.on('loading', () => self.props.dataLoading(true));
+        layer.on('load', () => self.props.dataLoading(false));
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
@@ -344,6 +347,7 @@ LeafletMap.defaultProps = {
 
 LeafletMap.propTypes = {
   onMapMoved: PropTypes.func.isRequired,
+  dataLoading: PropTypes.func.isRequired,
   filterByAreaIdentifier: PropTypes.func.isRequired,
   filterByAreaCustom: PropTypes.func.isRequired,
   zoom: PropTypes.number,

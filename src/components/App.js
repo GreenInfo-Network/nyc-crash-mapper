@@ -9,10 +9,15 @@ import StatsLegendConnected from '../containers/StatsLegendConnected';
 import OptionsFiltersConnected from '../containers/OptionsFiltersConnected';
 import ModalConnected from '../containers/ModalConnected';
 import SmallDeviceMessage from './SmallDeviceMessage';
+import LoadingIndicator from './LoadingIndicator';
 
 class App extends Component {
   constructor() {
     super();
+    this.state = {
+      isLoading: false
+    };
+    this.dataLoading = this.dataLoading.bind(this);
     this.onMapMoved = this.onMapMoved.bind(this);
   }
 
@@ -63,8 +68,14 @@ class App extends Component {
     this.context.router.push(`?${queryString.stringify(newQueryParams)}`);
   }
 
+  dataLoading(bool) {
+    this.setState({ isLoading: bool });
+  }
+
   render() {
+    const { isLoading } = this.state;
     const { location, openModal, height, width } = this.props;
+
     return (
       <div className="App">
         { /* hide app to mobile users for now */
@@ -75,8 +86,11 @@ class App extends Component {
             <LeafletMapConnected
               key="leaflet-map"
               location={location}
+              dataLoading={this.dataLoading}
+              isLoading={isLoading}
               onMapMoved={this.onMapMoved}
             />,
+            <LoadingIndicator key="loading-indicator" isLoading={isLoading} />,
             <StatsLegendConnected key="stats-legend" />,
             <OptionsFiltersConnected key="options-filters" />,
             <ModalConnected key="modal" />
