@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import momentPropTypes from 'react-moment-proptypes';
 import ReactModal from 'react-modal';
 
 import ModalContent from './ModalContent';
@@ -63,8 +64,8 @@ ModalWrapper.propTypes = {
   modalType: PropTypes.string,
   filterType: PropTypes.shape({}).isRequired,
   filterArea: PropTypes.shape({}).isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
+  startDate: momentPropTypes.momentObj.isRequired,
+  endDate: momentPropTypes.momentObj.isRequired,
 };
 
 export default ModalWrapper;

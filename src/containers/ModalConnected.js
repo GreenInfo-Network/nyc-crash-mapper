@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
+
 import { closeModal } from '../actions/';
-import { dateStringFormatModel } from '../constants/api';
 import Modal from '../components/Modal/';
 
 const mapStateToProps = ({ modal, filterType, filterArea, dateRange }) => {
@@ -11,8 +11,8 @@ const mapStateToProps = ({ modal, filterType, filterArea, dateRange }) => {
     modalType,
     filterArea,
     filterType,
-    startDate: startDate.format(dateStringFormatModel),
-    endDate: endDate.format(dateStringFormatModel),
+    startDate,
+    endDate,
   };
 };
 
