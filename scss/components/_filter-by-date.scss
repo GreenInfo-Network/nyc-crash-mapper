@@ -1,8 +1,86 @@
 .filter-by-date {
 
-  .start-date,
-  .end-date {
+  .filter-list li:nth-of-type(2) {
+    padding: 10px 0;
+  }
 
+  .label-select-group {
+    display: inline-block;
+
+    &:nth-of-type(2) {
+      margin-left: 10px;
+    }
+
+    label {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  .Select-control,
+  .Select-menu-outer {
+    width: $select-width;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: $marine-light;
+    background-color: $off-white;
+  }
+
+  .Select-control {
+    height: $select-height;
+  }
+
+  .Select-menu-outer {
+    z-index: 5;
+  }
+
+  .Select-menu {
+    background-color: $off-white;
+  }
+
+  .Select-option {
+    color: $marine-light;
+    background-color: $off-white;
+
+    &.is-focused {
+      background-color: $btn-hover;
+    }
+
+    &.is-selected {
+      background-color: $btn-active;
+    }
+  }
+
+  .has-value.Select--single > .Select-control .Select-value .Select-value-label,
+  .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    color: $marine-light;
+  }
+
+  .Select-placeholder,
+  .Select--single > .Select-control .Select-value {
+    line-height: 25px;
+  }
+
+  .Select-input {
+    height: $select-height;
+  }
+
+  .Select-value-label {
+    color: $marine-light;
+  }
+
+  .Select-arrow {
+    border-color: $marine-light transparent transparent;
+  }
+
+  .is-open .Select-arrow,
+  .Select-arrow-zone:hover > .Select-arrow, {
+    border-top-color: $marine;
+  }
+
+  .is-open > .Select-control .Select-arrow {
+    border-color: transparent transparent $marine-light;
   }
 
   .filter-date-label {

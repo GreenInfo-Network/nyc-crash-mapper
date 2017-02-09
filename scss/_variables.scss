@@ -50,14 +50,23 @@ $roboto: "Roboto", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-ser
 //––––––––––––––––––––––––––––––––––––––––––––––––––
 $app-header-height: 80px !default;
 $app-header-width: 450px !default;
+
 $zoom-controls-height: 70px !default;
 $zoom-controls-width: 30px !default;
+
 $app-stats-legend-height: 120px !default;
 $app-stats-legend-width: calc(100vw - 300px) !default;
+
 $app-options-filters-height: 100% !default;
 $app-options-filters-width: 300px !default;
+
 $button-height: 25px !default;
-$options-footer-height: 27px;
+
+$options-footer-height: 27px !default;
+
+// react select overrides
+$select-height: 25px !default;
+$select-width: 125px !default;
 
 $stats-header-height: 30px !default;
 $stats-content-height: calc(100% - 30px) !default;
