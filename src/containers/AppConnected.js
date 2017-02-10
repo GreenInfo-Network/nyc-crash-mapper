@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { openModal } from '../actions/';
 import App from '../components/App';
 
-const mapStateToProps = ({ browser, dateRange, filterType, filterArea }) => {
-  const { startDate, endDate } = dateRange;
+const mapStateToProps = ({ browser, filterDate, filterType, filterArea }) => {
+  const { startDate, endDate } = filterDate;
   const { identifier, geo, lngLats } = filterArea;
   const { height, width } = browser;
   return {

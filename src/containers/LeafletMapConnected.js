@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { filterByAreaIdentifier, filterByAreaCustom } from '../actions/';
 import LeafletMap from '../components/LeafletMap/';
 
-const mapStateToProps = ({ dateRange, filterType, filterArea }, ownProps) => {
-  const { startDate, endDate } = dateRange;
+const mapStateToProps = ({ filterDate, filterType, filterArea }, ownProps) => {
+  const { startDate, endDate } = filterDate;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
   const { geo, identifier, lngLats, drawEnabeled } = filterArea;

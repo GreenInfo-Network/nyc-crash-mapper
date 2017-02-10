@@ -62,7 +62,7 @@ export const makeDefaultState = () => {
   });
 
   return {
-    dateRange: {
+    filterDate: {
       startDate: isValidMomentObj(p.startDate),
       endDate: isValidMomentObj(p.endDate),
     },
