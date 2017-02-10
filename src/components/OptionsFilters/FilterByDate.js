@@ -32,7 +32,7 @@ class FilterByDate extends Component {
   }
 
   render() {
-    const { startDate, endDate } = this.props;
+    const { startDate, endDate, years } = this.props;
     const startMonth = startDate.month() + 1;
     const startYear = startDate.year();
     const endMonth = endDate.month() + 1;
@@ -44,7 +44,7 @@ class FilterByDate extends Component {
           <li>
             <MonthYearSelector
               handleChange={this.handleStartDateChange}
-              years={[2011, 2012]}
+              years={years}
               curMonth={startMonth}
               curYear={startYear}
               prefix="Start"
@@ -53,7 +53,7 @@ class FilterByDate extends Component {
           <li>
             <MonthYearSelector
               handleChange={this.handleEndDateChange}
-              years={[2011, 2012]}
+              years={years}
               curMonth={endMonth}
               curYear={endYear}
               prefix="End"
@@ -71,25 +71,7 @@ FilterByDate.propTypes = {
   endDateChange: PropTypes.func.isRequired,
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
+  years: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default FilterByDate;
-
-// <ul className="filter-by-date filter-list">
-//   <li className="start-date">
-//     <p className="filter-date-label">Start Date:</p>
-//     <DatePicker
-//       dateFormat={'YYYY-MM-DD'}
-//       selected={startDate}
-//       onChange={date => this.handleStartDateChange(date)}
-//     />
-//   </li>
-//   <li className="end-date">
-//     <p className="filter-date-label">End Date:</p>
-//     <DatePicker
-//       dateFormat={'YYYY-MM-DD'}
-//       selected={endDate}
-//       onChange={date => this.handleEndDateChange(date)}
-//     />
-//   </li>
-// </ul>

@@ -22,6 +22,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    // async calls for UI dependent on data
     this.props.fetchCrashStatsData(this.props);
     this.props.fetchCrashesYearRange();
     this.props.fetchContributingFactors(this.props);
