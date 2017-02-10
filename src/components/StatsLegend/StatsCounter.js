@@ -16,7 +16,7 @@ const StatsCounter = (props) => {
       </div>
       <div className="count">
         <p>{driver.toLocaleString()}</p>
-        <p>Driver</p>
+        <p>Motorist</p>
       </div>
       <div className="count">
         <p className="roboto-bold">{total.toLocaleString()}</p>

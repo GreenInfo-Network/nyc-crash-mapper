@@ -21,7 +21,7 @@ class FilterByType extends Component {
           </li>
           <li>
             <FilterButton
-              label={'driver fatality'}
+              label={'motorist fatality'}
               id={'motorist'}
               handleClick={filterByTypeFatality}
               btnSize={'med'}
@@ -59,7 +59,7 @@ class FilterByType extends Component {
           </li>
           <li>
             <FilterButton
-              label={'driver injury'}
+              label={'motorist injury'}
               id={'motorist'}
               handleClick={filterByTypeInjury}
               btnSize={'med'}
