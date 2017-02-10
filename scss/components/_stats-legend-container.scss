@@ -58,6 +58,11 @@
     }
   }
 
+  svg,
+  svg:not(:root) {
+    overflow: auto;
+  }
+
   circle {
     fill: rgba(0,0,0,0);
     stroke: $off-white;
