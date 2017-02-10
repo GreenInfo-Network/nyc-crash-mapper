@@ -2,7 +2,10 @@ import { polyfill } from 'es6-promise';
 import fetch from 'isomorphic-fetch';
 import { cartoSQLQuery } from '../constants/app_config';
 import * as actions from '../constants/action_types';
-import { configureStatsSQL, configureFactorsSQL } from '../constants/sql_queries';
+import {
+  configureStatsSQL,
+  configureFactorsSQL,
+  crashesYearRangeSQL } from '../constants/sql_queries';
 
 polyfill();
 
@@ -55,5 +58,31 @@ export const fetchContributingFactors = (params) => {
       .then(res => res.json())
       .then(json => dispatch(receiveContributingFactors(json.rows)))
       .catch(error => dispatch(receiveContributingFactorsError(error)));
+  };
+};
+
+const requestCrashesYearRange = () => ({
+  type: actions.CRASHES_YEAR_RANGE_REQUEST
+});
+
+const receiveCrashesYearRange = json => ({
+  type: actions.CRASHES_YEAR_RANGE_SUCCESS,
+  json
+});
+
+const receiveCrashesYearRangeError = error => ({
+  type: actions.CRASHES_YEAR_RANGE_ERROR,
+  error
+});
+
+export const fetchCrashesYearRange = () => {
+  const query = encodeURIComponent(crashesYearRangeSQL());
+  const url = cartoSQLQuery(query);
+  return (dispatch) => {
+    dispatch(requestCrashesYearRange());
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => dispatch(receiveCrashesYearRange(json.rows)))
+      .catch(error => dispatch(receiveCrashesYearRangeError(error)));
   };
 };

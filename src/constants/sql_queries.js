@@ -84,12 +84,10 @@ export const filterByAreaSQL = {
 };
 
 // Selects max and min date from all crashes
-export const dateBounds = () => sls`
-  SELECT
-    MAX(date) as max_date,
-    MIN(date) as min_date
-  FROM
-    ${nyc_crashes}
+export const crashesYearRangeSQL = () => sls`
+  SELECT DISTINCT year
+  FROM ${nyc_crashes}
+  ORDER BY year DESC;
 `;
 
 /*

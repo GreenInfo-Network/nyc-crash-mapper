@@ -1,4 +1,7 @@
-export { fetchCrashStatsData, fetchContributingFactors } from './async_actions';
+export { fetchCrashStatsData,
+  fetchContributingFactors,
+  fetchCrashesYearRange,
+} from './async_actions';
 export { startDateChange, endDateChange } from './date_range_actions';
 export {
   filterByTypeInjury,

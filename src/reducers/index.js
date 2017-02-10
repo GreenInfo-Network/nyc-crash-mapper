@@ -7,6 +7,7 @@ import filterArea from './filter_by_area_reducer';
 import filterType from './filter_by_type_reducer';
 import filterContributingFactor from './filter_contributing_factor_reducer';
 import contributingFactors from './stats_contributing_factors_reducer';
+import yearRange from './year_range_reducer';
 import crashStats from './crash_stats_reducer';
 import modal from './modal_reducer';
 
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   filterType,
   modal,
   routing: routerReducer,
+  yearRange,
 });
 
 export default rootReducer;
