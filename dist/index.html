@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NYC Crash Mapper</title>
+    <meta name="description" content="Mapping NYC automobile collisions and their resulting injuries and fatalities">
+    <meta name="author" content="chris henrick">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Social Media: FB -->
+    <meta property="og:url" content="https://clhenrick.github.io/nyc-crash-mapper/">
+    <meta property="og:title" content="NYC Crash Mapper, by CHEKPEDS">
+    <meta property="og:description" content="Mapping NYC automobile collisions and their resulting injuries and fatalities">
+    <meta property="og:image" content="https://clhenrick.github.io/nyc-crash-mapper/img/crash-mapper-lg.jpg">
+
+    <!-- Social Media: Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@chekpeds">
+    <meta name="twitter:creator" content="@chrislhenrick">
+    <meta name="twitter:title" content="NYC Crash Mapper">
+    <meta name="twitter:description" content="Mapping NYC automobile collisions and their resulting injuries and fatalities">
+    <meta name="twitter:image" content="https://clhenrick.github.io/nyc-crash-mapper/img/crash-mapper-lg.jpg">
+    <meta name="twitter:image:alt" content="screen capture of the NYC Crash Mapper web app">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+  <link href="vendor.7e13e6d0af8d5d7b6a0a.css" rel="stylesheet"><link href="bundle.e9098cd5bb201069ec5c.css" rel="stylesheet"></head>
+  <body>
+    <div id="root"></div>
+
+    <!-- HTML template for custom infowindow -->
+    <script type="infowindow/html" id="infowindow_template">
+    <div class="cartodb-popup customized">
+      <a href="#close" class="cartodb-popup-close-button close">×</a>
+      <div class="cartodb-popup-content-wrapper">
+        <div class="cartodb-popup-content">
+          <!-- content.data contains the field info -->
+          <h4>Total Crashes</h4>
+          <p>{{content.data.total_crashes}}</p>
+          <h4>On Street Name</h4>
+          <p>{{content.data.on_street_name}}</p>
+          <h4>Cross Street Name</h4>
+          <p>{{content.data.cross_street_name}}</p>
+          <h4>Cyclists Injured</h4>
+          <p>{{content.data.cyclist_injured}}</p>
+          <h4>Cyclists Killed</h4>
+          <p>{{content.data.cyclist_killed}}</p>
+          <h4>Motorists Injured</h4>
+          <p>{{content.data.motorist_injured}}</p>
+          <h4>Motorists Killed</h4>
+          <p>{{content.data.motorist_killed}}</p>
+          <h4>Pedestrians Injured</h4>
+          <p>{{content.data.pedestrian_injured}}</p>
+          <h4>Pedestrians Killed</h4>
+          <p>{{content.data.pedestrian_killed}}</p>
+        </div>
+      </div>
+      <div class="cartodb-popup-tip-container"></div>
+    </div>
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-24175026-2', 'auto');
+      ga('send', 'pageview');
+    </script>
+  <script type="text/javascript" src="manifest.e00a6d94bdf712c43f43.js"></script><script type="text/javascript" src="vendor.7e13e6d0af8d5d7b6a0a.js"></script><script type="text/javascript" src="bundle.e9098cd5bb201069ec5c.js"></script></body>
+</html>
