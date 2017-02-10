@@ -9,15 +9,13 @@ const ContributingFactorsList = (props) => {
 
       return (
         <li key={factor}>
-          <p>
-            <span className="factor-count">
-              {count_factor.toLocaleString()}
-            </span>
-            <span className="factor-type">
-              {
-                factor !== '' ? factor : 'None Recorded'
-              }
-            </span>
+          <p className="factor-count">
+            {count_factor.toLocaleString()}
+          </p>
+          <p className="factor-type">
+            {
+              factor !== '' ? factor.replace(/\//g, ' / ') : 'None Recorded'
+            }
           </p>
         </li>);
     });

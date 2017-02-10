@@ -88,7 +88,7 @@ class App extends Component {
     return (
       <div className="App">
         { /* hide app to mobile users for now */
-          (width < 550 || height < 416) ?
+          (width < 1000 || height < 416) ?
             <SmallDeviceMessage /> :
           [
             <AppHeader key="app-header" openModal={openModal} />,

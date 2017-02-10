@@ -15,8 +15,8 @@
   .legend-crash-count {
     width: 40%;
     position: absolute;
-    top: -$stats-header-height - 3px;
-    right: 0;
+    top: -$stats-header-height - 5px;
+    right: 10px;
   }
 
   ul, li {
@@ -32,11 +32,10 @@
 
   p {
     display: inline;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-left: 5px;
   }
 
-  // TO DO: adjust the size of dots to match size of map dots
   span {
     width: 7px;
     height: 7px;
@@ -72,6 +71,6 @@
   text {
     @extend %roboto-regular;
     fill: $off-white;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }

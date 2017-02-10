@@ -8,25 +8,39 @@
     list-style-type: none;
   }
 
-  li, p {
-    width: 100%;
+  li {
+    width: calc(100% - 10px);
+    margin: 0 5px 0 5px;
+    border-bottom: 0.5px solid $hr-border;
+
+    &:last-of-type {
+      border: none;
+    }
   }
 
   p {
-    font-size: 1.4rem;
-    padding-left: $padding-5;
+    padding: 2px 5px;
+    height: 100%;
+    font-size: 1.3rem;
   }
 
   .factor-count,
   .factor-type {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   .factor-count {
-    width: 20%;
+    width: 60px;
+    max-width: 60px;
+    text-align: right;
   }
 
   .factor-type {
-    width: 80%;
+    max-width: calc(100% - 60px - 20px);
+    padding-left: $padding-5;
+    overflow-x: hidden;
   }
 }

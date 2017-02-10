@@ -14,7 +14,7 @@ export default () => (
         </li>
         <li>
           <span className="type-no-inj-fat" />
-          <p>No Inj/Fat</p>
+          <p>None</p>
         </li>
       </ul>
     </div>
@@ -48,7 +48,7 @@ export default () => (
               <circle className="swatch" r="4" style={{ r: '4px' }}>
                 <title>11 or fewer crashes</title>
               </circle>
-              <text className="label" transform="translate(17.5,5)">11</text>
+              <text className="label" transform="translate(10,5)">{'<=11'}</text>
             </g>
           </g>
         </g>

@@ -1,5 +1,5 @@
 .small-device-message {
-  @media (#{$bp-larger-than-phablet}) and (orientation: portrait),
+  @media (#{$bp-larger-than-desktop}) and (orientation: portrait),
   (#{$bp-taller-than-mobile-landscape}) and (orientation: landscape) {
     display: none;
   }
@@ -35,10 +35,6 @@
 
   a {
     text-decoration: none;
-  }
-
-  h4 {
-    // margin-top: $margin-25;
   }
 
   p {
