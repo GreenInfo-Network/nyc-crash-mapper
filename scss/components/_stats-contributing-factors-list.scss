@@ -11,7 +11,7 @@
   li {
     width: calc(100% - 10px);
     margin: 0 5px 0 5px;
-    border-bottom: 0.5px solid $hr-border;
+    border-bottom: 0.5px dashed $hr-border;
 
     &:last-of-type {
       border: none;

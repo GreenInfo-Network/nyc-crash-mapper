@@ -70,6 +70,10 @@
     height: 300px;
     max-height: 300px;
     overflow-y: auto;
+
+    p {
+      padding-right: $padding-25;
+    }
   }
 
   .modal-download-data {
