@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 
-// import { dateStringFormatView } from '../constants/api';
-import { fetchCrashStatsData, fetchContributingFactors } from '../actions/';
 import StatsLegend from '../components/StatsLegend/';
 
 const mapStateToProps = (state) => {
@@ -23,7 +21,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  fetchCrashStatsData,
-  fetchContributingFactors
-})(StatsLegend);
+export default connect(mapStateToProps, {})(StatsLegend);

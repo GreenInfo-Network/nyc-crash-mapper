@@ -21,10 +21,17 @@ class App extends Component {
     this.onMapMoved = this.onMapMoved.bind(this);
   }
 
+  componentWillMount() {
+    this.props.fetchCrashStatsData(this.props);
+    this.props.fetchContributingFactors(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (crashDataChanged(this.props, nextProps)) {
       const { query } = this.props.location;
       this.updateQueryParams({ ...query, ...nextProps });
+      this.props.fetchCrashStatsData(nextProps);
+      this.props.fetchContributingFactors(nextProps);
     }
   }
 
@@ -108,10 +115,12 @@ App.defaultProps = {
 };
 
 App.propTypes = {
+  fetchContributingFactors: PropTypes.func.isRequired,
+  fetchCrashStatsData: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
   location: PropTypes.shape({
     query: PropTypes.object.isRequired
   }).isRequired,
-  openModal: PropTypes.func.isRequired,
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
   filterType: PropTypes.shape({

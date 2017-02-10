@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import momentPropTypes from 'react-moment-proptypes';
 
-import { crashDataChanged, dateStringFormatView, } from '../../constants/api';
+import { dateStringFormatView, } from '../../constants/api';
 import DateRange from './DateRange';
 import TotalCrashCounter from './TotalCrashCounter';
 import StatsCounter from './StatsCounter';
@@ -9,18 +9,6 @@ import ContributingFactorsList from './ContributingFactorsList';
 import LegendContainer from './LegendContainer';
 
 class StatsLegend extends Component {
-
-  componentWillMount() {
-    this.props.fetchCrashStatsData(this.props);
-    this.props.fetchContributingFactors(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (crashDataChanged(this.props, nextProps)) {
-      this.props.fetchCrashStatsData(nextProps);
-      this.props.fetchContributingFactors(nextProps);
-    }
-  }
 
   render() {
     const { startDate,
@@ -102,8 +90,6 @@ StatsLegend.defaultProps = {
 StatsLegend.propTypes = {
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
-  fetchContributingFactors: PropTypes.func.isRequired,
-  fetchCrashStatsData: PropTypes.func.isRequired,
   contributingFactors: PropTypes.arrayOf(PropTypes.shape({
     count_factor: PropTypes.number,
     factor: PropTypes.string
