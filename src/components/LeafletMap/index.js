@@ -274,6 +274,7 @@ class LeafletMap extends Component {
 
   customFilterCancelDraw() {
     this.customDraw.cancelDraw();
+    this.cartoSubLayer.setInteraction(true);
   }
 
   renderFilterArea(geo) {
