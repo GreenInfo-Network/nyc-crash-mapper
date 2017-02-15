@@ -21,16 +21,16 @@ class OptionsFilters extends Component {
           ruledLine
           scroll
         >
+          <OptionsContainer title={'Filter by Date Range'}>
+            <FilterByDate />
+          </OptionsContainer>
+          <hr />
           <OptionsContainer title={'Filter by Boundary'}>
             <FilterByArea />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Type'}>
             <FilterByType />
-          </OptionsContainer>
-          <hr />
-          <OptionsContainer title={'Filter by Date Range'}>
-            <FilterByDate />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Data'}>
