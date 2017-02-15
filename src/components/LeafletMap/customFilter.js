@@ -28,7 +28,12 @@ class CustomFilter {
 
   initDrawPolygon() {
     const self = this;
-    this.poly = new L.Draw.Polygon(self.map);
+    this.poly = new L.Draw.Polygon(self.map, {
+      shapeOptions: {
+        color: '#17838f',
+        fillColor: '#17838f'
+      }
+    });
   }
 
   onLayerCreated() {
