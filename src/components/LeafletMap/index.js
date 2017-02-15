@@ -350,7 +350,7 @@ class LeafletMap extends Component {
         />
         <div ref={(_) => { this.mapStatsDisclaimer = _; }} className="map-stats-disclaimer">
           <p>
-            <strong>Note:</strong> Map may differ from stats below
+            <strong>Note:</strong> Map data may differ from stats below
             due to lack of location information provided by the NYPD.
           </p>
         </div>
