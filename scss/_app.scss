@@ -101,11 +101,19 @@ hr {
   @media screen and (#{$bp-larger-than-phablet}) {
     width: 16.666666666666667%;
   }
+
+  @media screen and (#{$bp-narrow-width}) {
+    display: none;
+  }
 }
 
 .three.columns {
   @media screen and (#{$bp-larger-than-phablet}) {
     width: 25%;
+  }
+
+  @media screen and (#{$bp-narrow-width}) {
+    display: none;
   }
 }
 
@@ -113,16 +121,28 @@ hr {
   @media screen and (#{$bp-larger-than-phablet}) {
     width: 33.333333333333%;
   }
+
+  @media screen and (#{$bp-narrow-width}) {
+    display: none;
+  }
 }
 
 .six.columns {
   @media screen and (#{$bp-larger-than-phablet}) {
     width: 50%;
   }
+
+  @media screen and (#{$bp-narrow-width}) {
+    display: none;
+  }
 }
 
 .seven.columns {
   @media screen and (#{$bp-larger-than-phablet}) {
     width: 58.3333333333%
+  }
+
+  @media screen and (#{$bp-narrow-width}) {
+    width: 100%;
   }
 }

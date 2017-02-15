@@ -35,6 +35,10 @@
     font-size: 6rem;
     text-transform: uppercase;
     margin-left: $margin-5;
+
+    @media screen and (#{$bp-narrow-width}) {
+      font-size: 4rem;
+    }
   }
 
   .header-about {
