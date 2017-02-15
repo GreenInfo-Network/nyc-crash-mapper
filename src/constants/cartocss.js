@@ -37,7 +37,7 @@ const cartocss = sls`
       marker-fill: @fatality;
     }
 
-    #${nyc_crashes} [ total_crashes <= 74] {
+    #${nyc_crashes} [ total_crashes > 67] {
        marker-width: 25;
     }
     #${nyc_crashes} [ total_crashes <= 67] {
