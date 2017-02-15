@@ -48,8 +48,8 @@ $roboto: "Roboto", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-ser
 
 // Main Component Dimensions
 //––––––––––––––––––––––––––––––––––––––––––––––––––
-$app-header-height: 80px !default;
-$app-header-width: 450px !default;
+$app-header-height: 100px !default;
+$app-header-width: auto !default;
 
 $zoom-controls-height: 70px !default;
 $zoom-controls-width: 30px !default;
@@ -78,6 +78,7 @@ $infowindowWidthInner: 155px !default;
 // margins
 $margin-25: 25px !default;
 $margin-10: 10px !default;
+$margin-5: 5px !default;
 
 // padding
 $padding-25: 25px !default;

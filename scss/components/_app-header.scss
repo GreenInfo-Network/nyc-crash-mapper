@@ -7,26 +7,50 @@
   z-index: 1;
   color: rgba($marine-light, 0.7);
 
+  .logo-checkpeds,
   .header-title,
   .header-about {
     margin: 0;
     padding: 0;
   }
 
+  .logo-chekpeds {
+    display: inline-block;
+    width: 33px;
+    height: 45px;
+
+    a, a:hover {
+      background-color: none;
+      border: none;
+    }
+
+    img {
+      width: 33px;
+      height: 45px;
+    }
+  }
+
   .header-title {
+    display: inline-block;
+    font-size: 6rem;
     text-transform: uppercase;
+    margin-left: $margin-5;
   }
 
   .header-about {
     @extend .roboto-bold;
-  }
+    display: inline-block;
+    position: relative;
+    bottom: 10px;
 
-  a {
-    cursor: pointer;
-    color: rgba($marine-light, 0.7);
+    a {
+      cursor: pointer;
+      color: rgba($marine-light, 0.7);
 
-    &:hover {
-      background-color: $btn-hover;
+      &:hover {
+        color: $marine;
+      }
     }
   }
+
 }
