@@ -18,6 +18,8 @@
 
     * {
       color: $marine;
+      background: none;
+      background: transparent;
     }
 
     a {
@@ -126,5 +128,14 @@
       border-width: 25px 25px 0 0;
       border-color: $ui-grey transparent transparent transparent;
     }
+  }
+
+  .map-stats-disclaimer {
+    position: absolute;
+    bottom: 119px;
+    left: 238px;
+    z-index: 5;
+    font-size: 1.1rem;
+    color: $marine-light;
   }
 }

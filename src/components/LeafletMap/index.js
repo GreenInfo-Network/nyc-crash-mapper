@@ -23,7 +23,9 @@ class LeafletMap extends Component {
       paddingBottomRight: [300, 120],
       maxZoom: 18
     };
+    this.mapDiv = undefined;
     this.map = undefined;
+    this.mapStatsDisclaimer = undefined;
     this.customDraw = undefined;
     this.cartoLayer = undefined;
     this.cartoSubLayer = undefined;
@@ -48,6 +50,12 @@ class LeafletMap extends Component {
     if (crashDataChanged(this.props, nextProps)) {
       // if boundary filters were changed by user, update map data
       this.updateCartoSubLayer(nextProps);
+    }
+
+    if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
+      this.showMapStatsDisclaimer();
+    } else if (geo !== 'Citywide') {
+      this.hideMapStatsDisclaimer();
     }
 
     if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
@@ -277,6 +285,14 @@ class LeafletMap extends Component {
     this.cartoSubLayer.setInteraction(true);
   }
 
+  showMapStatsDisclaimer() {
+    this.mapStatsDisclaimer.style.display = '';
+  }
+
+  hideMapStatsDisclaimer() {
+    this.mapStatsDisclaimer.style.display = 'none';
+  }
+
   renderFilterArea(geo) {
     // renders the Carto subLayer for a boundary geometry which the user may
     // click on to filter data by
@@ -332,6 +348,12 @@ class LeafletMap extends Component {
           handleZoomIn={this.handleZoomIn}
           handleZoomOut={this.handleZoomOut}
         />
+        <div ref={(_) => { this.mapStatsDisclaimer = _; }} className="map-stats-disclaimer">
+          <p>
+            <strong>Note:</strong> Map may differ from stats below
+            due to lack of location information provided by the NYPD.
+          </p>
+        </div>
         <div ref={(_) => { this.mapDiv = _; }} id="map" />
       </div>
     );
