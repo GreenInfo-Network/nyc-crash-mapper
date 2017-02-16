@@ -23,18 +23,20 @@ class App extends Component {
 
   componentWillMount() {
     // async calls for UI dependent on data
-    this.props.fetchCrashStatsData(this.props);
-    this.props.fetchCrashesYearRange();
-    this.props.fetchContributingFactors(this.props);
-    this.props.fetchCrashesDateRange();
+    this.props.fetchCrashesYearRange()
+      .then(this.props.fetchCrashesDateRange())
+      .then(this.props.fetchCrashStatsData(this.props))
+      .then(this.props.fetchContributingFactors(this.props))
+      .catch((error) => { throw error; });
   }
 
   componentWillReceiveProps(nextProps) {
     if (crashDataChanged(this.props, nextProps)) {
       const { query } = this.props.location;
       this.updateQueryParams({ ...query, ...nextProps });
-      this.props.fetchCrashStatsData(nextProps);
-      this.props.fetchContributingFactors(nextProps);
+      this.props.fetchCrashStatsData(nextProps)
+        .then(this.props.fetchContributingFactors(nextProps))
+        .catch((error) => { throw error; });
     }
   }
 
