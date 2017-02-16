@@ -5,7 +5,8 @@ import * as actions from '../constants/action_types';
 import {
   configureStatsSQL,
   configureFactorsSQL,
-  crashesYearRangeSQL } from '../constants/sql_queries';
+  crashesYearRangeSQL,
+  minMaxDateRange } from '../constants/sql_queries';
 
 polyfill();
 
@@ -84,5 +85,31 @@ export const fetchCrashesYearRange = () => {
       .then(res => res.json())
       .then(json => dispatch(receiveCrashesYearRange(json.rows)))
       .catch(error => dispatch(receiveCrashesYearRangeError(error)));
+  };
+};
+
+const requestCrashesDateRange = () => ({
+  type: actions.CRASHES_DATE_RANGE_REQUEST
+});
+
+const receiveCrashesDateRange = json => ({
+  type: actions.CRASHES_DATE_RANGE_SUCCESS,
+  json
+});
+
+const receiveCrashesDateRangeError = error => ({
+  type: actions.CRASHES_DATE_RANGE_ERROR,
+  error
+});
+
+export const fetchCrashesDateRange = () => {
+  const query = encodeURIComponent(minMaxDateRange());
+  const url = cartoSQLQuery(query);
+  return (dispatch) => {
+    dispatch(requestCrashesDateRange());
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => dispatch(receiveCrashesDateRange(json.rows)))
+      .catch(error => dispatch(receiveCrashesDateRangeError(error)));
   };
 };

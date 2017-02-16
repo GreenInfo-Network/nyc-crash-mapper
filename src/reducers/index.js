@@ -8,6 +8,7 @@ import filterType from './filter_by_type_reducer';
 import filterContributingFactor from './filter_contributing_factor_reducer';
 import contributingFactors from './stats_contributing_factors_reducer';
 import yearRange from './year_range_reducer';
+import crashesDateRange from './crashes_date_range_reducer';
 import crashStats from './crash_stats_reducer';
 import modal from './modal_reducer';
 
@@ -30,6 +31,7 @@ const browser = createResponsiveStateReducer({
 const rootReducer = combineReducers({
   browser,
   contributingFactors,
+  crashesDateRange,
   crashStats,
   filterDate,
   filterArea,

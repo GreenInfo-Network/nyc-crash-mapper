@@ -12,7 +12,12 @@ class FilterByDate extends Component {
   }
 
   handleStartDateChange(year, month) {
-    const { endDate } = this.props;
+    const { endDate, crashesDateRange: { minDate } } = this.props;
+
+    if (year === minDate.year() && month < minDate.month() + 1) {
+      month = minDate.month() + 1;
+    }
+
     const mm = month < 10 ? `0${month}` : month;
     const startMoment = momentize(`${year}-${mm}`);
 
@@ -22,7 +27,12 @@ class FilterByDate extends Component {
   }
 
   handleEndDateChange(year, month) {
-    const { startDate } = this.props;
+    const { startDate, crashesDateRange: { maxDate } } = this.props;
+
+    if (year === maxDate.year() && month > maxDate.month() + 1) {
+      month = maxDate.month() + 1;
+    }
+
     const mm = month < 10 ? `0${month}` : month;
     const endMoment = momentize(`${year}-${mm}`);
 
@@ -32,7 +42,8 @@ class FilterByDate extends Component {
   }
 
   render() {
-    const { startDate, endDate, years } = this.props;
+    const { crashesDateRange, startDate, endDate, years } = this.props;
+    // months in moment.js are zero based
     const startMonth = startDate.month() + 1;
     const startYear = startDate.year();
     const endMonth = endDate.month() + 1;
@@ -48,6 +59,7 @@ class FilterByDate extends Component {
               curMonth={startMonth}
               curYear={startYear}
               prefix="Start"
+              crashesDateRange={crashesDateRange}
             />
           </li>
           <li>
@@ -57,6 +69,7 @@ class FilterByDate extends Component {
               curMonth={endMonth}
               curYear={endYear}
               prefix="End"
+              crashesDateRange={crashesDateRange}
             />
           </li>
         </ul>
@@ -67,6 +80,10 @@ class FilterByDate extends Component {
 
 // react-datepicker requires dates to be moment objects
 FilterByDate.propTypes = {
+  crashesDateRange: PropTypes.shape({
+    minDate: momentPropTypes.momentObj,
+    maxDate: momentPropTypes.momentObj,
+  }).isRequired,
   startDateChange: PropTypes.func.isRequired,
   endDateChange: PropTypes.func.isRequired,
   startDate: momentPropTypes.momentObj.isRequired,

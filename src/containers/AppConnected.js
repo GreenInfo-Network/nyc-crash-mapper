@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   fetchCrashStatsData,
   fetchCrashesYearRange,
+  fetchCrashesDateRange,
   fetchContributingFactors,
   openModal,
 } from '../actions/';
@@ -27,6 +28,7 @@ const mapStateToProps = ({ browser, filterDate, filterType, filterArea }) => {
 
 export default connect(mapStateToProps, {
   fetchCrashStatsData,
+  fetchCrashesDateRange,
   fetchCrashesYearRange,
   fetchContributingFactors,
   openModal,

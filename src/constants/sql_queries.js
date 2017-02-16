@@ -87,7 +87,14 @@ export const filterByAreaSQL = {
 export const crashesYearRangeSQL = () => sls`
   SELECT DISTINCT year
   FROM ${nyc_crashes}
-  ORDER BY year DESC;
+  ORDER BY year DESC
+`;
+
+export const minMaxDateRange = () => sls`
+  SELECT
+  min(year::text || '-' || LPAD(month::text, 2, '0')),
+  max(year::text || '-' || LPAD(month::text, 2, '0'))
+  FROM ${nyc_crashes}
 `;
 
 /*

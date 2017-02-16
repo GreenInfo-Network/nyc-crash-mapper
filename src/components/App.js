@@ -26,6 +26,7 @@ class App extends Component {
     this.props.fetchCrashStatsData(this.props);
     this.props.fetchCrashesYearRange();
     this.props.fetchContributingFactors(this.props);
+    this.props.fetchCrashesDateRange();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -118,6 +119,7 @@ App.defaultProps = {
 
 App.propTypes = {
   fetchContributingFactors: PropTypes.func.isRequired,
+  fetchCrashesDateRange: PropTypes.func.isRequired,
   fetchCrashStatsData: PropTypes.func.isRequired,
   fetchCrashesYearRange: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
