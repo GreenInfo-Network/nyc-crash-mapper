@@ -2,7 +2,7 @@ export { fetchCrashStatsData,
   fetchContributingFactors,
   fetchCrashesYearRange,
 } from './async_actions';
-export { startDateChange, endDateChange } from './date_range_actions';
+export { startDateChange, endDateChange } from './filter_by_date_actions';
 export {
   filterByTypeInjury,
   filterByTypeFatality,
