@@ -197,7 +197,7 @@ const filterByIdentifierWhereClause = (identifier, geo) => {
   if (geo !== 'Borough' && identifier) {
     return `AND a.identifier = $$${identifier}$$`;
   } else if (geo === 'Borough' && identifier) {
-    return `AND upper(c.borough) = upper('${boroughs[identifier - 1]}')`;
+    return `AND c.borough ilike '%${boroughs[identifier - 1]}%'`;
   }
   return '';
 };
