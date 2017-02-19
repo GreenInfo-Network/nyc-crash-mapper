@@ -2,4 +2,10 @@
   button {
     @extend .filter-options-button;
   }
+
+  button.cancel-drawing,
+  button.draw-again {
+    @extend .filter-options-button;
+    margin-left: $margin-10;
+  }
 }
