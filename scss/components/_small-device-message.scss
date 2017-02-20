@@ -1,6 +1,5 @@
 .small-device-message {
-  @media (#{$bp-larger-than-desktop}) and (orientation: portrait),
-  (#{$bp-taller-than-mobile-landscape}) and (orientation: landscape) {
+  @media screen and (#{$bp-larger-than-desktop}) and (orientation: portrait) {
     display: none;
   }
 
