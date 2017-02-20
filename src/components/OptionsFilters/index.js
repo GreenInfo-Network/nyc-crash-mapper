@@ -10,7 +10,7 @@ import FooterOptions from './FooterOptions';
 
 class OptionsFilters extends Component {
   render() {
-    const { height, openModal } = this.props;
+    const { height, maxDate, openModal } = this.props;
 
     return (
       <div className="ui right app-options-filters">
@@ -36,7 +36,7 @@ class OptionsFilters extends Component {
           <OptionsContainer title={'Data'}>
             <DownloadData
               openModal={openModal}
-              lastUpdated="12/31/2016"
+              lastUpdated={maxDate}
             />
           </OptionsContainer>
         </OptionsContainer>
@@ -56,10 +56,12 @@ class OptionsFilters extends Component {
 }
 
 OptionsFilters.defaultProps = {
+  maxDate: '',
   height: 120
 };
 
 OptionsFilters.propTypes = {
+  maxDate: PropTypes.string,
   openModal: PropTypes.func.isRequired,
   height: PropTypes.number
 };

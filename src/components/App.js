@@ -25,6 +25,7 @@ class App extends Component {
     // async calls for UI dependent on data
     this.props.fetchCrashesYearRange()
       .then(this.props.fetchCrashesDateRange())
+      .then(this.props.fetchCrashesMaxDate())
       .then(this.props.fetchCrashStatsData(this.props))
       .then(this.props.fetchContributingFactors(this.props))
       .catch((error) => { throw error; });
@@ -123,6 +124,7 @@ App.propTypes = {
   fetchContributingFactors: PropTypes.func.isRequired,
   fetchCrashesDateRange: PropTypes.func.isRequired,
   fetchCrashStatsData: PropTypes.func.isRequired,
+  fetchCrashesMaxDate: PropTypes.func.isRequired,
   fetchCrashesYearRange: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   location: PropTypes.shape({

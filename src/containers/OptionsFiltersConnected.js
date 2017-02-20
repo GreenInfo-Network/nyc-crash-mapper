@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { openModal } from '../actions/';
 import OptionsFilters from '../components/OptionsFilters/';
 
-const mapStateToProps = ({ browser }) => {
+const mapStateToProps = ({ browser, crashesMaxDate: { maxDate } }) => {
   const { height } = browser;
   return {
-    height
+    height,
+    maxDate: maxDate ? maxDate.format('MM/DD/YYYY') : ''
   };
 };
 
