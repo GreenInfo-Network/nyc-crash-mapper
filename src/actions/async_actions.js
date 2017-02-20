@@ -6,7 +6,8 @@ import {
   configureStatsSQL,
   configureFactorsSQL,
   crashesYearRangeSQL,
-  minMaxDateRange } from '../constants/sql_queries';
+  minMaxDateRange,
+  crashesMaxDate } from '../constants/sql_queries';
 
 polyfill();
 
@@ -111,5 +112,31 @@ export const fetchCrashesDateRange = () => {
       .then(res => res.json())
       .then(json => dispatch(receiveCrashesDateRange(json.rows)))
       .catch(error => dispatch(receiveCrashesDateRangeError(error)));
+  };
+};
+
+const requestCrashesMaxDate = () => ({
+  type: actions.CRASHES_MAX_DATE_REQUEST
+});
+
+const receiveCrashesMaxDate = json => ({
+  type: actions.CRASHES_MAX_DATE_RESPONSE,
+  json
+});
+
+const receiveCrashesMaxDateError = error => ({
+  type: actions.CRASHES_MAX_DATE_ERROR,
+  error
+});
+
+export const fetchCrashesMaxDate = () => {
+  const query = encodeURIComponent(crashesMaxDate());
+  const url = cartoSQLQuery(query);
+  return (dispatch) => {
+    dispatch(requestCrashesMaxDate());
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => dispatch(receiveCrashesMaxDate(json.rows)))
+      .catch(error => dispatch(receiveCrashesMaxDateError(error)));
   };
 };

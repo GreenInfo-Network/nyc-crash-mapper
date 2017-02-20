@@ -83,17 +83,26 @@ export const filterByAreaSQL = {
   `,
 };
 
-// Selects max and min date from all crashes
+// TO DO: Use a single Query for the following 3 date queries
+// selects all years for crash data, used by MonthYearSelector.js component
 export const crashesYearRangeSQL = () => sls`
   SELECT DISTINCT year
   FROM ${nyc_crashes}
   ORDER BY year DESC
 `;
 
+// selects min and max year-month formatted like "YYYY-MM"
+// used by MonthYearSelector.js component
 export const minMaxDateRange = () => sls`
   SELECT
   min(year::text || '-' || LPAD(month::text, 2, '0')),
   max(year::text || '-' || LPAD(month::text, 2, '0'))
+  FROM ${nyc_crashes}
+`;
+
+// selects max date, used for DownloadData.js component's "last updated on" msg
+export const crashesMaxDate = () => sls`
+  SELECT max(date_val) as max_date
   FROM ${nyc_crashes}
 `;
 

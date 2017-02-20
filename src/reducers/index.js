@@ -9,6 +9,7 @@ import filterContributingFactor from './filter_contributing_factor_reducer';
 import contributingFactors from './stats_contributing_factors_reducer';
 import yearRange from './year_range_reducer';
 import crashesDateRange from './crashes_date_range_reducer';
+import crashesMaxDate from './crashes_max_date_reducer';
 import crashStats from './crash_stats_reducer';
 import modal from './modal_reducer';
 
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   browser,
   contributingFactors,
   crashesDateRange,
+  crashesMaxDate,
   crashStats,
   filterDate,
   filterArea,
