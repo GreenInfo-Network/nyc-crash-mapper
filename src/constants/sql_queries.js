@@ -355,7 +355,7 @@ export const configureDownloadDataSQL = (params) => {
   return sls`
     SELECT
       c.cartodb_id,
-      c.unique_key,
+      c.socrata_id,
       c.the_geom,
       c.on_street_name,
       c.cross_street_name,
