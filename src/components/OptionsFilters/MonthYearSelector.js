@@ -64,6 +64,20 @@ class MonthYearSelector extends Component {
         <div className="month-year-selector">
           <div className="label-select-group">
             <label htmlFor="filter-by-year-month">
+              {`${prefix} Year`}
+            </label>
+            <Select
+              className="year-selector"
+              name="filter-by-year-month"
+              options={yearOptions}
+              onChange={y => handleChange(y.value, curMonth)}
+              matchPos="start"
+              clearable={false}
+              value={curYear}
+            />
+          </div>
+          <div className="label-select-group">
+            <label htmlFor="filter-by-year-month">
               {`${prefix} Month`}
             </label>
             <Select
@@ -75,20 +89,6 @@ class MonthYearSelector extends Component {
               ignoreCase
               clearable={false}
               value={curMonth}
-            />
-          </div>
-          <div className="label-select-group">
-            <label htmlFor="filter-by-year-month">
-              {`${prefix} Year`}
-            </label>
-            <Select
-              className="year-selector"
-              name="filter-by-year-month"
-              options={yearOptions}
-              onChange={y => handleChange(y.value, curMonth)}
-              matchPos="start"
-              clearable={false}
-              value={curYear}
             />
           </div>
         </div>
