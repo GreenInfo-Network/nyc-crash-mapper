@@ -3,10 +3,10 @@ import Collapse from 'react-collapse';
 import cx from 'classnames';
 
 class OptionsContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      opened: true
+      opened: props.isOpened
     };
     this.handleOpenClose = this.handleOpenClose.bind(this);
   }
@@ -58,6 +58,7 @@ OptionsContainer.defaultProps = {
   className: '',
   collapsable: true,
   collapseHeight: 0,
+  isOpened: true,
   optionsContainerHeight: null,
   ruledLine: false,
   scroll: false
@@ -71,6 +72,7 @@ OptionsContainer.propTypes = {
   className: PropTypes.string, // additional classname(s) to tack on to section el
   collapsable: PropTypes.bool, // should the content be collapsable?
   collapseHeight: PropTypes.number, // should the collapsable content have a fixed height?
+  isOpened: PropTypes.bool,
   optionsContainerHeight: PropTypes.number, // height for the options container
   ruledLine: PropTypes.bool, // add a ruled line under the header?
   scroll: PropTypes.bool, // should the content in Collapse be scrollable?

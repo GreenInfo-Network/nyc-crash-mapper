@@ -33,7 +33,7 @@ class OptionsFilters extends Component {
             <FilterByType />
           </OptionsContainer>
           <hr />
-          <OptionsContainer title={'Data'}>
+          <OptionsContainer title={'Data'} isOpened={false}>
             <DownloadData
               openModal={openModal}
               lastUpdated={maxDate}
