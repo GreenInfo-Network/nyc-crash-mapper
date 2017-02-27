@@ -243,7 +243,14 @@ const filterByCustomAreaClause = (lonLatArray) => {
 export const configureMapSQL = (params) => {
   const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
+  // the "box" CTE & ST_Intersects JOIN prevents incorrectly geocoded rows from
+  // throwing off L.map.fitBounds()
   return sls`
+    WITH box AS (
+      SELECT ST_SetSRID(ST_Extent(the_geom), 4326)::geometry as geom,
+      666 as cartodb_id
+      FROM nyc_borough
+    )
     SELECT * FROM
     (
       SELECT
@@ -272,7 +279,10 @@ export const configureMapSQL = (params) => {
         c.the_geom IS NOT NULL
       GROUP BY
         c.the_geom, c.the_geom_webmercator, c.on_street_name, c.cross_street_name
-    ) _
+    ) AS _
+    LEFT JOIN box ON
+    ST_Intersects(_.the_geom, box.geom)
+    WHERE box.cartodb_id IS NOT NULL
     ORDER BY
     CASE WHEN (persons_killed > 0) THEN 3
     WHEN (persons_injured > 0) THEN 2
