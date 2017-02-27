@@ -12,8 +12,10 @@ class FilterByDate extends Component {
   }
 
   handleStartDateChange(year, month) {
+    // validates the new start date before updating the redux store & selecting new data
     const { endDate, crashesDateRange: { minDate } } = this.props;
 
+    // don't allow a user to select a month before the begining of the dataset
     if (year === minDate.year() && month < minDate.month() + 1) {
       month = minDate.month() + 1;
     }
@@ -23,12 +25,18 @@ class FilterByDate extends Component {
 
     if (startMoment.isSameOrBefore(endDate)) {
       this.props.startDateChange(startMoment);
+    } else {
+      // if the user attempts to select a startDate greater than the current endDate
+      // set the new startDate to the current endDate
+      this.props.startDateChange(endDate);
     }
   }
 
   handleEndDateChange(year, month) {
+    // validates the new end date before updating the redux store & selecting new data
     const { startDate, crashesDateRange: { maxDate } } = this.props;
 
+    // don't allow a user to select a month after the end of the dataset
     if (year === maxDate.year() && month > maxDate.month() + 1) {
       month = maxDate.month() + 1;
     }
@@ -38,6 +46,10 @@ class FilterByDate extends Component {
 
     if (endMoment.isSameOrAfter(startDate)) {
       this.props.endDateChange(endMoment);
+    } else {
+      // if the user attempts to select an endDate earlier than the current startDate
+      // set the new endDate to the current startDate
+      this.props.endDateChange(startDate);
     }
   }
 
