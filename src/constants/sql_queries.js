@@ -249,7 +249,7 @@ export const configureMapSQL = (params) => {
     WITH box AS (
       SELECT ST_SetSRID(ST_Extent(the_geom), 4326)::geometry as geom,
       666 as cartodb_id
-      FROM nyc_borough
+      FROM ${nyc_borough}
     )
     SELECT * FROM
     (
