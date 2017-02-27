@@ -246,13 +246,12 @@ export const configureMapSQL = (params) => {
   // the "box" CTE & ST_Intersects JOIN prevents incorrectly geocoded rows from
   // throwing off L.map.fitBounds()
   return sls`
-    WITH box AS (
+    WITH bbox AS (
       SELECT ST_SetSRID(ST_Extent(the_geom), 4326)::geometry as geom,
       666 as cartodb_id
       FROM ${nyc_borough}
-    )
-    SELECT * FROM
-    (
+    ),
+    crashes AS (
       SELECT
         c.the_geom as the_geom,
         c.the_geom_webmercator as the_geom_webmercator,
@@ -279,10 +278,13 @@ export const configureMapSQL = (params) => {
         c.the_geom IS NOT NULL
       GROUP BY
         c.the_geom, c.the_geom_webmercator, c.on_street_name, c.cross_street_name
-    ) AS _
-    LEFT JOIN box ON
-    ST_Intersects(_.the_geom, box.geom)
-    WHERE box.cartodb_id IS NOT NULL
+    )
+    SELECT c.*
+    FROM crashes c
+    LEFT JOIN
+    bbox ON
+    ST_Intersects(c.the_geom, bbox.geom)
+    WHERE bbox.cartodb_id IS NOT NULL
     ORDER BY
     CASE WHEN (persons_killed > 0) THEN 3
     WHEN (persons_injured > 0) THEN 2
