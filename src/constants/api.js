@@ -2,8 +2,9 @@ import moment from 'moment';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 
-import { cartoLayerSource, defaultYearMonth } from './app_config';
+import { cartoLayerSource } from './app_config';
 
+window.moment = moment;
 export const dateStringFormatModel = 'YYYY-MM';
 export const dateStringFormatView = 'MMM, YYYY';
 
@@ -41,6 +42,8 @@ export const makeDefaultState = () => {
     if (m && m.isValid()) {
       return m;
     }
+    const m2 = moment();
+    const defaultYearMonth = `${m2.year()}-${m2.format('MM')}`;
     return momentize(defaultYearMonth);
   };
 

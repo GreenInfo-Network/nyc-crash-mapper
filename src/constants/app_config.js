@@ -45,6 +45,3 @@ export const cartoLayerSource = {
 // basemap for Leaflet
 export const basemapURL =
   'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
-
-// default start year and month for filter by date range
-export const defaultYearMonth = '2017-01';
