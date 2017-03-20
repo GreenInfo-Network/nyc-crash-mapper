@@ -359,7 +359,7 @@ export const configureDownloadDataSQL = (params) => {
       c.the_geom,
       c.on_street_name,
       c.cross_street_name,
-      c.date_val AS date,
+      c.date_val AS date_time,
       c.latitude,
       c.longitude,
       c.borough,
@@ -373,14 +373,14 @@ export const configureDownloadDataSQL = (params) => {
       c.number_of_pedestrian_killed,
       c.number_of_persons_injured,
       c.number_of_persons_killed,
-      c.contributing_factor,
-      c.vehicle_type
+      array_to_string(c.contributing_factor, ',') as contributing_factors,
+      array_to_string(c.vehicle_type, ',') as vehicle_types
     FROM ${nyc_crashes} c
     ${joinToGeoTableClause(geo)}
     WHERE
     ${filterByDateWhereClause(startDate, endDate)}
     ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
-    ${filterByIdentifierWhereClause(identifier)}
+    ${filterByIdentifierWhereClause(identifier, geo)}
   `;
 };
