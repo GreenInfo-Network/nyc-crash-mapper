@@ -17,11 +17,14 @@ const ModalContent = (WrappedComponent, config) => {
         'share-url': 'Share URL',
       };
 
+      // wraps the child component with a title and close button
+      // passes closeModal action creator in case child needs to call it,
+      // e.g. DownloadData buttons
       return (
         <div>
           <button className="btn-modal-close" onClick={() => closeModal()} />
           <h5 className="modal-title">{title[modalType]}</h5>
-          <WrappedComponent {...this.props} />
+          <WrappedComponent {...this.props} closeModal={closeModal} />
         </div>
       );
     }
