@@ -6,10 +6,11 @@ import { cartoUser } from '../../constants/app_config';
 
 // TO DO: fix props validation for start & end dates
 const DownloadData = (props) => {
-  const { startDate, endDate, closeModal } = props;
+  const { startDate, endDate, closeModal, filterArea } = props;
   const sql = configureDownloadDataSQL({
     startDate,
     endDate,
+    ...filterArea,
     ...props,
   });
   const sqlEncoded = window.encodeURIComponent(sql);
@@ -45,4 +46,5 @@ DownloadData.propTypes = {
   closeModal: PropTypes.func.isRequired,
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
+  filterArea: PropTypes.shape({}).isRequired,
 };

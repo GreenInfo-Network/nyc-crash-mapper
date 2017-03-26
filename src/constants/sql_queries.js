@@ -1,3 +1,5 @@
+// @flow
+
 import sls from 'single-line-string';
 
 import { cartoTables } from './app_config';
@@ -198,7 +200,7 @@ const joinToGeoTableClause = (areaName) => {
 const boroughs = ['manhattan', 'bronx', 'brooklyn', 'queens', 'staten island'];
 
 // Creates the WHERE clause for boundary table identifier
-// NOTE: Deliberately not using Borough, because when > 1 year of data is selected
+// NOTE: Deliberately not using Borough polys, because when > 1 year of data is selected
 // the spatial join will time out on Borough polygons
 // @param {number || string} identifier, unique id of boundary polygon
 // @param {string} geo, name of boundary table identifier column belongs to
@@ -230,6 +232,27 @@ const filterByCustomAreaClause = (lonLatArray) => {
   return '';
 };
 
+// flow types for SQL fns
+type FilterType = {
+  injury: Object;
+  fatality: Object;
+  noInjuryFatality: Object;
+};
+
+// longitude latitude tuple
+type LngLat = [ number, number ];
+
+// params object passed to SQL template literals
+type SqlParams = {
+  nyc_crashes: string;
+  geo: string;
+  startDate: Object;
+  endDate: Object;
+  lngLats: Array<LngLat>;
+  filterType: FilterType;
+  identifier: string
+};
+
 /*
  ********************************** MAP ****************************************
  */
@@ -240,7 +263,7 @@ const filterByCustomAreaClause = (lonLatArray) => {
 // @param {string} endDate: max date; required
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
-export const configureMapSQL = (params) => {
+export const configureMapSQL = (params: SqlParams): string => {
   const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
   return sls`
@@ -286,7 +309,7 @@ export const configureMapSQL = (params) => {
  ******************************* STATS *****************************************
  */
 
-export const configureStatsSQL = (params) => {
+export const configureStatsSQL = (params: SqlParams): string => {
   const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
   return sls`
@@ -315,7 +338,7 @@ export const configureStatsSQL = (params) => {
  *************************** CONTRIBUTING FACTORS ******************************
 */
 
-export const configureFactorsSQL = (params) => {
+export const configureFactorsSQL = (params: SqlParams): string => {
   const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
 
   return sls`
@@ -348,9 +371,8 @@ export const configureFactorsSQL = (params) => {
 */
 
 // Creates the SQL query for "Download Data" buttons
-export const configureDownloadDataSQL = (params) => {
-  const { startDate, endDate, filterArea, filterType } = params;
-  const { geo, lngLats, identifier } = filterArea;
+export const configureDownloadDataSQL = (params: SqlParams): string => {
+  const { startDate, endDate, filterType, geo, lngLats, identifier } = params;
 
   return sls`
     SELECT

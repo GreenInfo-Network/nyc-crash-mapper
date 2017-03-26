@@ -1,25 +1,26 @@
+// @flow
 import moment from 'moment';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 
 import { cartoLayerSource } from './app_config';
 
-window.moment = moment;
-export const dateStringFormatModel = 'YYYY-MM';
-export const dateStringFormatView = 'MMM, YYYY';
+export const dateStringFormatModel: string = 'YYYY-MM';
+export const dateStringFormatView: string = 'MMM, YYYY';
 
-export const momentize = dateString => moment(dateString, dateStringFormatModel, true);
+export const momentize = (dateString: string): Object =>
+  moment(dateString, dateStringFormatModel, true);
 
 // Names for Filter by Boundary
-export const geos = ['Citywide', 'Borough', 'Community Board', 'City Council District',
+export const geos: Array<string> = ['Citywide', 'Borough', 'Community Board', 'City Council District',
   'Neighborhood (NTA)', 'NYPD Precinct', 'Zipcode (ZCTA)', 'Custom'];
 
 // creates default app state using any available params from window.location.hash
-export const makeDefaultState = () => {
-  const hash = window.location.hash;
-  const qString = hash.substring(3, hash.length);
-  const q = queryString.parse(qString);
-  const p = {};
+export const makeDefaultState = (): Object => {
+  const hash: string = window.location.hash;
+  const qString: string = hash.substring(3, hash.length);
+  const q: Object = queryString.parse(qString);
+  const p: Object = {};
 
   const isJsonString = (str) => {
     try {
@@ -97,7 +98,7 @@ export const makeDefaultState = () => {
 };
 
 // configures Carto crashes map layer's SQL
-export const configureLayerSource = (sql) => {
+export const configureLayerSource = (sql: string): Object => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;
 };
@@ -105,7 +106,7 @@ export const configureLayerSource = (sql) => {
 // Should the component fetch new crash data?
 // @param {object} curProps; the component's this.props
 // @param {object} nextProps; the component's nextProps in componentWillReceiveProps
-export const crashDataChanged = (curProps, nextProps) => {
+export const crashDataChanged = (curProps: Object, nextProps: Object): boolean => {
   const { endDate, startDate, filterType, identifier, geo, lngLats } = nextProps;
   const { injury, fatality, noInjuryFatality } = filterType;
 

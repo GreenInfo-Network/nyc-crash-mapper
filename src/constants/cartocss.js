@@ -1,9 +1,10 @@
+/* @flow */
 import sls from 'single-line-string';
 
 // for some reason importing this val from './app_config' isn't working...
-const nyc_crashes = 'export2016_07';
+const nyc_crashes: string = 'export2016_07';
 
-const cartocss = sls`
+const cartocss: string = sls`
   /* color values match those ./scss/_variables.scss */
   @fatality: #f03b20;
   @injury: #fd8d3c;
@@ -70,7 +71,7 @@ const cartocss = sls`
   }
 `;
 
-export const filterAreaCartocss = layer => sls`
+export const filterAreaCartocss = (layer: string) => sls`
   /* color values match those ./scss/_variables.scss */
   @marine: #105b63;
 
