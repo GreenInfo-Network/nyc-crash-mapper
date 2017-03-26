@@ -5,17 +5,11 @@ import FilterButton from './FilterButton';
 const FilterByBoundary = (props) => {
   const { filterByAreaType, toggleCustomAreaDraw, drawEnabeled, geo, identifier } = props;
 
-  const boroughLookUp = {
-    1: 'Manhattan',
-    2: 'Bronx',
-    3: 'Brooklyn',
-    4: 'Queens',
-    5: 'Staten Island',
-  };
-
+  // Creates label for the identifier of current boundary filter
+  // located next to FilterButton; e.g. 'Brooklyn', '104', 'Greenpoint'
   const showIdentifier = (name) => {
     if (geo === name && identifier) {
-      let label = name === 'Borough' ? boroughLookUp[identifier] : identifier;
+      let label = identifier;
 
       if (label.length > 16) {
         label = `${label.substring(0, 16)}...`;

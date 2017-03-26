@@ -334,9 +334,21 @@ class LeafletMap extends Component {
       this.initFilterLayerTooltips(geo);
       // set up a click handler on the cartoFilterSubLayer
       this.cartoFilterSubLayers[geo].on('featureClick', (e, latlng, pos, data) => {
-        const { identifier } = data;
+        let id;
+        // Below is a temporary work around for integrating Flow typing of identifier to string
+        // previously "identifier" could be either a string or number
+        // TO DO: set "identifier" for "nyc_borough" table to "Borough" instead of a number
+        if (geo === 'Borough') {
+          const { borough } = data;
+          id = borough;
+        } else {
+          const { identifier } = data;
+          // make sure identifier is always type string
+          id = identifier.toString();
+        }
+
         self.cartoSubLayer.setInteraction(true);
-        filterByAreaIdentifier(identifier);
+        filterByAreaIdentifier(id);
       });
     }
   }

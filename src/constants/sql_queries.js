@@ -172,7 +172,7 @@ const filterByTypeWhereClause = (filterType) => {
 };
 
 // Links the Filter by Boundary button name to corresponding Carto table name
-// NOTE: Deliberately not using Borough, because when > 1 year of data is selected
+// NOTE: Deliberately not using Borough boundaries, because when > 1 year of data is selected
 // the spatial join will time out on Borough polygons
 export const filterAreaBtnTableMap = {
   Borough: undefined,
@@ -196,9 +196,6 @@ const joinToGeoTableClause = (areaName) => {
   return '';
 };
 
-// name mappings for Carto table nyc_borough "identifier" to borough name
-const boroughs = ['manhattan', 'bronx', 'brooklyn', 'queens', 'staten island'];
-
 // Creates the WHERE clause for boundary table identifier
 // NOTE: Deliberately not using Borough polys, because when > 1 year of data is selected
 // the spatial join will time out on Borough polygons
@@ -208,7 +205,7 @@ const filterByIdentifierWhereClause = (identifier, geo) => {
   if (geo !== 'Borough' && identifier) {
     return `AND a.identifier = $$${identifier}$$`;
   } else if (geo === 'Borough' && identifier) {
-    return `AND c.borough ilike '%${boroughs[identifier - 1]}%'`;
+    return `AND c.borough ilike '%${identifier}%'`;
   }
   return '';
 };
