@@ -1,5 +1,8 @@
 {
-  "extends": "airbnb",
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended"
+  ],
   "env": {
     "browser": true
   },
@@ -17,7 +20,8 @@
     }
   },
   "plugins": [
-    "babel"
+    "babel",
+    "flowtype"
   ],
   "rules": {
     "arrow-body-style": ["error", "as-needed"],
@@ -46,6 +50,9 @@
       "webpack": {
         "config": "webpack.config.js"
       }
+    },
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
     }
   }
 }

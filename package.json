@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "export NODE_ENV=production npm run clean && webpack -p",
+    "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "serve": "webpack-dev-server",
     "deploy:gh-pages": "npm run build && . ./deploy_gh_pages.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -67,10 +68,12 @@
     "eslint-config-airbnb": "^14.0.0",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-babel": "^4.0.1",
+    "eslint-plugin-flowtype": "^2.30.4",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
+    "flow-bin": "^0.42.0",
     "html-webpack-plugin": "^2.26.0",
     "image-webpack-loader": "^3.2.0",
     "install": "^0.8.4",
