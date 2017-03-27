@@ -1,4 +1,5 @@
 /* @flow */
+// Redux action type constants
 export const START_DATE_CHANGE: string = 'START_DATE_CHANGE';
 export const END_DATE_CHANGE: string = 'END_DATE_CHANGE';
 

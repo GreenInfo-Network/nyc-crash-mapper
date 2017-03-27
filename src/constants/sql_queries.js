@@ -1,8 +1,40 @@
 // @flow
-
+import moment from 'moment';
 import sls from 'single-line-string';
 
 import { cartoTables } from './app_config';
+
+// needed for Flow to recognize moment.js object annotations
+class Moment extends moment {}
+
+// flow types for SQL functions
+// Filter by Type personTypes
+type PersonTypes = {
+  cyclist: boolean;
+  motorist: boolean;
+  pedestrian: boolean
+};
+
+// Filter by (crash) Type
+type FilterType = {
+  injury: PersonTypes;
+  fatality: PersonTypes;
+  noInjuryFatality: boolean
+};
+
+// longitude latitude tuple
+type LngLat = [number, number];
+
+// params object passed to SQL template literals
+type SqlParams = {
+  nyc_crashes: string;
+  geo: string;
+  startDate: Moment;
+  endDate: Moment;
+  lngLats: Array<LngLat>;
+  filterType: FilterType;
+  identifier: string
+};
 
 const { nyc_borough,
   nyc_city_council,
@@ -12,7 +44,7 @@ const { nyc_borough,
   nyc_zip_code,
   nyc_crashes } = cartoTables;
 
-// Links each boundary filter name to a SQL query
+// maps each boundary filter name to a SQL query
 export const filterByAreaSQL = {
   Borough: sls`
     SELECT DISTINCT
@@ -85,9 +117,9 @@ export const filterByAreaSQL = {
   `,
 };
 
-// TO DO: Use a single Query for the following 3 date queries
+// TO DO: could use a single Query for the following 3 date queries
 // selects all years for crash data, used by MonthYearSelector.js component
-export const crashesYearRangeSQL = () => sls`
+export const crashesYearRangeSQL = (): string => sls`
   SELECT DISTINCT year
   FROM ${nyc_crashes}
   ORDER BY year DESC
@@ -95,7 +127,7 @@ export const crashesYearRangeSQL = () => sls`
 
 // selects min and max year-month formatted like "YYYY-MM"
 // used by MonthYearSelector.js component
-export const minMaxDateRange = () => sls`
+export const minMaxDateRange = (): string => sls`
   SELECT
   min(year::text || '-' || LPAD(month::text, 2, '0')),
   max(year::text || '-' || LPAD(month::text, 2, '0'))
@@ -103,7 +135,7 @@ export const minMaxDateRange = () => sls`
 `;
 
 // selects max date, used for DownloadData.js component's "last updated on" msg
-export const crashesMaxDate = () => sls`
+export const crashesMaxDate = (): string => sls`
   SELECT max(date_val) as max_date
   FROM ${nyc_crashes}
 `;
@@ -115,7 +147,7 @@ export const crashesMaxDate = () => sls`
 // Generates the SQL WHERE clause for "Filter by Date Range"
 // @param {object} startDate, a moment.js object
 // @param {object} endDate, a moment.js object
-const filterByDateWhereClause = (startDate, endDate) =>
+const filterByDateWhereClause = (startDate: Moment, endDate: Moment): string =>
   sls`
       (
         year::text || LPAD(month::text, 2, '0') <=
@@ -130,11 +162,11 @@ const filterByDateWhereClause = (startDate, endDate) =>
 
 // Generates the SQL WHERE clause for "Filter by Type"
 // @param {object} the store.filterType piece of state
-const filterByTypeWhereClause = (filterType) => {
+const filterByTypeWhereClause = (filterType: FilterType): string => {
   const { injury, fatality, noInjuryFatality } = filterType;
   let whereClause = '';
 
-  const mapTypes = (personTypes, harmType) =>
+  const mapTypes = (personTypes: PersonTypes, harmType: string): string =>
     Object.keys(personTypes).filter((type) => {
       const val = personTypes[type];
       if (val) return type;
@@ -171,9 +203,9 @@ const filterByTypeWhereClause = (filterType) => {
   return whereClause;
 };
 
-// Links the Filter by Boundary button name to corresponding Carto table name
+// Maps the Filter by Boundary button name to corresponding CARTO table name
 // NOTE: Deliberately not using Borough boundaries, because when > 1 year of data is selected
-// the spatial join will time out on Borough polygons
+// the spatial join will time out
 export const filterAreaBtnTableMap = {
   Borough: undefined,
   'Community Board': nyc_community_board,
@@ -185,7 +217,7 @@ export const filterAreaBtnTableMap = {
 
 // Creates the spatial join clause with a boundary table geom
 // @param {string} areaName, name of boundary, eg 'Borough' or 'City Council Districts'
-const joinToGeoTableClause = (areaName) => {
+const joinToGeoTableClause = (areaName: string): string => {
   const geoTable = filterAreaBtnTableMap[areaName];
   if (geoTable) {
     return sls`
@@ -201,7 +233,7 @@ const joinToGeoTableClause = (areaName) => {
 // the spatial join will time out on Borough polygons
 // @param {number || string} identifier, unique id of boundary polygon
 // @param {string} geo, name of boundary table identifier column belongs to
-const filterByIdentifierWhereClause = (identifier, geo) => {
+const filterByIdentifierWhereClause = (identifier: string, geo: string): string => {
   if (geo !== 'Borough' && identifier) {
     return `AND a.identifier = $$${identifier}$$`;
   } else if (geo === 'Borough' && identifier) {
@@ -212,10 +244,10 @@ const filterByIdentifierWhereClause = (identifier, geo) => {
 
 // Creates the PostGIS query for selecting crash data by custom area created by Leaflet.Draw
 // @param {array} lonLatArray, an array of longitude, latitude arrays that form an enclosed polygon
-const filterByCustomAreaClause = (lonLatArray) => {
+const filterByCustomAreaClause = (lonLatArray: Array<LngLat>): string => {
   if (lonLatArray && lonLatArray.length) {
     // PostGIS GeomFromText expects lon lat coords like (-73.91 40.74, -73.89 40.73, ...)
-    const coordinates = lonLatArray.map(lonLat => lonLat.join(' '));
+    const coordinates: Array<string> = lonLatArray.map(lonLat => lonLat.join(' '));
     return sls`
       AND
         ST_Contains(
@@ -227,27 +259,6 @@ const filterByCustomAreaClause = (lonLatArray) => {
     `;
   }
   return '';
-};
-
-// flow types for SQL fns
-type FilterType = {
-  injury: Object;
-  fatality: Object;
-  noInjuryFatality: Object;
-};
-
-// longitude latitude tuple
-type LngLat = [ number, number ];
-
-// params object passed to SQL template literals
-type SqlParams = {
-  nyc_crashes: string;
-  geo: string;
-  startDate: Object;
-  endDate: Object;
-  lngLats: Array<LngLat>;
-  filterType: FilterType;
-  identifier: string
 };
 
 /*

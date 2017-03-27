@@ -1,8 +1,6 @@
-// @flow
-import cartocss from './cartocss';
-
+/* @flow */
 // CARTO account name
-export const cartoUser = 'chekpeds';
+export const cartoUser: string = 'chekpeds';
 
 // CARTO SQL API endpoint
 export const cartoSQLQuery = (query: string): string =>
@@ -27,6 +25,7 @@ export const cartoTables: {
   nyc_crashes: 'crashes_all_prod'
 };
 
+// field names from cartoTables.nyc_crashes used in LeafletMap's tooltips & infowindows
 export const crashDataFieldNames: Array<string> = [
   'total_crashes',
   'cyclist_injured',
@@ -41,27 +40,6 @@ export const crashDataFieldNames: Array<string> = [
   'cross_street_name'
 ];
 
-// flow type, used in cartoLayerSource
-type Sublayers = {
-  sql: string;
-  cartocss: string;
-  interactivity: string
-};
-
-export const cartoLayerSource: {
-  user_name: string;
-  type: string;
-  sublayers: Array<Sublayers>
-} = {
-  user_name: cartoUser,
-  type: 'cartodb',
-  sublayers: [{
-    sql: '',
-    cartocss,
-    interactivity: crashDataFieldNames.join(','),
-  }]
-};
-
-// basemap for Leaflet
+// tile layer URL for LeafletMap's basemap
 export const basemapURL: string =
   'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';

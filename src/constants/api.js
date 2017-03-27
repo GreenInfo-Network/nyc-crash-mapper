@@ -3,12 +3,52 @@ import moment from 'moment';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 
-import { cartoLayerSource } from './app_config';
+import { cartoUser, crashDataFieldNames } from './app_config';
+import cartocss from './cartocss';
+
+// needed for Flow to recognize moment.js object annotations
+class Moment extends moment {}
+
+// Flow type, used in cartoLayerSource
+type Sublayers = {
+  sql: string;
+  cartocss: string;
+  interactivity: string
+};
+
+// flow types for SQL functions
+// Filter by Type personTypes
+type PersonTypes = {
+  cyclist: boolean;
+  motorist: boolean;
+  pedestrian: boolean
+};
+
+// Filter by (crash) Type
+type FilterType = {
+  injury: PersonTypes;
+  fatality: PersonTypes;
+  noInjuryFatality: boolean
+};
+
+// longitude latitude tuple
+type LngLat = [number, number];
+
+// params object passed to crashDataChanged
+type Props = {
+  nyc_crashes: string;
+  geo: string;
+  startDate: Moment;
+  endDate: Moment;
+  lngLats: Array<LngLat>;
+  filterType: FilterType;
+  identifier: string
+};
 
 export const dateStringFormatModel: string = 'YYYY-MM';
 export const dateStringFormatView: string = 'MMM, YYYY';
 
-export const momentize = (dateString: string): Object =>
+export const momentize = (dateString: string): Moment =>
   moment(dateString, dateStringFormatModel, true);
 
 // Names for Filter by Boundary
@@ -65,6 +105,7 @@ export const makeDefaultState = (): Object => {
     }
   });
 
+  // NOTE: this is not the whole Redux state, just what can be set via the query string
   return {
     filterDate: {
       startDate: isValidMomentObj(p.startDate),
@@ -97,6 +138,21 @@ export const makeDefaultState = (): Object => {
   };
 };
 
+// layer source object configuration used by cartoLayer in Leaflet map
+const cartoLayerSource: {
+  user_name: string;
+  type: string;
+  sublayers: Array<Sublayers>
+} = {
+  user_name: cartoUser,
+  type: 'cartodb',
+  sublayers: [{
+    sql: '',
+    cartocss,
+    interactivity: crashDataFieldNames.join(','),
+  }]
+};
+
 // configures Carto crashes map layer's SQL
 export const configureLayerSource = (sql: string): Object => {
   cartoLayerSource.sublayers[0].sql = sql;
@@ -106,7 +162,7 @@ export const configureLayerSource = (sql: string): Object => {
 // Should the component fetch new crash data?
 // @param {object} curProps; the component's this.props
 // @param {object} nextProps; the component's nextProps in componentWillReceiveProps
-export const crashDataChanged = (curProps: Object, nextProps: Object): boolean => {
+export const crashDataChanged = (curProps: Props, nextProps: Props): boolean => {
   const { endDate, startDate, filterType, identifier, geo, lngLats } = nextProps;
   const { injury, fatality, noInjuryFatality } = filterType;
 
