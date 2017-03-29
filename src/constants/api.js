@@ -3,42 +3,20 @@ import moment from 'moment';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 
+// App flow types
+import { Params } from '../flow-types';
+
 import { cartoUser, crashDataFieldNames } from './app_config';
 import cartocss from './cartocss';
+
+// Flow type for diffing props update
+type Props = Params;
 
 // Flow type, used in cartoLayerSource
 type Sublayers = {
   sql: string;
   cartocss: string;
   interactivity: string
-};
-
-// flow types for SQL functions
-// Filter by Type personTypes
-type PersonTypes = {
-  cyclist: boolean;
-  motorist: boolean;
-  pedestrian: boolean
-};
-
-// Filter by (crash) Type
-type FilterType = {
-  injury: PersonTypes;
-  fatality: PersonTypes;
-  noInjuryFatality: boolean
-};
-
-// longitude latitude tuple
-type LngLat = [number, number];
-
-// params object passed to crashDataChanged
-type Props = {
-  geo: string;
-  startDate: moment;
-  endDate: moment;
-  lngLats: Array<LngLat>;
-  filterType: FilterType;
-  identifier: string
 };
 
 export const dateStringFormatModel: string = 'YYYY-MM';

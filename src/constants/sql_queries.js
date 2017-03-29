@@ -4,33 +4,16 @@ import sls from 'single-line-string';
 
 import { cartoTables } from './app_config';
 
-// needed for Flow to recognize moment.js object annotations
-class Moment extends moment {}
+// app flow types
+import { PersonTypes, FilterType, LngLat } from '../flow-types';
 
 // flow types for SQL functions
-// Filter by Type personTypes
-type PersonTypes = {
-  cyclist: boolean;
-  motorist: boolean;
-  pedestrian: boolean
-};
-
-// Filter by (crash) Type
-type FilterType = {
-  injury: PersonTypes;
-  fatality: PersonTypes;
-  noInjuryFatality: boolean
-};
-
-// longitude latitude tuple
-type LngLat = [number, number];
-
 // params object passed to SQL template literals
 type SqlParams = {
   nyc_crashes: string;
   geo: string;
-  startDate: Moment;
-  endDate: Moment;
+  startDate: moment;
+  endDate: moment;
   lngLats: Array<LngLat>;
   filterType: FilterType;
   identifier: string
@@ -147,7 +130,7 @@ export const crashesMaxDate = (): string => sls`
 // Generates the SQL WHERE clause for "Filter by Date Range"
 // @param {object} startDate, a moment.js object
 // @param {object} endDate, a moment.js object
-const filterByDateWhereClause = (startDate: Moment, endDate: Moment): string =>
+const filterByDateWhereClause = (startDate: moment, endDate: moment): string =>
   sls`
       (
         year::text || LPAD(month::text, 2, '0') <=
