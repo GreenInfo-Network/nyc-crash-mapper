@@ -1,6 +1,11 @@
-import React, { PropTypes } from 'react';
+// @flow
+import React from 'react';
 
-const AppHeader = (props) => {
+type Props = {
+  openModal: (modalType: string) => void
+};
+
+const AppHeader = (props: Props) => {
   const { openModal } = props;
   return (
     <div className="app-header">
@@ -17,10 +22,6 @@ const AppHeader = (props) => {
       </p>
     </div>
   );
-};
-
-AppHeader.propTypes = {
-  openModal: PropTypes.func.isRequired,
 };
 
 export default AppHeader;
