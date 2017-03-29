@@ -1,7 +1,14 @@
-import React, { Component, PropTypes } from 'react';
-import momentPropTypes from 'react-moment-proptypes';
+// @flow
+
+// libraries
+import React, { Component } from 'react';
 import queryString from 'query-string';
 
+// Flow types for 3rd party libraries
+import type Moment from 'moment';
+import type Promise from 'es6-promise';
+
+// Component imports
 import { dateStringFormatModel, crashDataChanged } from '../constants/api';
 import AppHeader from './AppHeader';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
@@ -11,7 +18,66 @@ import ModalConnected from '../containers/ModalConnected';
 import SmallDeviceMessage from './SmallDeviceMessage';
 import LoadingIndicator from './LoadingIndicator';
 
+// Filter by Type personTypes
+type PersonTypes = {
+  cyclist: boolean;
+  motorist: boolean;
+  pedestrian: boolean
+};
+
+// Filter by (crash) Type
+type FilterType = {
+  injury: PersonTypes;
+  fatality: PersonTypes;
+  noInjuryFatality: boolean
+};
+// longitude latitude tuple
+type LngLat = [number, number];
+
+// params object passed to some fetch function calls
+type Params = {
+  geo: string;
+  startDate: Moment;
+  endDate: Moment;
+  lngLats: Array<LngLat>;
+  filterType: FilterType;
+  identifier: string
+};
+
+type Props = {
+  fetchContributingFactors: (params: Params) => Promise<Object>,
+  fetchCrashesDateRange: () => Promise<Object>,
+  fetchCrashStatsData: (params: Params) => Promise<Object>,
+  fetchCrashesMaxDate: () => Promise<Object>,
+  fetchCrashesYearRange: () => Promise<Object>,
+  openModal: () => void,
+  location: Object,
+  startDate: Moment,
+  endDate: Moment,
+  filterType: FilterType,
+  identifier: string,
+  geo: string,
+  lngLats: Array<LngLat>,
+  height: number,
+  width: number,
+}
+
 class App extends Component {
+  props: Props;
+
+  static defaultProps: {
+    identifier: '',
+    geo: '',
+    lngLats: [],
+  };
+
+  state: {
+    isLoading: boolean
+  }
+
+  onMapMoved: () => void;
+  dataLoading: () => void;
+
   constructor() {
     super();
     this.state = {
@@ -31,8 +97,9 @@ class App extends Component {
       .catch((error) => { throw error; });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (crashDataChanged(this.props, nextProps)) {
+  componentWillReceiveProps(nextProps: Props) {
+    const changed = crashDataChanged(this.props, nextProps);
+    if (changed) {
       const { query } = this.props.location;
       this.updateQueryParams({ ...query, ...nextProps });
       this.props.fetchCrashStatsData(nextProps)
@@ -41,7 +108,7 @@ class App extends Component {
     }
   }
 
-  onMapMoved(event) {
+  onMapMoved(event: Object) {
     // update the url query params with map center & zoom
     if (event && event.target) {
       const query = {};
@@ -52,7 +119,7 @@ class App extends Component {
     }
   }
 
-  updateQueryParams(params) {
+  updateQueryParams(params: Object) {
     // updates the URL location query with app state filters & map zoom & center
     // this allows for "stateful URLs" so that when app loads, it will load
     // with the same filters & map zoom & center last viewed, enabling sharing
@@ -81,7 +148,7 @@ class App extends Component {
     this.context.router.push(`?${queryString.stringify(newQueryParams)}`);
   }
 
-  dataLoading(bool) {
+  dataLoading(bool: boolean) {
     this.setState({ isLoading: bool });
   }
 
@@ -114,48 +181,48 @@ class App extends Component {
   }
 }
 
-App.defaultProps = {
-  identifier: '',
-  geo: '',
-  lngLats: [],
-};
-
-App.propTypes = {
-  fetchContributingFactors: PropTypes.func.isRequired,
-  fetchCrashesDateRange: PropTypes.func.isRequired,
-  fetchCrashStatsData: PropTypes.func.isRequired,
-  fetchCrashesMaxDate: PropTypes.func.isRequired,
-  fetchCrashesYearRange: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  location: PropTypes.shape({
-    query: PropTypes.object.isRequired
-  }).isRequired,
-  startDate: momentPropTypes.momentObj.isRequired,
-  endDate: momentPropTypes.momentObj.isRequired,
-  filterType: PropTypes.shape({
-    noInjuryFatality: PropTypes.bool,
-    injury: PropTypes.shape({
-      cyclist: PropTypes.bool,
-      motorist: PropTypes.bool,
-      pedestrian: PropTypes.bool,
-    }),
-    fatality: PropTypes.shape({
-      cyclist: PropTypes.bool,
-      motorist: PropTypes.bool,
-      pedestrian: PropTypes.bool,
-    }),
-  }).isRequired,
-  identifier: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-  geo: PropTypes.string,
-  lngLats: PropTypes.arrayOf(
-    PropTypes.arrayOf(PropTypes.number)
-  ),
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-};
+// App.defaultProps = {
+//   identifier: '',
+//   geo: '',
+//   lngLats: [],
+// };
+//
+// App.propTypes = {
+//   fetchContributingFactors: PropTypes.func.isRequired,
+//   fetchCrashesDateRange: PropTypes.func.isRequired,
+//   fetchCrashStatsData: PropTypes.func.isRequired,
+//   fetchCrashesMaxDate: PropTypes.func.isRequired,
+//   fetchCrashesYearRange: PropTypes.func.isRequired,
+//   openModal: PropTypes.func.isRequired,
+//   location: PropTypes.shape({
+//     query: PropTypes.object.isRequired
+//   }).isRequired,
+//   startDate: momentPropTypes.momentObj.isRequired,
+//   endDate: momentPropTypes.momentObj.isRequired,
+//   filterType: PropTypes.shape({
+//     noInjuryFatality: PropTypes.bool,
+//     injury: PropTypes.shape({
+//       cyclist: PropTypes.bool,
+//       motorist: PropTypes.bool,
+//       pedestrian: PropTypes.bool,
+//     }),
+//     fatality: PropTypes.shape({
+//       cyclist: PropTypes.bool,
+//       motorist: PropTypes.bool,
+//       pedestrian: PropTypes.bool,
+//     }),
+//   }).isRequired,
+//   identifier: PropTypes.oneOfType([
+//     PropTypes.number,
+//     PropTypes.string,
+//   ]),
+//   geo: PropTypes.string,
+//   lngLats: PropTypes.arrayOf(
+//     PropTypes.arrayOf(PropTypes.number)
+//   ),
+//   height: PropTypes.number.isRequired,
+//   width: PropTypes.number.isRequired,
+// };
 
 App.contextTypes = {
   router: React.PropTypes.object.isRequired
