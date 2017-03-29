@@ -6,9 +6,6 @@ import isEqual from 'lodash/isEqual';
 import { cartoUser, crashDataFieldNames } from './app_config';
 import cartocss from './cartocss';
 
-// needed for Flow to recognize moment.js object annotations
-class Moment extends moment {}
-
 // Flow type, used in cartoLayerSource
 type Sublayers = {
   sql: string;
@@ -36,10 +33,9 @@ type LngLat = [number, number];
 
 // params object passed to crashDataChanged
 type Props = {
-  nyc_crashes: string;
   geo: string;
-  startDate: Moment;
-  endDate: Moment;
+  startDate: moment;
+  endDate: moment;
   lngLats: Array<LngLat>;
   filterType: FilterType;
   identifier: string
@@ -48,7 +44,7 @@ type Props = {
 export const dateStringFormatModel: string = 'YYYY-MM';
 export const dateStringFormatView: string = 'MMM, YYYY';
 
-export const momentize = (dateString: string): Moment =>
+export const momentize = (dateString: string): moment =>
   moment(dateString, dateStringFormatModel, true);
 
 // Names for Filter by Boundary
