@@ -141,4 +141,10 @@ class App extends Component {
   }
 }
 
+// Do context types apply to Flow?
+// removing this seems to prevent React Router from working
+App.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
 export default App;

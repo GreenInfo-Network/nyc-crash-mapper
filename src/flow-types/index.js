@@ -1,4 +1,4 @@
-// Flow types for App wide use
+// Flow types for Components
 
 // Flow types for 3rd party libraries
 import type Moment from 'moment';
