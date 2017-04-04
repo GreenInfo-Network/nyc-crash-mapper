@@ -1,3 +1,5 @@
+// @flow
+
 import {
   FILTER_BY_AREA_TYPE,
   FILTER_BY_AREA_IDENTIFIER,
@@ -5,14 +7,41 @@ import {
   TOGGLE_CUSTOM_AREA_DRAW,
 } from '../constants/action_types';
 
+// Flow Action types
+import {
+  FilterByAreaTypeAction,
+  FilterByAreaIdentifierAction,
+  ToggleCustomAreaDrawAction,
+  FilterByAreaCustomAction,
+} from '../actions';
+
+// LngLat flow type
+import { LngLats } from '../flow-types';
+
+
+type FilterByAreaState = {
+  geo: string,
+  identifier: string,
+  lngLats: LngLats,
+  drawEnabeled: boolean
+};
+
+type Action = FilterByAreaTypeAction | FilterByAreaIdentifierAction |
+  ToggleCustomAreaDrawAction | FilterByAreaCustomAction;
+
 const defaultState = {
   geo: 'Citywide',
-  identifier: undefined,
-  latLons: [],
+  identifier: '',
+  lngLats: [],
   drawEnabeled: false,
 };
 
-export default (state = defaultState, action) => {
+
+// Reducer
+export default (
+  state: FilterByAreaState = defaultState,
+  action: Action
+): FilterByAreaState => {
   switch (action.type) {
     case FILTER_BY_AREA_TYPE:
       return {

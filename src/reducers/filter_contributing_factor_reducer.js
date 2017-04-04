@@ -1,6 +1,14 @@
+// @flow
+
 import { FILTER_BY_CONTRIBUTING_FACTOR } from '../constants/action_types';
 
-export default (state = 'ALL', action) => {
+// Flow Types
+import { FilterByContributingFactor } from '../actions';
+
+export default (
+  state: string = 'ALL',
+  action: FilterByContributingFactor
+): FilterByContributingFactor => {
   switch (action.type) {
     case FILTER_BY_CONTRIBUTING_FACTOR:
       return action.factor;
