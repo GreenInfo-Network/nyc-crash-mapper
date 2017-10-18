@@ -4,8 +4,8 @@ import cartocss from './cartocss';
 export const cartoUser = 'chekpeds';
 
 // CARTO SQL API endpoint
-export const cartoSQLQuery = query =>
-  `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
+export const cartoSQLQuery = (query, format) =>
+  `https://${cartoUser}.carto.com/api/v2/sql?${format === 'geojson' ? 'format=GeoJSON&' : ''}q=${query}`;
 
 // CARTO table names lookup
 export const cartoTables = {
