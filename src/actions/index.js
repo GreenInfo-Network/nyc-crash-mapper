@@ -3,6 +3,7 @@ export { fetchCrashStatsData,
   fetchCrashesYearRange,
   fetchCrashesDateRange,
   fetchCrashesMaxDate,
+  fetchGeoPolygons,
 } from './async_actions';
 export { startDateChange, endDateChange } from './filter_by_date_actions';
 export {

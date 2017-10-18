@@ -7,7 +7,8 @@ import {
   configureFactorsSQL,
   crashesYearRangeSQL,
   minMaxDateRange,
-  crashesMaxDate } from '../constants/sql_queries';
+  crashesMaxDate,
+  filterByAreaSQL } from '../constants/sql_queries';
 
 polyfill();
 
@@ -138,5 +139,31 @@ export const fetchCrashesMaxDate = () => {
       .then(res => res.json())
       .then(json => dispatch(receiveCrashesMaxDate(json.rows)))
       .catch(error => dispatch(receiveCrashesMaxDateError(error)));
+  };
+};
+
+const requestGeoPolygons = () => ({
+  type: actions.GEO_POLYGONS_REQUEST,
+});
+
+const receiveGeoPolygons = geojson => ({
+  type: actions.GEO_POLYGONS_SUCCESS,
+  geojson,
+});
+
+const receiveGeoPolygonsError = error => ({
+  type: actions.GEO_POLYGONS_ERROR,
+  error,
+});
+
+export const fetchGeoPolygons = (geo) => {
+  const query = encodeURIComponent(filterByAreaSQL[geo]);
+  const url = cartoSQLQuery(query, 'geojson');
+  return (dispatch) => {
+    dispatch(requestGeoPolygons());
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => dispatch(receiveGeoPolygons(json)))
+      .catch(error => dispatch(receiveGeoPolygonsError(error)));
   };
 };
