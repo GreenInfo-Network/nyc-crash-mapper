@@ -14,73 +14,62 @@ const { nyc_borough,
 export const filterByAreaSQL = {
   Borough: sls`
     SELECT DISTINCT
-      borough,
       identifier,
-      cartodb_id,
-      the_geom,
-      the_geom_webmercator
+      ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_borough}
-    ORDER BY
+    GROUP BY
       identifier
   `,
 
   'City Council District': sls`
     SELECT DISTINCT
       identifier,
-      cartodb_id,
-      the_geom_webmercator
+      ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_city_council}
-    ORDER BY
+    GROUP BY
       identifier
   `,
 
   'Community Board': sls`
     SELECT DISTINCT
       identifier,
-      cartodb_id,
-      the_geom_webmercator
+      ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_community_board}
-    ORDER BY
+    GROUP BY
       identifier
   `,
 
   'Neighborhood (NTA)': sls`
     SELECT DISTINCT
-      borough,
       identifier,
-      cartodb_id,
-      the_geom_webmercator
+      ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_neighborhood}
-    ORDER BY
-      borough, identifier
+    GROUP BY
+      identifier
   `,
 
   'NYPD Precinct': sls`
     SELECT DISTINCT
-      borough,
       identifier,
-      cartodb_id,
-      the_geom_webmercator
+      ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_nypd_precinct}
-    ORDER BY
-      borough, identifier
+    GROUP BY
+      identifier
   `,
 
   'Zipcode (ZCTA)': sls`
     SELECT DISTINCT
-      borough,
       identifier,
-      cartodb_id,
-      the_geom_webmercator
+      ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_zip_code}
-    ORDER BY
-      borough, identifier
+    GROUP BY
+      identifier
   `,
 };
 
