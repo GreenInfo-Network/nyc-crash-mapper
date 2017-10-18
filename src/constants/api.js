@@ -14,6 +14,9 @@ export const momentize = dateString => moment(dateString, dateStringFormatModel,
 export const geos = ['Citywide', 'Borough', 'Community Board', 'City Council District',
   'Neighborhood (NTA)', 'NYPD Precinct', 'Zipcode (ZCTA)', 'Custom'];
 
+// Borough Names mapped to array index position
+export const boroughs = [undefined, 'Manhattan', 'The Bronx', 'Brooklyn', 'Queens', 'Staten Island'];
+
 // creates default app state using any available params from window.location.hash
 export const makeDefaultState = () => {
   const hash = window.location.hash;

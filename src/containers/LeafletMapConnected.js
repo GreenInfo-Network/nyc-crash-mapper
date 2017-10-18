@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import { filterByAreaIdentifier, filterByAreaCustom } from '../actions/';
+import { filterByAreaIdentifier, filterByAreaCustom, fetchGeoPolygons } from '../actions/';
 import LeafletMap from '../components/LeafletMap/';
 
 const mapStateToProps = ({ filterDate, filterType, filterArea }, ownProps) => {
   const { startDate, endDate } = filterDate;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
-  const { geo, identifier, lngLats, drawEnabeled } = filterArea;
+  const { geo, geojson, identifier, lngLats, drawEnabeled } = filterArea;
   return {
     zoom: zoom ? Number(zoom) : undefined,
     lat: lat ? Number(lat) : undefined,
@@ -17,6 +17,7 @@ const mapStateToProps = ({ filterDate, filterType, filterArea }, ownProps) => {
     filterType,
     drawEnabeled,
     geo,
+    geojson,
     identifier,
     lngLats,
   };
@@ -25,4 +26,5 @@ const mapStateToProps = ({ filterDate, filterType, filterArea }, ownProps) => {
 export default connect(mapStateToProps, {
   filterByAreaIdentifier,
   filterByAreaCustom,
+  fetchGeoPolygons,
 })(LeafletMap);

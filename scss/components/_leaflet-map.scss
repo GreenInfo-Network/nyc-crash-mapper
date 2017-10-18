@@ -138,4 +138,15 @@
     font-size: 1.1rem;
     color: $marine-light;
   }
+
+  .filter-area-tooltip {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 6;
+    padding: 0 3px;
+    color: $marine-light;
+    background-color: $off-white;
+  }
 }

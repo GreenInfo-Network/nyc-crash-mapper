@@ -2,14 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import momentPropTypes from 'react-moment-proptypes';
 import sls from 'single-line-string';
 
-import {
-  configureMapSQL,
-  filterAreaBtnTableMap,
-  filterByAreaSQL
-} from '../../constants/sql_queries';
+import { configureMapSQL } from '../../constants/sql_queries';
 import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
-import { configureLayerSource, crashDataChanged } from '../../constants/api';
-import { filterAreaCartocss } from '../../constants/cartocss';
+import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
 
 import ZoomControls from './ZoomControls';
 import CustomFilter from './customFilter';
@@ -23,17 +18,17 @@ class LeafletMap extends Component {
       paddingBottomRight: [300, 120],
       maxZoom: 18
     };
-    this.mapDiv = undefined;
-    this.map = undefined;
+    this.mapDiv = undefined; // div Leaflet mounts to
+    this.map = undefined; // instance of L.map
+    this.filterPolygons = undefined; // L.geoJson for selecting an geo area to filter by
+    this.filterAreaTooltip = undefined; // div for tooltip for filter area polygons
     this.mapStatsDisclaimer = undefined;
     this.customDraw = undefined;
     this.cartoLayer = undefined;
     this.cartoSubLayer = undefined;
-    this.cartoFilterSubLayers = {};
     this.cartodbSQL = undefined;
     this.cartoSubLayerTooltip = undefined;
     this.cartoInfowindow = undefined;
-    this.filterLayerTooltips = {};
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
@@ -45,7 +40,12 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, lngLats, drawEnabeled } = nextProps;
+    const { geo, geojson, identifier, lngLats, drawEnabeled } = nextProps;
+
+    if (identifier && identifier !== this.props.identifier) {
+      // user filtered by a specific geography, so hide the GeoJSON boundary overlay
+      this.map.removeLayer(this.filterPolygons);
+    }
 
     if (crashDataChanged(this.props, nextProps)) {
       // if boundary filters were changed by user, update map data
@@ -54,6 +54,7 @@ class LeafletMap extends Component {
 
     if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
       this.showMapStatsDisclaimer();
+      this.hideFilterAreaPolygons();
     } else if (geo !== 'Citywide') {
       this.hideMapStatsDisclaimer();
     }
@@ -61,13 +62,22 @@ class LeafletMap extends Component {
     if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
       // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
-      // show the user polygons for filter by area / boundary
-      this.renderFilterArea(geo);
+      // make an API call for GeoJSON of boundary polygons
+      this.props.fetchGeoPolygons(geo);
+    }
+
+    if (geojson.features.length) {
+      if (
+        (geojson.geoName !== this.props.geojson.geoName) ||
+        (geo !== 'Citywide' && this.props.geo === 'Citywide') ||
+        (geo !== 'Custom' && this.props.geo === 'Custom')
+      ) {
+        // show the user polygons for filter by area / boundary
+        this.renderFilterPolygons(geo, geojson);
+      }
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
-      // hide / disable any visible filter area polygon
-      this.hideFilterSublayers();
       // enable Leaflet Draw
       this.customFilterDraw();
     }
@@ -191,9 +201,6 @@ class LeafletMap extends Component {
 
   hideCartoTooltips() {
     this.cartoSubLayerTooltip.hide();
-    Object.keys(this.filterLayerTooltips).forEach((key) => {
-      this.filterLayerTooltips[key].hide();
-    });
   }
 
   hideCartoInfowindow() {
@@ -213,10 +220,8 @@ class LeafletMap extends Component {
   updateCartoSubLayer(nextProps) {
     // create the new sql query string
     const sql = configureMapSQL(nextProps);
-    // hide any visible filter sublayer
-    this.hideFilterSublayers();
-    // hide any previously visible tooltips from filter sublayer
-    // hideCartoTooltips('filter-layer');
+    // hide any visible tooltips
+    this.hideFilterAreaTooltip();
     this.hideCartoTooltips();
     // hide any open infowindow
     this.hideCartoInfowindow();
@@ -226,41 +231,6 @@ class LeafletMap extends Component {
     this.cartoSubLayer.setInteraction(true);
     // update the cartoLayer SQL using new props, such as start and end dates
     this.cartoSubLayer.setSQL(sql);
-  }
-
-  hideFilterSublayers() {
-    Object.keys(this.cartoFilterSubLayers).forEach((sublayer) => {
-      this.cartoFilterSubLayers[sublayer].hide();
-    });
-  }
-
-  initFilterLayerTooltips(geo) {
-    // geo comes from nextProps so must be passed as a parameter
-    const self = this;
-    const labelMappings = {
-      Borough: '{{borough}}',
-      'Community Board': '<span>CB</span> {{identifier}}',
-      'City Council District': '<span>CD</span> {{identifier}}',
-      'Neighborhood (NTA)': '{{identifier}}',
-      'NYPD Precinct': '<span>NYPD Precinct</span> {{identifier}}',
-      'Zipcode (ZCTA)': '<span>Zipcode</span> {{identifier}}'
-    };
-    const template = sls`
-      <div class="cartodb-tooltip-content-wrapper filter-layer">
-        <p>${labelMappings[geo]}</p>
-      </div>
-    `;
-
-    this.filterLayerTooltips[geo] = this.cartoLayer.leafletMap.viz.addOverlay({
-      type: 'tooltip',
-      layer: self.cartoFilterSubLayers[geo],
-      template,
-      position: 'bottom|right',
-      fields: [
-        { borough: 'borough' },
-        { identifier: 'identifier' }
-      ]
-    });
   }
 
   initCustomFilter() {
@@ -275,6 +245,8 @@ class LeafletMap extends Component {
 
   customFilterDraw() {
     this.cartoSubLayer.setInteraction(false);
+    this.hideFilterAreaPolygons();
+    this.hideFilterAreaTooltip();
     this.hideCartoTooltips();
     this.hideCartoInfowindow();
     this.customDraw.startDraw();
@@ -293,52 +265,99 @@ class LeafletMap extends Component {
     this.mapStatsDisclaimer.style.display = 'none';
   }
 
-  renderFilterArea(geo) {
-    // renders the Carto subLayer for a boundary geometry which the user may
-    // click on to filter data by
-    const self = this;
-    const { filterByAreaIdentifier } = this.props;
-    const table = filterAreaBtnTableMap[geo];
-    const cartocss = filterAreaCartocss(table);
-    const sql = filterByAreaSQL[geo];
-    const interactivity = sql.indexOf('borough') > -1 ? ['cartodb_id', 'borough', 'identifier'] : ['cartodb_id', 'identifier'];
+  revealFilterAreaTooltip(geo, event) {
+    const { containerPoint, target } = event;
+    const { x, y } = containerPoint;
+    const identifier = target.feature.properties.identifier;
+    const p = this.filterAreaTooltip.children[0];
+    this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
+    p.textContent = geo === 'Borough' ? boroughs[identifier] : identifier;
+  }
 
-    // hide any visible filter sublayer
-    this.hideFilterSublayers();
-    // temporarily disable cartoSubLayer tooltips
-    this.hideCartoTooltips();
-    // temporarily disable cartoSubLayer infowindow
-    this.hideCartoInfowindow();
-    // temporarily disable cartoSubLayer interactivity
-    this.cartoSubLayer.setInteraction(false);
+  hideFilterAreaTooltip() {
+    this.filterAreaTooltip.style.display = 'none';
+  }
+
+  hideFilterAreaPolygons() {
+    // clear any existing geojson polygons that may be visible
+    if (this.filterPolygons) {
+      this.map.removeLayer(this.filterPolygons);
+    }
+  }
+
+  renderFilterPolygons(geo, geojson) {
+    const self = this;
+
+    // functions to pass to L.geoJson.options.onEachFeature
+    function handleMouseover(e) {
+      const layer = e.target;
+
+      layer.setStyle({
+        fillColor: '#105b63',
+        fillOpacity: 1
+      });
+
+      self.revealFilterAreaTooltip(geo, e);
+
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+    }
+
+    function handleMouseout(e) {
+      self.filterPolygons.resetStyle(e.target);
+      self.hideFilterAreaTooltip();
+    }
+
+    function handleMousemove(e) {
+      self.revealFilterAreaTooltip(geo, e);
+    }
+
+    function handleClick(e) {
+      const target = e.target;
+      const identifier = target.feature.properties.identifier;
+      self.cartoSubLayer.setInteraction(true);
+      self.props.filterByAreaIdentifier(identifier);
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: handleMouseover,
+        mouseout: handleMouseout,
+        mousemove: handleMousemove,
+        click: handleClick,
+      });
+    }
+
+    // sets the default polygon style for filterPolygons
+    function style() {
+      return {
+        fillColor: '#17838f',
+        weight: 1,
+        opacity: 1,
+        color: '#fff',
+        fillOpacity: 0.7
+      };
+    }
 
     if (geo !== 'Custom') {
-      // for filter area polygons, fit map bounds to the entire city
+      // for filter area polygons, fit map bounds to all of NYC
       this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }
 
-    if (this.cartoFilterSubLayers[geo]) {
-      // if the filter sublayer is already stored then show it
-      this.cartoFilterSubLayers[geo].show();
-      this.cartoFilterSubLayers[geo].setInteraction(true);
-    } else {
-      // store the filter sublayer
-      this.cartoFilterSubLayers[geo] = this.cartoLayer.createSubLayer({
-        sql,
-        cartocss,
-        interactivity
-      });
+    // hide Carto sublayer tooltips / info windows & prevent interaction
+    this.hideCartoTooltips();
+    this.hideCartoInfowindow();
+    this.cartoSubLayer.setInteraction(false);
 
-      this.cartoFilterSubLayers[geo].setInteraction(true);
-      // add tooltips for filter layer
-      this.initFilterLayerTooltips(geo);
-      // set up a click handler on the cartoFilterSubLayer
-      this.cartoFilterSubLayers[geo].on('featureClick', (e, latlng, pos, data) => {
-        const { identifier } = data;
-        self.cartoSubLayer.setInteraction(true);
-        filterByAreaIdentifier(identifier);
-      });
-    }
+    // clear any existing geojson polygons that may be visible
+    this.hideFilterAreaPolygons();
+
+    // set the geojson layer, store it, and add it to the map
+    this.filterPolygons = L.geoJson(geojson, {
+      onEachFeature,
+      style,
+    }).addTo(this.map);
   }
 
   render() {
@@ -354,6 +373,9 @@ class LeafletMap extends Component {
             due to lack of location information provided by the NYPD.
           </p>
         </div>
+        <div ref={(_) => { this.filterAreaTooltip = _; }} className="filter-area-tooltip">
+          <p />
+        </div>
         <div ref={(_) => { this.mapDiv = _; }} id="map" />
       </div>
     );
@@ -366,6 +388,7 @@ LeafletMap.defaultProps = {
   lng: -73.982,
   identifier: '',
   lngLats: [],
+  geojson: {},
 };
 
 LeafletMap.propTypes = {
@@ -373,10 +396,16 @@ LeafletMap.propTypes = {
   dataLoading: PropTypes.func.isRequired,
   filterByAreaIdentifier: PropTypes.func.isRequired,
   filterByAreaCustom: PropTypes.func.isRequired,
+  fetchGeoPolygons: PropTypes.func.isRequired,
   zoom: PropTypes.number,
   lat: PropTypes.number,
   lng: PropTypes.number,
   geo: PropTypes.string.isRequired,
+  geojson: PropTypes.shape({
+    type: PropTypes.string,
+    features: PropTypes.array,
+    geoName: PropTypes.string,
+  }),
   identifier: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
