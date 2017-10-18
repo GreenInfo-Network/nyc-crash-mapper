@@ -17,6 +17,7 @@ export const filterByAreaSQL = {
       borough,
       identifier,
       cartodb_id,
+      the_geom,
       the_geom_webmercator
     FROM
       ${nyc_borough}
