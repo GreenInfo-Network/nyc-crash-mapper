@@ -25,6 +25,7 @@ class LeafletMap extends Component {
     };
     this.mapDiv = undefined;
     this.map = undefined;
+    this.filterPolygons = undefined;
     this.mapStatsDisclaimer = undefined;
     this.customDraw = undefined;
     this.cartoLayer = undefined;
@@ -45,7 +46,7 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, lngLats, drawEnabeled } = nextProps;
+    const { geo, geojson, lngLats, drawEnabeled } = nextProps;
 
     if (crashDataChanged(this.props, nextProps)) {
       // if boundary filters were changed by user, update map data
@@ -61,8 +62,13 @@ class LeafletMap extends Component {
     if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
       // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
+      // make an API call for GeoJSON of boundary polygons
+      this.props.fetchGeoPolygons(geo);
+    }
+
+    if (geojson.features.length && !this.props.geojson.features.length) {
       // show the user polygons for filter by area / boundary
-      this.renderFilterArea(geo);
+      this.renderFilterPolygons(geojson);
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
@@ -293,6 +299,54 @@ class LeafletMap extends Component {
     this.mapStatsDisclaimer.style.display = 'none';
   }
 
+  renderFilterPolygons(geojson) {
+    const self = this;
+    this.hideCartoTooltips();
+    this.hideCartoInfowindow();
+
+    function highlightFeature(e) {
+      const layer = e.target;
+      layer.setStyle({
+        fillColor: '#105b63',
+        fillOpacity: 1
+      });
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+    }
+
+    function resetHighlight(e) {
+      self.filterPolygons.resetStyle(e.target);
+    }
+
+    function zoomToFeature(e) {
+      self.map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+      });
+    }
+
+    function style() {
+      return {
+        fillColor: '#17838f',
+        weight: 1,
+        opacity: 1,
+        color: '#fff',
+        fillOpacity: 0.7
+      };
+    }
+
+    this.filterPolygons = L.geoJson(geojson, {
+      onEachFeature,
+      style,
+    }).addTo(this.map);
+  }
+
   renderFilterArea(geo) {
     // renders the Carto subLayer for a boundary geometry which the user may
     // click on to filter data by
@@ -366,6 +420,7 @@ LeafletMap.defaultProps = {
   lng: -73.982,
   identifier: '',
   lngLats: [],
+  geojson: {},
 };
 
 LeafletMap.propTypes = {
@@ -373,10 +428,15 @@ LeafletMap.propTypes = {
   dataLoading: PropTypes.func.isRequired,
   filterByAreaIdentifier: PropTypes.func.isRequired,
   filterByAreaCustom: PropTypes.func.isRequired,
+  fetchGeoPolygons: PropTypes.func.isRequired,
   zoom: PropTypes.number,
   lat: PropTypes.number,
   lng: PropTypes.number,
   geo: PropTypes.string.isRequired,
+  geojson: PropTypes.shape({
+    type: PropTypes.string,
+    features: PropTypes.array,
+  }),
   identifier: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
