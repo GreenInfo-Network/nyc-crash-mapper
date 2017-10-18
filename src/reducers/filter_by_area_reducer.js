@@ -11,7 +11,11 @@ import {
 export const defaultState = {
   _isFetching: false,
   geo: 'Citywide',
-  geojson: {},
+  geojson: {
+    type: '',
+    features: [],
+    geoName: '',
+  },
   identifier: undefined,
   latLons: [],
   drawEnabeled: false,
