@@ -8,9 +8,10 @@ import {
   GEO_POLYGONS_ERROR,
 } from '../constants/action_types';
 
-const defaultState = {
+export const defaultState = {
   _isFetching: false,
   geo: 'Citywide',
+  geojson: {},
   identifier: undefined,
   latLons: [],
   drawEnabeled: false,

@@ -3,8 +3,8 @@ import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 
 import { cartoLayerSource } from './app_config';
+import { defaultState } from '../reducers/filter_by_area_reducer';
 
-window.moment = moment;
 export const dateStringFormatModel = 'YYYY-MM';
 export const dateStringFormatView = 'MMM, YYYY';
 
@@ -70,10 +70,10 @@ export const makeDefaultState = () => {
       endDate: isValidMomentObj(p.endDate),
     },
     filterArea: {
+      ...defaultState,
       geo: isValidGeo(p.geo),
       identifier: p.identifier || undefined,
       lngLats: p.lngLats || [],
-      drawEnabeled: false,
     },
     filterType: {
       injury: {
