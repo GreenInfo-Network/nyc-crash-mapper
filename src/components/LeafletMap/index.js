@@ -266,8 +266,8 @@ class LeafletMap extends Component {
   }
 
   revealFilterAreaTooltip(geo, event) {
-    const { layerPoint, target } = event;
-    const { x, y } = layerPoint;
+    const { containerPoint, target } = event;
+    const { x, y } = containerPoint;
     const identifier = target.feature.properties.identifier;
     const p = this.filterAreaTooltip.children[0];
     this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
