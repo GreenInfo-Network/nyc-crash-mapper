@@ -70,17 +70,4 @@ const cartocss = sls`
   }
 `;
 
-export const filterAreaCartocss = layer => sls`
-  /* color values match those ./scss/_variables.scss */
-  @marine: #105b63;
-
-  #${layer} {
-    polygon-fill: lighten(@marine, 10);
-    polygon-opacity: 0.7;
-    line-color: #fff;
-    line-width: 1;
-    line-opacity: 1;
-  }"
-`;
-
 export default cartocss;

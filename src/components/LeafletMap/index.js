@@ -2,14 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import momentPropTypes from 'react-moment-proptypes';
 import sls from 'single-line-string';
 
-import {
-  configureMapSQL,
-  filterAreaBtnTableMap,
-  filterByAreaSQL
-} from '../../constants/sql_queries';
+import { configureMapSQL } from '../../constants/sql_queries';
 import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
 import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
-import { filterAreaCartocss } from '../../constants/cartocss';
 
 import ZoomControls from './ZoomControls';
 import CustomFilter from './customFilter';
@@ -31,11 +26,9 @@ class LeafletMap extends Component {
     this.customDraw = undefined;
     this.cartoLayer = undefined;
     this.cartoSubLayer = undefined;
-    this.cartoFilterSubLayers = {};
     this.cartodbSQL = undefined;
     this.cartoSubLayerTooltip = undefined;
     this.cartoInfowindow = undefined;
-    this.filterLayerTooltips = {};
     this.handleZoomIn = this.handleZoomIn.bind(this);
     this.handleZoomOut = this.handleZoomOut.bind(this);
   }
@@ -85,8 +78,6 @@ class LeafletMap extends Component {
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
-      // hide / disable any visible filter area polygon
-      this.hideFilterSublayers();
       // enable Leaflet Draw
       this.customFilterDraw();
     }
@@ -210,9 +201,6 @@ class LeafletMap extends Component {
 
   hideCartoTooltips() {
     this.cartoSubLayerTooltip.hide();
-    Object.keys(this.filterLayerTooltips).forEach((key) => {
-      this.filterLayerTooltips[key].hide();
-    });
   }
 
   hideCartoInfowindow() {
@@ -232,9 +220,7 @@ class LeafletMap extends Component {
   updateCartoSubLayer(nextProps) {
     // create the new sql query string
     const sql = configureMapSQL(nextProps);
-    // hide any visible filter sublayer
-    this.hideFilterSublayers();
-    // hide any previously visible tooltips from filter sublayer
+    // hide any visible tooltips
     this.hideFilterAreaTooltip();
     this.hideCartoTooltips();
     // hide any open infowindow
@@ -245,41 +231,6 @@ class LeafletMap extends Component {
     this.cartoSubLayer.setInteraction(true);
     // update the cartoLayer SQL using new props, such as start and end dates
     this.cartoSubLayer.setSQL(sql);
-  }
-
-  hideFilterSublayers() {
-    Object.keys(this.cartoFilterSubLayers).forEach((sublayer) => {
-      this.cartoFilterSubLayers[sublayer].hide();
-    });
-  }
-
-  initFilterLayerTooltips(geo) {
-    // geo comes from nextProps so must be passed as a parameter
-    const self = this;
-    const labelMappings = {
-      Borough: '{{borough}}',
-      'Community Board': '<span>CB</span> {{identifier}}',
-      'City Council District': '<span>CD</span> {{identifier}}',
-      'Neighborhood (NTA)': '{{identifier}}',
-      'NYPD Precinct': '<span>NYPD Precinct</span> {{identifier}}',
-      'Zipcode (ZCTA)': '<span>Zipcode</span> {{identifier}}'
-    };
-    const template = sls`
-      <div class="cartodb-tooltip-content-wrapper filter-layer">
-        <p>${labelMappings[geo]}</p>
-      </div>
-    `;
-
-    this.filterLayerTooltips[geo] = this.cartoLayer.leafletMap.viz.addOverlay({
-      type: 'tooltip',
-      layer: self.cartoFilterSubLayers[geo],
-      template,
-      position: 'bottom|right',
-      fields: [
-        { borough: 'borough' },
-        { identifier: 'identifier' }
-      ]
-    });
   }
 
   initCustomFilter() {
@@ -337,6 +288,7 @@ class LeafletMap extends Component {
   renderFilterPolygons(geo, geojson) {
     const self = this;
 
+    // functions to pass to L.geoJson.options.onEachFeature
     function handleMouseover(e) {
       const layer = e.target;
 
@@ -377,6 +329,7 @@ class LeafletMap extends Component {
       });
     }
 
+    // sets the default polygon style for filterPolygons
     function style() {
       return {
         fillColor: '#17838f',
@@ -400,59 +353,11 @@ class LeafletMap extends Component {
     // clear any existing geojson polygons that may be visible
     this.hideFilterAreaPolygons();
 
+    // set the geojson layer, store it, and add it to the map
     this.filterPolygons = L.geoJson(geojson, {
       onEachFeature,
       style,
     }).addTo(this.map);
-  }
-
-  renderFilterArea(geo) {
-    // renders the Carto subLayer for a boundary geometry which the user may
-    // click on to filter data by
-    const self = this;
-    const { filterByAreaIdentifier } = this.props;
-    const table = filterAreaBtnTableMap[geo];
-    const cartocss = filterAreaCartocss(table);
-    const sql = filterByAreaSQL[geo];
-    const interactivity = sql.indexOf('borough') > -1 ? ['cartodb_id', 'borough', 'identifier'] :
-      ['cartodb_id', 'identifier'];
-
-    // hide any visible filter sublayer
-    this.hideFilterSublayers();
-    // temporarily disable cartoSubLayer tooltips
-    this.hideCartoTooltips();
-    // temporarily disable cartoSubLayer infowindow
-    this.hideCartoInfowindow();
-    // temporarily disable cartoSubLayer interactivity
-    this.cartoSubLayer.setInteraction(false);
-
-    if (geo !== 'Custom') {
-      // for filter area polygons, fit map bounds to the entire city
-      this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
-    }
-
-    if (this.cartoFilterSubLayers[geo]) {
-      // if the filter sublayer is already stored then show it
-      this.cartoFilterSubLayers[geo].show();
-      this.cartoFilterSubLayers[geo].setInteraction(true);
-    } else {
-      // store the filter sublayer
-      this.cartoFilterSubLayers[geo] = this.cartoLayer.createSubLayer({
-        sql,
-        cartocss,
-        interactivity
-      });
-
-      this.cartoFilterSubLayers[geo].setInteraction(true);
-      // add tooltips for filter layer
-      this.initFilterLayerTooltips(geo);
-      // set up a click handler on the cartoFilterSubLayer
-      this.cartoFilterSubLayers[geo].on('featureClick', (e, latlng, pos, data) => {
-        const { identifier } = data;
-        self.cartoSubLayer.setInteraction(true);
-        filterByAreaIdentifier(identifier);
-      });
-    }
   }
 
   render() {
