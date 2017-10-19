@@ -14,6 +14,7 @@ export const defaultState = {
   geojson: {
     type: '',
     features: [],
+    geoName: '',
   },
   identifier: undefined,
   latLons: [],

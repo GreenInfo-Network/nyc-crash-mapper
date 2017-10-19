@@ -163,7 +163,11 @@ export const fetchGeoPolygons = (geo) => {
     dispatch(requestGeoPolygons());
     return fetch(url)
       .then(res => res.json())
-      .then(json => dispatch(receiveGeoPolygons(json)))
+      .then((json) => {
+        // tack on the geography name so that it may be diff'd in LeafletMap propTypes
+        json.geoName = geo;
+        return dispatch(receiveGeoPolygons(json));
+      })
       .catch(error => dispatch(receiveGeoPolygonsError(error)));
   };
 };
