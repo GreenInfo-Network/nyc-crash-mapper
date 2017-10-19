@@ -8,7 +8,7 @@ import {
   filterByAreaSQL
 } from '../../constants/sql_queries';
 import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
-import { configureLayerSource, crashDataChanged } from '../../constants/api';
+import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
 import { filterAreaCartocss } from '../../constants/cartocss';
 
 import ZoomControls from './ZoomControls';
@@ -23,9 +23,10 @@ class LeafletMap extends Component {
       paddingBottomRight: [300, 120],
       maxZoom: 18
     };
-    this.mapDiv = undefined;
-    this.map = undefined;
-    this.filterPolygons = undefined;
+    this.mapDiv = undefined; // div Leaflet mounts to
+    this.map = undefined; // instance of L.map
+    this.filterPolygons = undefined; // L.geoJson for selecting an geo area to filter by
+    this.filterAreaTooltip = undefined; // div for tooltip for filter area polygons
     this.mapStatsDisclaimer = undefined;
     this.customDraw = undefined;
     this.cartoLayer = undefined;
@@ -227,7 +228,7 @@ class LeafletMap extends Component {
     // hide any visible filter sublayer
     this.hideFilterSublayers();
     // hide any previously visible tooltips from filter sublayer
-    // hideCartoTooltips('filter-layer');
+    this.hideFilterAreaTooltip();
     this.hideCartoTooltips();
     // hide any open infowindow
     this.hideCartoInfowindow();
@@ -304,25 +305,47 @@ class LeafletMap extends Component {
     this.mapStatsDisclaimer.style.display = 'none';
   }
 
+  revealFilterAreaTooltip(geo, event) {
+    const { layerPoint, target } = event;
+    const { x, y } = layerPoint;
+    const identifier = target.feature.properties.identifier;
+    const p = this.filterAreaTooltip.children[0];
+    this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
+    p.textContent = geo === 'Borough' ? boroughs[identifier] : identifier;
+  }
+
+  hideFilterAreaTooltip() {
+    this.filterAreaTooltip.style.display = 'none';
+  }
+
   renderFilterPolygons(geo, geojson) {
     const self = this;
     this.hideCartoTooltips();
     this.hideCartoInfowindow();
     this.cartoSubLayer.setInteraction(false);
 
-    function highlightFeature(e) {
+    function handleMouseover(e) {
       const layer = e.target;
+
       layer.setStyle({
         fillColor: '#105b63',
         fillOpacity: 1
       });
+
+      self.revealFilterAreaTooltip(geo, e);
+
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
       }
     }
 
-    function resetHighlight(e) {
+    function handleMouseout(e) {
       self.filterPolygons.resetStyle(e.target);
+      self.hideFilterAreaTooltip();
+    }
+
+    function handleMousemove(e) {
+      self.revealFilterAreaTooltip(geo, e);
     }
 
     function handleClick(e) {
@@ -334,8 +357,9 @@ class LeafletMap extends Component {
 
     function onEachFeature(feature, layer) {
       layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
+        mouseover: handleMouseover,
+        mouseout: handleMouseout,
+        mousemove: handleMousemove,
         click: handleClick,
       });
     }
@@ -355,6 +379,11 @@ class LeafletMap extends Component {
       this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }
 
+    // clear any existing geojson polygons that may be visible
+    if (this.filterPolygons) {
+      this.map.removeLayer(this.filterPolygons);
+    }
+
     this.filterPolygons = L.geoJson(geojson, {
       onEachFeature,
       style,
@@ -369,7 +398,8 @@ class LeafletMap extends Component {
     const table = filterAreaBtnTableMap[geo];
     const cartocss = filterAreaCartocss(table);
     const sql = filterByAreaSQL[geo];
-    const interactivity = sql.indexOf('borough') > -1 ? ['cartodb_id', 'borough', 'identifier'] : ['cartodb_id', 'identifier'];
+    const interactivity = sql.indexOf('borough') > -1 ? ['cartodb_id', 'borough', 'identifier'] :
+      ['cartodb_id', 'identifier'];
 
     // hide any visible filter sublayer
     this.hideFilterSublayers();
@@ -421,6 +451,9 @@ class LeafletMap extends Component {
             <strong>Note:</strong> Map data may differ from stats below
             due to lack of location information provided by the NYPD.
           </p>
+        </div>
+        <div ref={(_) => { this.filterAreaTooltip = _; }} className="filter-area-tooltip">
+          <p />
         </div>
         <div ref={(_) => { this.mapDiv = _; }} id="map" />
       </div>
