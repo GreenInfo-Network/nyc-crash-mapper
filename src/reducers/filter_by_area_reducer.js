@@ -17,7 +17,7 @@ export const defaultState = {
     geoName: '',
   },
   identifier: undefined,
-  latLons: [],
+  lngLats: [],
   drawEnabeled: false,
 };
 
