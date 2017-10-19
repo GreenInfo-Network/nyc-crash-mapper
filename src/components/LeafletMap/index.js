@@ -43,8 +43,9 @@ class LeafletMap extends Component {
     this.initMap();
     this.initCustomFilter();
 
+    // if app loaded with an existing polygon from query params, add it to the drawlayer feat group
     if (lngLats && lngLats.length) {
-      // reverse the coordinates lng, lat -> lat, lng because Leaflet
+      // reverse the coordinates [lng, lat] -> [lat, lng], because Leaflet :)
       const reversed = lngLats.reduce((acc, cur) => {
         acc.push([cur[1], cur[0]]);
         return acc;
@@ -55,7 +56,7 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, geojson, identifier, lngLats, drawEnabeled } = nextProps;
+    const { geo, geojson, identifier, drawEnabeled } = nextProps;
 
     if (identifier && identifier !== this.props.identifier) {
       // user filtered by a specific geography, so hide the GeoJSON boundary overlay
@@ -70,6 +71,7 @@ class LeafletMap extends Component {
     if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
       this.showMapStatsDisclaimer();
       this.hideFilterAreaPolygons();
+      this.customFilterClearPoly();
     } else if (geo !== 'Citywide') {
       this.hideMapStatsDisclaimer();
     }
@@ -78,7 +80,7 @@ class LeafletMap extends Component {
       // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
       // clear custom area layer if it was drawn
-      this.customDraw.drawLayer.clearLayers();
+      this.customFilterClearPoly();
       // make an API call for GeoJSON of boundary polygons
       this.props.fetchGeoPolygons(geo);
     }
@@ -95,22 +97,16 @@ class LeafletMap extends Component {
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
-      // clear existing drawn layer
-      this.customDraw.drawLayer.clearLayers();
-      // enable Leaflet Draw
+      this.customFilterClearPoly();
       this.customFilterEnableDraw();
     }
 
     if (!drawEnabeled && this.props.drawEnabeled) {
       this.customFilterCancelDraw();
     } else if (drawEnabeled && !this.props.drawEnabeled) {
-      this.customDraw.drawLayer.clearLayers();
+      // clear any existing custom drawn polygon before drawing another one
+      this.customFilterClearPoly();
       this.customFilterEnableDraw();
-    }
-
-    if (lngLats && lngLats.length) {
-      // clear the custom overlay after user finishes drawing
-      // this.customDraw.drawLayer.clearLayers();
     }
   }
 
@@ -275,6 +271,10 @@ class LeafletMap extends Component {
   customFilterCancelDraw() {
     this.customDraw.cancelDraw();
     this.cartoSubLayer.setInteraction(true);
+  }
+
+  customFilterClearPoly() {
+    this.customDraw.drawLayer.clearLayers();
   }
 
   showMapStatsDisclaimer() {
