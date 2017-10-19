@@ -46,7 +46,12 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, geojson, lngLats, drawEnabeled } = nextProps;
+    const { geo, geojson, identifier, lngLats, drawEnabeled } = nextProps;
+
+    if (identifier && identifier !== this.props.identifier) {
+      // user filtered by a specific geography, so hide the GeoJSON boundary overlay
+      this.map.removeLayer(this.filterPolygons);
+    }
 
     if (crashDataChanged(this.props, nextProps)) {
       // if boundary filters were changed by user, update map data
@@ -303,6 +308,7 @@ class LeafletMap extends Component {
     const self = this;
     this.hideCartoTooltips();
     this.hideCartoInfowindow();
+    this.cartoSubLayer.setInteraction(false);
 
     function highlightFeature(e) {
       const layer = e.target;
@@ -319,15 +325,19 @@ class LeafletMap extends Component {
       self.filterPolygons.resetStyle(e.target);
     }
 
-    function zoomToFeature(e) {
-      self.map.fitBounds(e.target.getBounds());
+    function handleClick(e) {
+      const target = e.target;
+      const identifier = target.feature.properties.identifier;
+      self.map.fitBounds(target.getBounds());
+      self.cartoSubLayer.setInteraction(true);
+      self.props.filterByAreaIdentifier(identifier);
     }
 
     function onEachFeature(feature, layer) {
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: zoomToFeature
+        click: handleClick,
       });
     }
 
