@@ -61,6 +61,7 @@ class LeafletMap extends Component {
 
     if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
       this.showMapStatsDisclaimer();
+      this.hideFilterAreaPolygons();
     } else if (geo !== 'Citywide') {
       this.hideMapStatsDisclaimer();
     }
@@ -72,9 +73,15 @@ class LeafletMap extends Component {
       this.props.fetchGeoPolygons(geo);
     }
 
-    if (geojson.features.length && geojson.geoName !== this.props.geojson.geoName) {
-      // show the user polygons for filter by area / boundary
-      this.renderFilterPolygons(geo, geojson);
+    if (geojson.features.length) {
+      if (
+        (geojson.geoName !== this.props.geojson.geoName) ||
+        (geo !== 'Citywide' && this.props.geo === 'Citywide') ||
+        (geo !== 'Custom' && this.props.geo === 'Custom')
+      ) {
+        // show the user polygons for filter by area / boundary
+        this.renderFilterPolygons(geo, geojson);
+      }
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
@@ -287,6 +294,8 @@ class LeafletMap extends Component {
 
   customFilterDraw() {
     this.cartoSubLayer.setInteraction(false);
+    this.hideFilterAreaPolygons();
+    this.hideFilterAreaTooltip();
     this.hideCartoTooltips();
     this.hideCartoInfowindow();
     this.customDraw.startDraw();
@@ -318,11 +327,15 @@ class LeafletMap extends Component {
     this.filterAreaTooltip.style.display = 'none';
   }
 
+  hideFilterAreaPolygons() {
+    // clear any existing geojson polygons that may be visible
+    if (this.filterPolygons) {
+      this.map.removeLayer(this.filterPolygons);
+    }
+  }
+
   renderFilterPolygons(geo, geojson) {
     const self = this;
-    this.hideCartoTooltips();
-    this.hideCartoInfowindow();
-    this.cartoSubLayer.setInteraction(false);
 
     function handleMouseover(e) {
       const layer = e.target;
@@ -379,10 +392,13 @@ class LeafletMap extends Component {
       this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }
 
+    // hide Carto sublayer tooltips / info windows & prevent interaction
+    this.hideCartoTooltips();
+    this.hideCartoInfowindow();
+    this.cartoSubLayer.setInteraction(false);
+
     // clear any existing geojson polygons that may be visible
-    if (this.filterPolygons) {
-      this.map.removeLayer(this.filterPolygons);
-    }
+    this.hideFilterAreaPolygons();
 
     this.filterPolygons = L.geoJson(geojson, {
       onEachFeature,
