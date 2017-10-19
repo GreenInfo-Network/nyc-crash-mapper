@@ -71,9 +71,9 @@ class LeafletMap extends Component {
       this.props.fetchGeoPolygons(geo);
     }
 
-    if (geojson.features.length && !this.props.geojson.features.length) {
+    if (geojson.features.length && geojson.geoName !== this.props.geojson.geoName) {
       // show the user polygons for filter by area / boundary
-      this.renderFilterPolygons(geojson);
+      this.renderFilterPolygons(geo, geojson);
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
@@ -304,7 +304,7 @@ class LeafletMap extends Component {
     this.mapStatsDisclaimer.style.display = 'none';
   }
 
-  renderFilterPolygons(geojson) {
+  renderFilterPolygons(geo, geojson) {
     const self = this;
     this.hideCartoTooltips();
     this.hideCartoInfowindow();
@@ -349,6 +349,11 @@ class LeafletMap extends Component {
         color: '#fff',
         fillOpacity: 0.7
       };
+    }
+
+    if (geo !== 'Custom') {
+      // for filter area polygons, fit map bounds to all of NYC
+      this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }
 
     this.filterPolygons = L.geoJson(geojson, {
@@ -446,6 +451,7 @@ LeafletMap.propTypes = {
   geojson: PropTypes.shape({
     type: PropTypes.string,
     features: PropTypes.array,
+    geoName: PropTypes.string,
   }),
   identifier: PropTypes.oneOfType([
     PropTypes.string,
