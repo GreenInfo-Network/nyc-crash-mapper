@@ -93,16 +93,6 @@ const FilterByBoundary = (props) => {
       </li>
       <li>
         <FilterButton
-          label={'Zipcode (ZCTA)'}
-          id={'Zipcode (ZCTA)'}
-          isActive={geo === 'Zipcode (ZCTA)'}
-          handleClick={filterByAreaType}
-          preventRetrigger
-        />
-        { showIdentifier('Zipcode (ZCTA)') }
-      </li>
-      <li>
-        <FilterButton
           label={'Custom'}
           id={'Custom'}
           isActive={geo === 'Custom'}
