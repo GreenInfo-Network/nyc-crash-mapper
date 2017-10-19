@@ -14,7 +14,6 @@ export const cartoTables = {
   nyc_community_board: 'nyc_community_board',
   nyc_neighborhood: 'nyc_neighborhood',
   nyc_nypd_precinct: 'nyc_nypd_precinct',
-  nyc_zip_code: 'nyc_zip_code',
   nyc_crashes: 'crashes_all_prod'
 };
 

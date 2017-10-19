@@ -7,7 +7,6 @@ const { nyc_borough,
   nyc_community_board,
   nyc_neighborhood,
   nyc_nypd_precinct,
-  nyc_zip_code,
   nyc_crashes } = cartoTables;
 
 // Links each boundary filter name to a SQL query
@@ -58,16 +57,6 @@ export const filterByAreaSQL = {
       ST_Collect(the_geom) as the_geom
     FROM
       ${nyc_nypd_precinct}
-    GROUP BY
-      identifier
-  `,
-
-  'Zipcode (ZCTA)': sls`
-    SELECT DISTINCT
-      identifier,
-      ST_Collect(the_geom) as the_geom
-    FROM
-      ${nyc_zip_code}
     GROUP BY
       identifier
   `,
@@ -168,7 +157,6 @@ export const filterAreaBtnTableMap = {
   'City Council District': nyc_city_council,
   'Neighborhood (NTA)': nyc_neighborhood,
   'NYPD Precinct': nyc_nypd_precinct,
-  'Zipcode (ZCTA)': nyc_zip_code,
 };
 
 // Creates the spatial join clause with a boundary table geom
