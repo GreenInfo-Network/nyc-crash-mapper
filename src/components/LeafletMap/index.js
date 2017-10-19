@@ -328,7 +328,6 @@ class LeafletMap extends Component {
     function handleClick(e) {
       const target = e.target;
       const identifier = target.feature.properties.identifier;
-      self.map.fitBounds(target.getBounds());
       self.cartoSubLayer.setInteraction(true);
       self.props.filterByAreaIdentifier(identifier);
     }
