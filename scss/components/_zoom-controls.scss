@@ -15,10 +15,14 @@
     border-radius: 0;
     background-color: $btn-bg;
     border-color: $marine-light;
+    color: $marine-light;
+    font-size: 20px;
+    line-height: 25px;
 
     &:hover {
       background-color: $btn-hover;
       border-color: $marine;
+      color: $marine;
     }
   }
 
