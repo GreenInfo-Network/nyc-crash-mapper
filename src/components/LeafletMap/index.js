@@ -18,9 +18,11 @@ class LeafletMap extends Component {
       paddingBottomRight: [300, 120],
       maxZoom: 18
     };
-    this.polyOverlayStyle = {
+    // styles to apply to custom draw poly overlay
+    this.customDrawStyle = {
       color: '#17838f',
-      fillColor: '#17838f'
+      fillOpacity: 0,
+      weight: 2,
     };
     this.mapDiv = undefined; // div Leaflet mounts to
     this.map = undefined; // instance of L.map
@@ -50,7 +52,7 @@ class LeafletMap extends Component {
         acc.push([cur[1], cur[0]]);
         return acc;
       }, []);
-      const poly = L.polygon(reversed, this.polyOverlayStyle);
+      const poly = L.polygon(reversed, this.customDrawStyle);
       this.customDraw.drawLayer.addLayer(poly);
     }
   }
@@ -265,6 +267,7 @@ class LeafletMap extends Component {
     this.customDraw = new CustomFilter();
     this.customDraw.mapInstance = this.map;
     this.customDraw.layerCreatedCallback = filterByAreaCustom;
+    this.customDraw.polyStyle = this.customDrawStyle;
     this.customDraw.onLayerCreated();
     this.customDraw.initCustomFilterLayer();
     this.customDraw.initDrawPolygon();

@@ -4,6 +4,7 @@ class CustomFilter {
     this.drawnItems = L.featureGroup();
     this.customLayer = undefined;
     this.poly = undefined;
+    this.polyStyle = {};
     this.onLayerCreatedCB = () => {};
   }
 
@@ -15,6 +16,10 @@ class CustomFilter {
     if (func && typeof func === 'function') {
       this.onLayerCreatedCB = func;
     }
+  }
+
+  set polyOverlayStyle(obj) {
+    this.polyStyle = obj;
   }
 
   get drawLayer() {
@@ -29,10 +34,7 @@ class CustomFilter {
   initDrawPolygon() {
     const self = this;
     this.poly = new L.Draw.Polygon(self.map, {
-      shapeOptions: {
-        color: '#17838f',
-        fillColor: '#17838f'
-      }
+      shapeOptions: self.polyStyle,
     });
   }
 
