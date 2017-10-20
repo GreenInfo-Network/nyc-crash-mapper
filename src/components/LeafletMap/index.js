@@ -63,12 +63,23 @@ class LeafletMap extends Component {
       this.map.removeLayer(this.filterPolygons);
     }
 
+    if ((!identifier && this.props.identifier) && (geo === this.props.geo)) {
+      // user deselected a geo identifier, so either show filter polygons again,
+      // or fetch them if no geojson for them exists (app loaded with prexisting geo & identifier)
+      if (geojson.features.length) {
+        this.renderFilterPolygons(geo, geojson);
+      } else {
+        this.props.fetchGeoPolygons(geo);
+      }
+    }
+
     if (crashDataChanged(this.props, nextProps)) {
       // if boundary filters were changed by user, update map data
       this.updateCartoSubLayer(nextProps);
     }
 
     if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
+      // user selected or deselected citywide filter, hide & show relevant overlays
       this.showMapStatsDisclaimer();
       this.hideFilterAreaPolygons();
       this.customFilterClearPoly();
@@ -76,7 +87,7 @@ class LeafletMap extends Component {
       this.hideMapStatsDisclaimer();
     }
 
-    if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
+    if (geo && (geo !== this.props.geo) && (geo !== 'Citywide') && (geo !== 'Custom')) {
       // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
       // clear custom area layer if it was drawn
