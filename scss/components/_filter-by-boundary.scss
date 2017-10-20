@@ -3,9 +3,16 @@
     @extend .filter-options-button;
 
     &.cancel-drawing,
-    &.draw-again,
-    &.deselect-identifier {
+    &.draw-again {
       margin-left: $margin-10;
+    }
+
+    &.deselect-identifier {
+      height: 20px;
+      padding: 0 5px;
+      margin: 0 0 0 $margin-10;
+      font-size: 11px;
+      line-height: 11px;
     }
   }
 
