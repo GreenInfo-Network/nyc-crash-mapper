@@ -49,6 +49,7 @@ p {
 .filter-list {
   display: inline-block;
   height: 100%;
+  width: calc(100% - 20px);
   padding: 0;
   margin: 0;
   list-style-type: none;
