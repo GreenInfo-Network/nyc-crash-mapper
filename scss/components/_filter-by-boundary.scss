@@ -1,11 +1,17 @@
 .filter-by-boundary {
   button {
     @extend .filter-options-button;
+
+    &.cancel-drawing,
+    &.draw-again,
+    &.deselect-identifier {
+      margin-left: $margin-10;
+    }
   }
 
-  button.cancel-drawing,
-  button.draw-again {
-    @extend .filter-options-button;
+  p.identifier-label {
+    display: inline-block;
     margin-left: $margin-10;
+    font-size: 11px;
   }
 }
