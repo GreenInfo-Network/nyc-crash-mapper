@@ -3,7 +3,8 @@ import React, { PropTypes } from 'react';
 import FilterButton from './FilterButton';
 
 const FilterByBoundary = (props) => {
-  const { filterByAreaType, toggleCustomAreaDraw, drawEnabeled, geo, identifier } = props;
+  const { filterByAreaType, filterByAreaIdentifier, toggleCustomAreaDraw, drawEnabeled, geo,
+    identifier } = props;
 
   const boroughLookUp = {
     1: 'Manhattan',
@@ -22,8 +23,16 @@ const FilterByBoundary = (props) => {
       }
 
       return (
-        <span style={{ marginLeft: '10px', fontSize: '11px' }}>
-          {label}
+        <span>
+          <p className="identifier-label">
+            {label}
+          </p>
+          <button
+            className="deselect-identifier"
+            onClick={() => filterByAreaIdentifier(undefined)}
+          >
+            {'✕'}
+          </button>
         </span>
       );
     }
@@ -121,6 +130,7 @@ FilterByBoundary.defaultProps = {
 
 FilterByBoundary.propTypes = {
   filterByAreaType: PropTypes.func.isRequired,
+  filterByAreaIdentifier: PropTypes.func.isRequired,
   toggleCustomAreaDraw: PropTypes.func.isRequired,
   drawEnabeled: PropTypes.bool.isRequired,
   geo: PropTypes.string.isRequired,
