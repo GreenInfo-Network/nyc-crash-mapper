@@ -18,6 +18,10 @@ class LeafletMap extends Component {
       paddingBottomRight: [300, 120],
       maxZoom: 18
     };
+    this.polyOverlayStyle = {
+      color: '#17838f',
+      fillColor: '#17838f'
+    };
     this.mapDiv = undefined; // div Leaflet mounts to
     this.map = undefined; // instance of L.map
     this.filterPolygons = undefined; // L.geoJson for selecting an geo area to filter by
@@ -34,17 +38,39 @@ class LeafletMap extends Component {
   }
 
   componentDidMount() {
+    const { lngLats } = this.props;
     this.cartodbSQL = new cartodb.SQL({ user: cartoUser });
     this.initMap();
     this.initCustomFilter();
+
+    // if app loaded with an existing polygon from query params, add it to the drawlayer feat group
+    if (lngLats && lngLats.length) {
+      // reverse the coordinates [lng, lat] -> [lat, lng], because Leaflet :)
+      const reversed = lngLats.reduce((acc, cur) => {
+        acc.push([cur[1], cur[0]]);
+        return acc;
+      }, []);
+      const poly = L.polygon(reversed, this.polyOverlayStyle);
+      this.customDraw.drawLayer.addLayer(poly);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, geojson, identifier, lngLats, drawEnabeled } = nextProps;
+    const { geo, geojson, identifier, drawEnabeled } = nextProps;
 
     if (identifier && identifier !== this.props.identifier) {
       // user filtered by a specific geography, so hide the GeoJSON boundary overlay
       this.map.removeLayer(this.filterPolygons);
+    }
+
+    if ((!identifier && this.props.identifier) && (geo === this.props.geo)) {
+      // user deselected a geo identifier, so either show filter polygons again,
+      // or fetch them if no geojson for them exists (app loaded with prexisting geo & identifier)
+      if (geojson.features.length) {
+        this.renderFilterPolygons(geo, geojson);
+      } else {
+        this.props.fetchGeoPolygons(geo);
+      }
     }
 
     if (crashDataChanged(this.props, nextProps)) {
@@ -53,15 +79,19 @@ class LeafletMap extends Component {
     }
 
     if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
+      // user selected or deselected citywide filter, hide & show relevant overlays
       this.showMapStatsDisclaimer();
       this.hideFilterAreaPolygons();
+      this.customFilterClearPoly();
     } else if (geo !== 'Citywide') {
       this.hideMapStatsDisclaimer();
     }
 
-    if (geo !== this.props.geo && geo !== 'Citywide' && geo !== 'Custom') {
+    if (geo && (geo !== this.props.geo) && (geo !== 'Citywide') && (geo !== 'Custom')) {
       // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
+      // clear custom area layer if it was drawn
+      this.customFilterClearPoly();
       // make an API call for GeoJSON of boundary polygons
       this.props.fetchGeoPolygons(geo);
     }
@@ -78,19 +108,16 @@ class LeafletMap extends Component {
     }
 
     if (geo === 'Custom' && this.props.geo !== 'Custom') {
-      // enable Leaflet Draw
-      this.customFilterDraw();
+      this.customFilterClearPoly();
+      this.customFilterEnableDraw();
     }
 
     if (!drawEnabeled && this.props.drawEnabeled) {
       this.customFilterCancelDraw();
     } else if (drawEnabeled && !this.props.drawEnabeled) {
-      this.customFilterDraw();
-    }
-
-    if (lngLats && lngLats.length) {
-      // clear the custom overlay after user finishes drawing
-      this.customDraw.drawLayer.clearLayers();
+      // clear any existing custom drawn polygon before drawing another one
+      this.customFilterClearPoly();
+      this.customFilterEnableDraw();
     }
   }
 
@@ -243,7 +270,7 @@ class LeafletMap extends Component {
     this.customDraw.initDrawPolygon();
   }
 
-  customFilterDraw() {
+  customFilterEnableDraw() {
     this.cartoSubLayer.setInteraction(false);
     this.hideFilterAreaPolygons();
     this.hideFilterAreaTooltip();
@@ -255,6 +282,10 @@ class LeafletMap extends Component {
   customFilterCancelDraw() {
     this.customDraw.cancelDraw();
     this.cartoSubLayer.setInteraction(true);
+  }
+
+  customFilterClearPoly() {
+    this.customDraw.drawLayer.clearLayers();
   }
 
   showMapStatsDisclaimer() {
