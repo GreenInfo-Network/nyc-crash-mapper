@@ -15,7 +15,7 @@ export const geos = ['citywide', 'borough', 'community_board', 'city_council',
   'neighborhood', 'nypd_precinct', 'custom'];
 
 // Borough Names mapped to array index position
-export const boroughs = [undefined, 'Manhattan', 'The Bronx', 'Brooklyn', 'Queens', 'Staten Island'];
+export const boroughs = [undefined, 'Manhattan', 'Bronx', 'Brooklyn', 'Queens', 'Staten Island'];
 
 // creates default app state using any available params from window.location.hash
 export const makeDefaultState = () => {

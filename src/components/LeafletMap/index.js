@@ -305,7 +305,7 @@ class LeafletMap extends Component {
     const identifier = target.feature.properties.identifier;
     const p = this.filterAreaTooltip.children[0];
     this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
-    p.textContent = geo === 'Borough' ? boroughs[identifier] : identifier;
+    p.textContent = geo === 'borough' ? boroughs[identifier] : identifier;
   }
 
   hideFilterAreaTooltip() {
@@ -349,7 +349,11 @@ class LeafletMap extends Component {
 
     function handleClick(e) {
       const target = e.target;
-      const identifier = target.feature.properties.identifier;
+      let identifier = target.feature.properties.identifier;
+      // use borough name string as the identifier, not number
+      if (geo === 'borough') {
+        identifier = boroughs[identifier];
+      }
       self.cartoSubLayer.setInteraction(true);
       self.props.filterByAreaIdentifier(identifier);
     }
