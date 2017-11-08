@@ -39,6 +39,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name].[chunkhash].js'
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {
