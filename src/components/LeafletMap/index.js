@@ -80,16 +80,16 @@ class LeafletMap extends Component {
       this.updateCartoSubLayer(nextProps);
     }
 
-    if (geo === 'Citywide' && this.props.geo !== 'Citywide') {
+    if (geo === 'citywide' && this.props.geo !== 'citywide') {
       // user selected or deselected citywide filter, hide & show relevant overlays
       this.showMapStatsDisclaimer();
       this.hideFilterAreaPolygons();
       this.customFilterClearPoly();
-    } else if (geo !== 'Citywide') {
+    } else if (geo !== 'citywide') {
       this.hideMapStatsDisclaimer();
     }
 
-    if (geo && (geo !== this.props.geo) && (geo !== 'Citywide') && (geo !== 'Custom')) {
+    if (geo && (geo !== this.props.geo) && (geo !== 'citywide') && (geo !== 'custom')) {
       // cancel custom draw in case it was enabled
       this.customFilterCancelDraw();
       // clear custom area layer if it was drawn
@@ -101,15 +101,15 @@ class LeafletMap extends Component {
     if (geojson.features.length) {
       if (
         (geojson.geoName !== this.props.geojson.geoName) ||
-        (geo !== 'Citywide' && this.props.geo === 'Citywide') ||
-        (geo !== 'Custom' && this.props.geo === 'Custom')
+        (geo !== 'citywide' && this.props.geo === 'citywide') ||
+        (geo !== 'custom' && this.props.geo === 'custom')
       ) {
         // show the user polygons for filter by area / boundary
         this.renderFilterPolygons(geo, geojson);
       }
     }
 
-    if (geo === 'Custom' && this.props.geo !== 'Custom') {
+    if (geo === 'custom' && this.props.geo !== 'custom') {
       this.customFilterClearPoly();
       this.customFilterEnableDraw();
     }
@@ -374,7 +374,7 @@ class LeafletMap extends Component {
       };
     }
 
-    if (geo !== 'Custom') {
+    if (geo !== 'custom') {
       // for filter area polygons, fit map bounds to all of NYC
       this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }

@@ -5,7 +5,7 @@ import {
   TOGGLE_CUSTOM_AREA_DRAW,
 } from '../constants/action_types';
 
-export const filterByAreaType = (geo = 'CITYWIDE') => ({
+export const filterByAreaType = (geo = 'citywide') => ({
   type: FILTER_BY_AREA_TYPE,
   geo,
 });

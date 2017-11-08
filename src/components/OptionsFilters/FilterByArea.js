@@ -16,7 +16,7 @@ const FilterByBoundary = (props) => {
 
   const showIdentifier = (name) => {
     if (geo === name && identifier) {
-      let label = name === 'Borough' ? boroughLookUp[identifier] : identifier;
+      let label = name === 'borough' ? boroughLookUp[identifier] : identifier;
 
       if (label.length > 16) {
         label = `${label.substring(0, 16)}...`;
@@ -44,8 +44,8 @@ const FilterByBoundary = (props) => {
       <li>
         <FilterButton
           label={'Citywide'}
-          id={'Citywide'}
-          isActive={geo === 'Citywide'}
+          id={'citywide'}
+          isActive={geo === 'citywide'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
@@ -53,67 +53,67 @@ const FilterByBoundary = (props) => {
       <li>
         <FilterButton
           label={'Borough'}
-          id={'Borough'}
-          isActive={geo === 'Borough'}
+          id={'borough'}
+          isActive={geo === 'borough'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
-        { showIdentifier('Borough') }
+        { showIdentifier('borough') }
       </li>
       <li>
         <FilterButton
           label={'Community Board'}
-          id={'Community Board'}
-          isActive={geo === 'Community Board'}
+          id={'community_board'}
+          isActive={geo === 'community_board'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
-        { showIdentifier('Community Board') }
+        { showIdentifier('community_board') }
       </li>
       <li>
         <FilterButton
           label={'City Council District'}
-          id={'City Council District'}
-          isActive={geo === 'City Council District'}
+          id={'city_council'}
+          isActive={geo === 'city_council'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
-        { showIdentifier('City Council District') }
+        { showIdentifier('city_council') }
       </li>
       <li>
         <FilterButton
           label={'Neighborhood (NTA)'}
-          id={'Neighborhood (NTA)'}
-          isActive={geo === 'Neighborhood (NTA)'}
+          id={'neighborhood'}
+          isActive={geo === 'neighborhood'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
-        { showIdentifier('Neighborhood (NTA)') }
+        { showIdentifier('neighborhood') }
       </li>
       <li>
         <FilterButton
           label={'NYPD Precinct'}
-          id={'NYPD Precinct'}
-          isActive={geo === 'NYPD Precinct'}
+          id={'nypd_precinct'}
+          isActive={geo === 'nypd_precinct'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
-        { showIdentifier('NYPD Precinct') }
+        { showIdentifier('nypd_precinct') }
       </li>
       <li>
         <FilterButton
           label={'Custom'}
-          id={'Custom'}
-          isActive={geo === 'Custom'}
+          id={'custom'}
+          isActive={geo === 'custom'}
           handleClick={filterByAreaType}
           preventRetrigger
         />
-        { geo === 'Custom' && !drawEnabeled ?
+        { geo === 'custom' && !drawEnabeled ?
           <button className="draw-again" onClick={() => toggleCustomAreaDraw()}>
             Draw Again
           </button> : null
         }
-        { geo === 'Custom' && drawEnabeled ?
+        { geo === 'custom' && drawEnabeled ?
           <button className="cancel-drawing" onClick={() => toggleCustomAreaDraw()}>
             Cancel Draw
           </button> : null

@@ -10,7 +10,7 @@ import {
 
 export const defaultState = {
   _isFetching: false,
-  geo: 'Citywide',
+  geo: 'citywide',
   geojson: {
     type: '',
     features: [],
@@ -29,7 +29,7 @@ export default (state = defaultState, action) => {
         geo: action.geo,
         identifier: undefined,
         lngLats: [],
-        drawEnabeled: action.geo === 'Custom',
+        drawEnabeled: action.geo === 'custom',
       };
 
     case FILTER_BY_AREA_IDENTIFIER:

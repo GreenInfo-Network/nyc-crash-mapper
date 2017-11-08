@@ -11,8 +11,8 @@ export const dateStringFormatView = 'MMM, YYYY';
 export const momentize = dateString => moment(dateString, dateStringFormatModel, true);
 
 // Names for Filter by Boundary
-export const geos = ['Citywide', 'Borough', 'Community Board', 'City Council District',
-  'Neighborhood (NTA)', 'NYPD Precinct', 'Zipcode (ZCTA)', 'Custom'];
+export const geos = ['citywide', 'borough', 'community_board', 'city_council',
+  'neighborhood', 'nypd_precinct', 'custom'];
 
 // Borough Names mapped to array index position
 export const boroughs = [undefined, 'Manhattan', 'The Bronx', 'Brooklyn', 'Queens', 'Staten Island'];
@@ -117,7 +117,7 @@ export const crashDataChanged = (curProps, nextProps) => {
       !isEqual(injury, curProps.filterType.injury) ||
       !isEqual(fatality, curProps.filterType.fatality) ||
       noInjuryFatality !== curProps.filterType.noInjuryFatality ||
-      (geo === 'Citywide' && curProps.geo !== 'Citywide') ||
+      (geo === 'citywide' && curProps.geo !== 'citywide') ||
       (identifier && identifier !== curProps.identifier) ||
       (lngLats && lngLats.length && !isEqual(lngLats, curProps.lngLats))) {
     return true;

@@ -11,7 +11,7 @@ const { nyc_borough,
 
 // Links each boundary filter name to a SQL query
 export const filterByAreaSQL = {
-  Borough: sls`
+  borough: sls`
     SELECT DISTINCT
       identifier,
       ST_Collect(the_geom) as the_geom
@@ -21,7 +21,7 @@ export const filterByAreaSQL = {
       identifier
   `,
 
-  'City Council District': sls`
+  city_council: sls`
     SELECT DISTINCT
       identifier,
       ST_Collect(the_geom) as the_geom
@@ -31,7 +31,7 @@ export const filterByAreaSQL = {
       identifier
   `,
 
-  'Community Board': sls`
+  community_board: sls`
     SELECT DISTINCT
       identifier,
       ST_Collect(the_geom) as the_geom
@@ -41,7 +41,7 @@ export const filterByAreaSQL = {
       identifier
   `,
 
-  'Neighborhood (NTA)': sls`
+  neighborhood: sls`
     SELECT DISTINCT
       identifier,
       ST_Collect(the_geom) as the_geom
@@ -51,7 +51,7 @@ export const filterByAreaSQL = {
       identifier
   `,
 
-  'NYPD Precinct': sls`
+  nypd_precinct: sls`
     SELECT DISTINCT
       identifier,
       ST_Collect(the_geom) as the_geom
@@ -152,11 +152,11 @@ const filterByTypeWhereClause = (filterType) => {
 // NOTE: Deliberately not using Borough, because when > 1 year of data is selected
 // the spatial join will time out on Borough polygons
 export const filterAreaBtnTableMap = {
-  Borough: undefined,
-  'Community Board': nyc_community_board,
-  'City Council District': nyc_city_council,
-  'Neighborhood (NTA)': nyc_neighborhood,
-  'NYPD Precinct': nyc_nypd_precinct,
+  borough: undefined,
+  community_board: nyc_community_board,
+  city_council: nyc_city_council,
+  neighborhood: nyc_neighborhood,
+  nypd_precinct: nyc_nypd_precinct,
 };
 
 // Creates the spatial join clause with a boundary table geom
@@ -181,9 +181,9 @@ const boroughs = ['manhattan', 'bronx', 'brooklyn', 'queens', 'staten island'];
 // @param {number || string} identifier, unique id of boundary polygon
 // @param {string} geo, name of boundary table identifier column belongs to
 const filterByIdentifierWhereClause = (identifier, geo) => {
-  if (geo !== 'Borough' && identifier) {
+  if (geo !== 'borough' && identifier) {
     return `AND a.identifier = $$${identifier}$$`;
-  } else if (geo === 'Borough' && identifier) {
+  } else if (geo === 'borough' && identifier) {
     return `AND c.borough ilike '%${boroughs[identifier - 1]}%'`;
   }
   return '';
