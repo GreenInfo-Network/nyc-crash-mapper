@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 
+import Menu from './Menu';
+
 const AppHeader = (props) => {
   const { openModal } = props;
   return (
@@ -12,9 +14,7 @@ const AppHeader = (props) => {
         </div>
         <h2 className="header-title">NYC Crash Mapper</h2>
       </div>
-      <p className="header-about">
-        <a onClick={() => openModal('about')}>About</a>
-      </p>
+      <Menu openModal={openModal} />
     </div>
   );
 };

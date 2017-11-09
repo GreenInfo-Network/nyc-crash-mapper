@@ -7,6 +7,10 @@
   z-index: 1;
   color: rgba($marine-light, 0.7);
 
+  .header-logo-title {
+    display: inline-block;
+  }
+
   .logo-checkpeds,
   .header-title,
   .header-about {
@@ -32,7 +36,7 @@
 
   .header-title {
     display: inline-block;
-    font-size: 6rem;
+    font-size: 3rem;
     text-transform: uppercase;
     margin-left: $margin-5;
 
