@@ -40,7 +40,6 @@ const Menu = (props) => {
           </button>
         );
 
-      // TO DO: implement "About"
       default:
         return (
           <button
