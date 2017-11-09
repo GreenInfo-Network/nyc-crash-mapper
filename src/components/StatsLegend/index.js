@@ -11,7 +11,8 @@ import LegendContainer from './LegendContainer';
 class StatsLegend extends Component {
 
   render() {
-    const { startDate,
+    const {
+      startDate,
       endDate,
       contributingFactors,
       cyclist_injured,
@@ -22,7 +23,8 @@ class StatsLegend extends Component {
       pedestrian_killed,
       persons_injured,
       persons_killed,
-      total_crashes, } = this.props;
+      total_crashes,
+    } = this.props;
 
     return (
       <div className="ui bottom app-stats-legend">
