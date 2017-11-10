@@ -45,7 +45,10 @@ export const makeDefaultState = () => {
     if (m && m.isValid()) {
       return m;
     }
-    const m2 = moment();
+    // fallback to last month, which is more likely to have data then the current month
+    // e.g. if the current date is the first week of the month,
+    // then data may not exist for that month yet
+    const m2 = moment().subtract(1, 'month');
     const defaultYearMonth = `${m2.year()}-${m2.format('MM')}`;
     return momentize(defaultYearMonth);
   };
