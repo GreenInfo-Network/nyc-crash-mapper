@@ -137,6 +137,7 @@ export const fetchCrashesMaxDate = () => {
     dispatch(requestCrashesMaxDate());
     return fetch(url)
       .then(res => res.json())
+      // [{ max_date: '2017-06-01T00:00:00Z' }]
       .then(json => dispatch(receiveCrashesMaxDate(json.rows)))
       .catch(error => dispatch(receiveCrashesMaxDateError(error)));
   };

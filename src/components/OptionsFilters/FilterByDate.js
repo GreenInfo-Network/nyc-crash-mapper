@@ -1,14 +1,61 @@
 import React, { PropTypes, Component } from 'react';
 import momentPropTypes from 'react-moment-proptypes';
+import moment from 'moment';
 
 import { momentize } from '../../constants/api';
 import MonthYearSelector from './MonthYearSelector';
 
 class FilterByDate extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const maxDate = props.maxDate;
+    let startDate = props.startDate;
+    let endDate = props.endDate;
+
+    // for some reason the component mounts twice, (perhaps to do with react-collapse library?)
+    // check has to be done here...
+    // make sure that end date isn't ahead of the most recent date in the data
+    if (moment(maxDate).isValid() && endDate.isAfter(maxDate)) {
+      endDate = maxDate;
+      startDate = maxDate;
+    }
+
+    this.state = {
+      startDate,
+      endDate,
+    };
+
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { startDate, endDate, maxDate } = nextProps;
+
+    // make sure that end date isn't ahead of the most recent date in the data
+    if (maxDate && !this.props.maxDate && endDate.isAfter(maxDate)) {
+      this.setState({
+        startDate: moment(maxDate),
+        endDate: moment(maxDate),
+      });
+    }
+
+    // otherwise stash the start and end dates in component state
+    if (!startDate.isSame(this.props.startDate) || !endDate.isSame(this.props.endDate)) {
+      this.setState({
+        startDate,
+        endDate,
+      });
+    }
+  }
+
+  compareMaxEndDates(endDate, maxDate) {
+    if (endDate.isAfter(maxDate)) {
+      this.setState({
+        startDate: moment(maxDate),
+        endDate: moment(maxDate),
+      });
+    }
   }
 
   handleStartDateChange(year, month) {
@@ -54,7 +101,9 @@ class FilterByDate extends Component {
   }
 
   render() {
-    const { crashesDateRange, startDate, endDate, years } = this.props;
+    const { crashesDateRange, years } = this.props;
+    const { startDate, endDate } = this.state;
+
     // months in moment.js are zero based
     const startMonth = startDate.month() + 1;
     const startYear = startDate.year();
@@ -96,11 +145,16 @@ FilterByDate.propTypes = {
     minDate: momentPropTypes.momentObj,
     maxDate: momentPropTypes.momentObj,
   }).isRequired,
+  maxDate: momentPropTypes.momentObj,
   startDateChange: PropTypes.func.isRequired,
   endDateChange: PropTypes.func.isRequired,
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
   years: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
+
+FilterByDate.defaultProps = {
+  maxDate: null,
 };
 
 export default FilterByDate;
