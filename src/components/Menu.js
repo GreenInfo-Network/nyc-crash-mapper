@@ -6,9 +6,7 @@ const Menu = (props) => {
   const { openModal, ...rest } = props;
   const queryString = qs.stringify(rest);
 
-  const hostname = process.env.NODE_ENV === 'production'
-    ? 'greeninfo-network.github.io'
-    : 'localhost:8889';
+  const hostname = process.env.NODE_ENV === 'production' ? 'vis.crashmapper.org' : 'localhost:8889';
 
   const items = [
     { type: null, value: 'map', label: 'Map' },
