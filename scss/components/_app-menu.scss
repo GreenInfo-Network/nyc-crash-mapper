@@ -1,0 +1,66 @@
+.Menu {
+  width: 300px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all .3s;
+
+    &::before {
+      content: '';
+      height: 1px;
+      width: 0;
+      background-color: rgba($marine-light, 0.7);
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transition: all .3s;
+    }
+
+    &:hover::before {
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  button,
+  a {
+    height: auto;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 1.4rem;
+    font-weight: normal;
+    line-height: 1.4rem;
+    color: rgba($marine-light, 0.7);
+    text-transform: none;
+
+    &.active {
+      font-weight: bold;
+    }
+
+    &:hover {
+      // color: $marine;
+    }
+  }
+
+  button {
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
