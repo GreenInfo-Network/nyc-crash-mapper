@@ -21,15 +21,7 @@ const Menu = (props) => {
 
     switch (type) {
       case 'link':
-        return (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`http://${hostname}?view=${value}&${queryString}`}
-          >
-            {label}
-          </a>
-        );
+        return <a href={`http://${hostname}?view=${value}&${queryString}`}>{label}</a>;
 
       case 'modal':
         return (
