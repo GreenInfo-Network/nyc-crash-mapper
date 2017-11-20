@@ -1,14 +1,18 @@
 .app-header {
   width: $app-header-width;
   height: $app-header-height;
+  display: flex;
+  align-items: center;
   position: absolute;
-  top: $margin-10;
+  justify-content: flex-start;
+  top: -5px;
   left: $margin-25;
   z-index: 1;
   color: rgba($marine-light, 0.7);
 
   .header-logo-title {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
   }
 
   .logo-checkpeds,
@@ -20,8 +24,7 @@
 
   .logo-chekpeds {
     display: inline-block;
-    width: 33px;
-    height: 45px;
+    height: 33px;
 
     a, a:hover {
       background-color: none;
@@ -29,16 +32,15 @@
     }
 
     img {
-      width: 33px;
-      height: 45px;
+      height: 33px;
     }
   }
 
   .header-title {
     display: inline-block;
-    font-size: 3rem;
+    font-size: 2.6rem;
     text-transform: uppercase;
-    margin-left: $margin-5;
+    margin-left: $margin-10;
 
     @media screen and (#{$bp-narrow-width}) {
       font-size: 4rem;
