@@ -76,6 +76,8 @@ npm run deploy:gh-pages
 
 That will execute the `build` script then the bash script, creating a Github Pages site with the content of the `dist` directory.
 
+**NOTE:** Doing this will remove the custom domain name (`crashmapper.org`) from the repo's settings. _**You will need to manually add it back after redeploying.**_
+
 ### About the Data
 NYC Crash Mapper uses vehicle collision data for New York City from August, 2011 - present. The data was aggregated and normalized from the following sources:
 
