@@ -47,6 +47,8 @@ npm run serve
 
 And open your browser to `localhost:8080`. Any changes made to the app's code base will cause Webpack to recompile the source code and refresh the browser. ES Lint will report any javascript errors as well as complain about broken style rules.
 
+**NOTE:** Running this app locally assumes that the companion app, [nyc-crash-mapper-chart-view](https://github.com/GreenInfo-Network/nyc-crash-mapper-chart-view) is also running locally on a separate port to allow debugging between both apps. Thus, the navigation list items for `trend`, `compare`, and `rank` will link to `localhost:8889`. When the app is deployed, these navigation list items will link to `vis.crashmapper.org`.
+
 ### Build
 To compile the source code do:
 
