@@ -127,6 +127,93 @@ This project follows the React Redux concept of using "Containers" which may be 
 The main scaffolding of the app resides within `src/components/App.jsx`.
 The app is connected to Redux via `Provider` and rendered to the DOM within `./src/index.jsx`.
 
+##### React Component Tree
+The following describes how React Components are nested within the app:
+
+- AppConnected\*
+
+  - App
+
+    - AppHeader
+      
+      - MenuConnected\*
+        
+        - Menu
+    
+    - LeafletMapConnected\*
+    
+      - LeafletMap/index
+      
+        - customFilter (_es6 class, but not a react component_)
+        
+        - ZoomControls
+    
+    - StatsLegendConnected\*
+    
+      - index
+      
+        - ContributingFactorsList
+        
+        - LegendContainer
+        
+        - StatsCounter
+        
+        - TotalCrashesCounter
+    
+    - OptionsFiltersConnected\*
+    
+      - index
+      
+        - OptionsContainer
+    
+        - FilterByAreaConnected\*
+        
+          - FilterByArea
+        
+        - FilterByTypeConnected\*
+        
+          - FilterByType
+        
+        - FilterByDateConnected\*
+        
+          - FilterByDate
+        
+        - DownloadData
+        
+        - ShareOptions
+        
+        - FooterOptions
+    
+    - ModalConnected\*
+    
+      - Modal
+      
+        - index
+    
+          - About
+            
+            - AboutCopy
+          
+          - ModalContent
+            
+          - Copyright
+          
+          - Disclaimer
+          
+          - DownloadData
+      
+          - ShareURL
+          
+          - ShareFB
+          
+          - ShareTwitter
+    
+    - SmallDeviceMessage
+    
+    - LoadingIndicator
+
+\* means Component is a **Container Component** connected to the Redux Store.
+
 #### Configuration
 This app uses [CARTO](https://carto.com) as a backend datastore and web map tile generator. The CARTO user name, data tables, and other app configuration parameters are specified in `./src/constants/app_config.js`.
 
