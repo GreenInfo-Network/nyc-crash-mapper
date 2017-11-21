@@ -150,7 +150,7 @@ The following describes how React Components are nested within the app:
     
     - StatsLegendConnected\*
     
-      - index
+      - StatsLegend/index
       
         - ContributingFactorsList
         
@@ -162,7 +162,7 @@ The following describes how React Components are nested within the app:
     
     - OptionsFiltersConnected\*
     
-      - index
+      - OptionsFilters/index
       
         - OptionsContainer
     
@@ -186,27 +186,25 @@ The following describes how React Components are nested within the app:
     
     - ModalConnected\*
     
-      - Modal
-      
-        - index
+      - Modal/index
     
-          - About
-            
-            - AboutCopy
+        - About
           
-          - ModalContent
-            
-          - Copyright
+          - AboutCopy
+        
+        - ModalContent
           
-          - Disclaimer
-          
-          - DownloadData
-      
-          - ShareURL
-          
-          - ShareFB
-          
-          - ShareTwitter
+        - Copyright
+        
+        - Disclaimer
+        
+        - DownloadData
+    
+        - ShareURL
+        
+        - ShareFB
+        
+        - ShareTwitter
     
     - SmallDeviceMessage
     
