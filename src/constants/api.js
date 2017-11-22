@@ -33,12 +33,7 @@ export const makeDefaultState = () => {
     return true;
   };
 
-  const isBool = (val) => {
-    if (val && typeof val === 'boolean') {
-      return val;
-    }
-    return false;
-  };
+  const isBool = val => typeof val === 'boolean';
 
   const isValidMomentObj = (dateString) => {
     const m = dateString ? momentize(dateString) : undefined;
@@ -81,18 +76,20 @@ export const makeDefaultState = () => {
       identifier: p.identifier || undefined,
       lngLats: p.lngLats || [],
     },
+    // filterTypes default to true for all injury & fatality
+    // except for noInjuryFatality which defaults to false
     filterType: {
       injury: {
-        cyclist: isBool(p.cinj),
-        motorist: isBool(p.minj),
-        pedestrian: isBool(p.pinj),
+        cyclist: isBool(p.cinj) ? p.cinj : true,
+        motorist: isBool(p.minj) ? p.minj : true,
+        pedestrian: isBool(p.pinj) ? p.pinj : true,
       },
       fatality: {
-        cyclist: isBool(p.cfat),
-        motorist: isBool(p.mfat),
-        pedestrian: isBool(p.pfat),
+        cyclist: isBool(p.cfat) ? p.cfat : true,
+        motorist: isBool(p.mfat) ? p.mfat : true,
+        pedestrian: isBool(p.pfat) ? p.pfat : true,
       },
-      noInjuryFatality: isBool(p.noInjFat),
+      noInjuryFatality: isBool(p.noInjFat) ? p.noInjFat : false,
     },
     filterContributingFactor: p.contrFactor || 'ALL',
     modal: {
