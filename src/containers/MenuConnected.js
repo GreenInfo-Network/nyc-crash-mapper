@@ -6,7 +6,7 @@ import Menu from '../components/Menu';
 
 const mapStateToProps = ({ filterDate, filterArea, filterType }) => {
   const { startDate, endDate } = filterDate;
-  const { geo, identifier } = filterArea;
+  const { geo, identifier, lngLats } = filterArea;
   const { injury, fatality } = filterType;
 
   // these props are used to create the query params when linking to the chart view app
@@ -14,6 +14,7 @@ const mapStateToProps = ({ filterDate, filterArea, filterType }) => {
     p1start: startDate.format(dateStringFormatModel),
     p1end: endDate.format(dateStringFormatModel),
     geo,
+    lngLats: encodeURIComponent(JSON.stringify(lngLats)),
     primary: identifier,
     pinj: injury.pedestrian,
     pfat: fatality.pedestrian,
