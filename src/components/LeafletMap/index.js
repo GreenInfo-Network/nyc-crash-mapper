@@ -385,10 +385,12 @@ class LeafletMap extends Component {
       };
     }
 
+    /* disabled behavior; visually jarring to have the map jump around
     if (geo !== 'custom') {
       // for filter area polygons, fit map bounds to all of NYC
       this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }
+    */
 
     // hide Carto sublayer tooltips / info windows & prevent interaction
     this.hideCartoTooltips();
