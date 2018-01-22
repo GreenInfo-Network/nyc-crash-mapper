@@ -60,9 +60,13 @@ class LeafletMap extends Component {
   componentWillReceiveProps(nextProps) {
     const { geo, geojson, identifier, drawEnabeled } = nextProps;
 
-    if (identifier && identifier !== this.props.identifier) {
+    if (identifier !== this.props.identifier) {
       // user filtered by a specific geography, so hide the GeoJSON boundary overlay
-      this.map.removeLayer(this.filterPolygons);
+      if (identifier) {
+        this.map.removeLayer(this.filterPolygons);
+      } else {
+        this.updateCartoSubLayer(nextProps);
+      }
     }
 
     if ((!identifier && this.props.identifier) && (geo === this.props.geo)) {
@@ -254,8 +258,10 @@ class LeafletMap extends Component {
     this.hideCartoTooltips();
     // hide any open infowindow
     this.hideCartoInfowindow();
-    // fit the map extent to the queried data
-    this.fitMapBounds(sql);
+    // fit the map extent to the queried data, unless that's Everything
+    if (nextProps.geo && nextProps.identifier) {
+      this.fitMapBounds(sql);
+    }
     // set the cartoSubLayer to be interactive
     this.cartoSubLayer.setInteraction(true);
     // update the cartoLayer SQL using new props, such as start and end dates
