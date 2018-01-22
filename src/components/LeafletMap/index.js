@@ -305,7 +305,14 @@ class LeafletMap extends Component {
     const identifier = target.feature.properties.identifier;
     const p = this.filterAreaTooltip.children[0];
     this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
-    p.textContent = geo === 'borough' ? boroughs[identifier] : identifier;
+    // text for tooltip = 'name' attribute if available, else 'identifier'
+    if (geo === 'borough') {
+      p.textContent = boroughs[identifier];
+    } else if (geo === 'intersection') {
+      p.textContent = identifier.split('|')[1];  // see sql_queries.js where we concat the ID+name
+    } else {
+      p.textContent = identifier;
+    }
   }
 
   hideFilterAreaTooltip() {

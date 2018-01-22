@@ -9,9 +9,10 @@ const FilterByBoundary = (props) => {
   const showIdentifier = (name) => {
     if (geo === name && identifier) {
       let label = identifier;
+      if (geo === 'intersection') label = label.split('|')[1];
 
-      if (label.length > 16) {
-        label = `${label.substring(0, 16)}...`;
+      if (label.length > 12) {
+        label = `${label.substring(0, 12)}...`;
       }
 
       return (
@@ -91,6 +92,16 @@ const FilterByBoundary = (props) => {
           preventRetrigger
         />
         { showIdentifier('nypd_precinct') }
+      </li>
+      <li>
+        <FilterButton
+          label={'Intersection'}
+          id={'intersection'}
+          isActive={geo === 'intersection'}
+          handleClick={filterByAreaType}
+          preventRetrigger
+        />
+        { showIdentifier('intersection') }
       </li>
       <li>
         <FilterButton
