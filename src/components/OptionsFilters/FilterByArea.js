@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 
 import FilterButton from './FilterButton';
 
+import { labelFormats } from './../../constants/app_config';
+
 const FilterByBoundary = (props) => {
   const { filterByAreaType, filterByAreaIdentifier, toggleCustomAreaDraw, drawEnabeled, geo,
     identifier } = props;
@@ -11,13 +13,15 @@ const FilterByBoundary = (props) => {
       let label = identifier;
       if (geo === 'intersection') label = label.split('|')[1];
 
+      const tooltip = labelFormats[geo].replace('{}', label);
+
       if (label.length > 12) {
         label = `${label.substring(0, 12)}...`;
       }
 
       return (
         <span>
-          <p className="identifier-label">
+          <p className="identifier-label" title={tooltip}>
             {label}
           </p>
           <button

@@ -3,7 +3,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import sls from 'single-line-string';
 
 import { configureMapSQL } from '../../constants/sql_queries';
-import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
+import { basemapURL, cartoUser, crashDataFieldNames, labelFormats } from '../../constants/app_config';
 import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
 
 import ZoomControls from './ZoomControls';
@@ -310,15 +310,21 @@ class LeafletMap extends Component {
     const { x, y } = containerPoint;
     const identifier = target.feature.properties.identifier;
     const p = this.filterAreaTooltip.children[0];
+
     this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
-    // text for tooltip = 'name' attribute if available, else 'identifier'
+
+    // intersections have the ID|Name thing to split out
+    // boroughs have a special lookup table for their label
+    // and they all map onto a format string to make the labels read nicely
+    let label = identifier;
     if (geo === 'borough') {
-      p.textContent = boroughs[identifier];
+      label = boroughs[identifier];
     } else if (geo === 'intersection') {
-      p.textContent = identifier.split('|')[1];  // see sql_queries.js where we concat the ID+name
-    } else {
-      p.textContent = identifier;
+      label = identifier.split('|')[1];  // see sql_queries.js where we concat the ID+name
     }
+    label = labelFormats[geo].replace('{}', label);
+
+    p.textContent = label;
   }
 
   hideFilterAreaTooltip() {
