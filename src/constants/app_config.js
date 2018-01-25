@@ -14,6 +14,7 @@ export const cartoTables = {
   nyc_community_board: 'nyc_community_board',
   nyc_neighborhood: 'nyc_neighborhood',
   nyc_nypd_precinct: 'nyc_nypd_precinct',
+  nyc_intersections: 'nyc_intersections',
   nyc_crashes: 'crashes_all_prod'
 };
 
@@ -44,3 +45,15 @@ export const cartoLayerSource = {
 // basemap for Leaflet
 export const basemapURL =
   'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+
+// mapping of selectable area types onto a format string, for labels and tooltips
+// "NYPD Precinct 107" is nicer than "107"
+// use {} as the placeholder for the one value to be passed: the identifier
+export const labelFormats = {
+  borough: '{}',
+  city_council: 'City Council District {}',
+  community_board: 'Community Board {}',
+  neighborhood: '{}',
+  nypd_precinct: 'NYPD Precinct {}',
+  intersection: '{}',
+};

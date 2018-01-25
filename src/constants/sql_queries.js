@@ -7,6 +7,7 @@ const { nyc_borough,
   nyc_community_board,
   nyc_neighborhood,
   nyc_nypd_precinct,
+  nyc_intersections,
   nyc_crashes } = cartoTables;
 
 // Links each boundary filter name to a SQL query
@@ -59,6 +60,17 @@ export const filterByAreaSQL = {
       ${nyc_nypd_precinct}
     GROUP BY
       identifier
+  `,
+
+  intersection: sls`
+    SELECT
+      CONCAT(borough, ', ', name, '|', cartodb_id) AS identifier,
+      the_geom
+    FROM
+      ${nyc_intersections}
+    WHERE crashcount IS NOT NULL AND borough != ''
+    ORDER BY crashcount DESC
+    LIMIT 500
   `,
 };
 
@@ -157,6 +169,7 @@ export const filterAreaBtnTableMap = {
   city_council: nyc_city_council,
   neighborhood: nyc_neighborhood,
   nypd_precinct: nyc_nypd_precinct,
+  intersection: nyc_intersections,
 };
 
 // Creates the spatial join clause with a boundary table geom
@@ -178,10 +191,13 @@ const joinToGeoTableClause = (areaName) => {
 // @param {number || string} identifier, unique id of boundary polygon
 // @param {string} geo, name of boundary table identifier column belongs to
 const filterByIdentifierWhereClause = (identifier, geo) => {
-  if (geo !== 'borough' && identifier) {
-    return `AND a.identifier = $$${identifier}$$`;
-  } else if (geo === 'borough' && identifier) {
+  if (geo === 'borough' && identifier) {
     return `AND c.borough ilike '%${identifier}%'`;
+  } else if (geo === 'intersection' && identifier) {
+    const cartodb_id = identifier.split('|')[1];
+    return `AND a.cartodb_id = ${cartodb_id}`;
+  } else if (geo !== 'borough' && identifier) {
+    return `AND a.identifier = $$${identifier}$$`;
   }
   return '';
 };

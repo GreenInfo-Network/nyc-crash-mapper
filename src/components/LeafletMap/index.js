@@ -3,7 +3,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import sls from 'single-line-string';
 
 import { configureMapSQL } from '../../constants/sql_queries';
-import { basemapURL, cartoUser, crashDataFieldNames } from '../../constants/app_config';
+import { basemapURL, cartoUser, crashDataFieldNames, labelFormats } from '../../constants/app_config';
 import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
 
 import ZoomControls from './ZoomControls';
@@ -60,9 +60,13 @@ class LeafletMap extends Component {
   componentWillReceiveProps(nextProps) {
     const { geo, geojson, identifier, drawEnabeled } = nextProps;
 
-    if (identifier && identifier !== this.props.identifier) {
+    if (identifier !== this.props.identifier) {
       // user filtered by a specific geography, so hide the GeoJSON boundary overlay
-      this.map.removeLayer(this.filterPolygons);
+      if (identifier) {
+        this.map.removeLayer(this.filterPolygons);
+      } else {
+        this.updateCartoSubLayer(nextProps);
+      }
     }
 
     if ((!identifier && this.props.identifier) && (geo === this.props.geo)) {
@@ -254,8 +258,10 @@ class LeafletMap extends Component {
     this.hideCartoTooltips();
     // hide any open infowindow
     this.hideCartoInfowindow();
-    // fit the map extent to the queried data
-    this.fitMapBounds(sql);
+    // fit the map extent to the queried data, unless that's Everything
+    if (nextProps.geo && nextProps.identifier) {
+      this.fitMapBounds(sql);
+    }
     // set the cartoSubLayer to be interactive
     this.cartoSubLayer.setInteraction(true);
     // update the cartoLayer SQL using new props, such as start and end dates
@@ -304,8 +310,21 @@ class LeafletMap extends Component {
     const { x, y } = containerPoint;
     const identifier = target.feature.properties.identifier;
     const p = this.filterAreaTooltip.children[0];
+
     this.filterAreaTooltip.style.cssText = `display: initial; top: ${(y - 25)}px; left: ${(x + 10)}px;`;
-    p.textContent = geo === 'borough' ? boroughs[identifier] : identifier;
+
+    // intersections have the ID|Name thing to split out
+    // boroughs have a special lookup table for their label
+    // and they all map onto a format string to make the labels read nicely
+    let label = identifier;
+    if (geo === 'borough') {
+      label = boroughs[identifier];
+    } else if (geo === 'intersection') {
+      label = identifier.split('|')[0].split(', ')[1];  // see sql_queries.js where we concat the borough,ID|name
+    }
+    label = labelFormats[geo].replace('{}', label);
+
+    p.textContent = label;
   }
 
   hideFilterAreaTooltip() {
@@ -378,10 +397,12 @@ class LeafletMap extends Component {
       };
     }
 
+    /* disabled behavior; visually jarring to have the map jump around
     if (geo !== 'custom') {
       // for filter area polygons, fit map bounds to all of NYC
       this.map.fitBounds(this.mapBounds, this.mapBoundsOptions);
     }
+    */
 
     // hide Carto sublayer tooltips / info windows & prevent interaction
     this.hideCartoTooltips();

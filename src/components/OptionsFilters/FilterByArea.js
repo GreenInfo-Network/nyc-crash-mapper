@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 
 import FilterButton from './FilterButton';
 
+import { labelFormats } from './../../constants/app_config';
+
 const FilterByBoundary = (props) => {
   const { filterByAreaType, filterByAreaIdentifier, toggleCustomAreaDraw, drawEnabeled, geo,
     identifier } = props;
@@ -9,14 +11,17 @@ const FilterByBoundary = (props) => {
   const showIdentifier = (name) => {
     if (geo === name && identifier) {
       let label = identifier;
+      if (geo === 'intersection') label = label.split('|')[0].split(', ')[1];
 
-      if (label.length > 16) {
-        label = `${label.substring(0, 16)}...`;
+      const tooltip = labelFormats[geo].replace('{}', label);
+
+      if (label.length > 12) {
+        label = `${label.substring(0, 12)}...`;
       }
 
       return (
         <span>
-          <p className="identifier-label">
+          <p className="identifier-label" title={tooltip}>
             {label}
           </p>
           <button
@@ -91,6 +96,16 @@ const FilterByBoundary = (props) => {
           preventRetrigger
         />
         { showIdentifier('nypd_precinct') }
+      </li>
+      <li>
+        <FilterButton
+          label={'Intersection'}
+          id={'intersection'}
+          isActive={geo === 'intersection'}
+          handleClick={filterByAreaType}
+          preventRetrigger
+        />
+        { showIdentifier('intersection') }
       </li>
       <li>
         <FilterButton
