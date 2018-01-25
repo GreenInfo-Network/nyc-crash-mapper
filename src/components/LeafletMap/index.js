@@ -40,7 +40,7 @@ class LeafletMap extends Component {
   }
 
   componentDidMount() {
-    const { lngLats } = this.props;
+    const { lngLats, geo, identifier } = this.props;
     this.cartodbSQL = new cartodb.SQL({ user: cartoUser });
     this.initMap();
     this.initCustomFilter();
@@ -54,6 +54,12 @@ class LeafletMap extends Component {
       }, []);
       const poly = L.polygon(reversed, this.customDrawStyle);
       this.customDraw.drawLayer.addLayer(poly);
+    }
+
+    // if loading a geo but no identifier, fetch geo-polygons to start up
+    // if loading both/neither, that's already handled by standard props updates
+    if (geo && !identifier) {
+      this.props.fetchGeoPolygons(geo);
     }
   }
 
@@ -69,9 +75,9 @@ class LeafletMap extends Component {
       }
     }
 
+    // user deselected a geo identifier, having had one selected previously
+    // and is keeping the same geography type
     if ((!identifier && this.props.identifier) && (geo === this.props.geo)) {
-      // user deselected a geo identifier, so either show filter polygons again,
-      // or fetch them if no geojson for them exists (app loaded with prexisting geo & identifier)
       if (geojson.features.length) {
         this.renderFilterPolygons(geo, geojson);
       } else {
