@@ -70,7 +70,7 @@ export const filterByAreaSQL = {
       ${nyc_intersections}
     WHERE crashcount IS NOT NULL
     ORDER BY crashcount DESC
-    LIMIT 1000
+    LIMIT 500
   `,
 };
 
@@ -194,7 +194,7 @@ const filterByIdentifierWhereClause = (identifier, geo) => {
   if (geo === 'borough' && identifier) {
     return `AND c.borough ilike '%${identifier}%'`;
   } else if (geo === 'intersection' && identifier) {
-    const cartodb_id = identifier.split('|')[0];
+    const cartodb_id = identifier.split('|')[1];
     return `AND a.cartodb_id = ${cartodb_id}`;
   } else if (geo !== 'borough' && identifier) {
     return `AND a.identifier = $$${identifier}$$`;
