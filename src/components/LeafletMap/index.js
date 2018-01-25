@@ -320,7 +320,7 @@ class LeafletMap extends Component {
     if (geo === 'borough') {
       label = boroughs[identifier];
     } else if (geo === 'intersection') {
-      label = identifier.split('|')[1];  // see sql_queries.js where we concat the ID+name
+      label = identifier.split('|')[0].split(', ')[1];  // see sql_queries.js where we concat the borough,ID|name
     }
     label = labelFormats[geo].replace('{}', label);
 

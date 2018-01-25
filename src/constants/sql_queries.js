@@ -64,11 +64,11 @@ export const filterByAreaSQL = {
 
   intersection: sls`
     SELECT
-      CONCAT(cartodb_id, '|', name) AS identifier,
+      CONCAT(borough, ', ', name, '|', cartodb_id) AS identifier,
       the_geom
     FROM
       ${nyc_intersections}
-    WHERE crashcount IS NOT NULL
+    WHERE crashcount IS NOT NULL AND borough != ''
     ORDER BY crashcount DESC
     LIMIT 500
   `,

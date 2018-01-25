@@ -11,7 +11,7 @@ const FilterByBoundary = (props) => {
   const showIdentifier = (name) => {
     if (geo === name && identifier) {
       let label = identifier;
-      if (geo === 'intersection') label = label.split('|')[1];
+      if (geo === 'intersection') label = label.split('|')[0].split(', ')[1];
 
       const tooltip = labelFormats[geo].replace('{}', label);
 
