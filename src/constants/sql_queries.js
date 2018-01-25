@@ -64,7 +64,7 @@ export const filterByAreaSQL = {
 
   intersection: sls`
     SELECT
-      CONCAT(borough, ', ', name, '|', cartodb_id) AS identifier,
+      CONCAT(UPPER(borough), ', ', name, '|', cartodb_id) AS identifier,
       the_geom
     FROM
       ${nyc_intersections}
