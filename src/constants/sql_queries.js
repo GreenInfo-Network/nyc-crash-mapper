@@ -221,6 +221,29 @@ const filterByCustomAreaClause = (lonLatArray) => {
   return '';
 };
 
+
+const filterByLocationSQL = ({ lat, lon }) => {
+  if (lat && lon) {
+    return sls`
+      AND
+        ST_Contains(
+          ST_Buffer(
+            ST_Transform(
+              ST_SetSRID(
+                ST_MakePoint(${lon}, ${lat}),
+                4326
+              ),
+              3785
+            ),
+            65
+          ),
+          c.the_geom_webmercator
+        )
+    `;
+  }
+  return '';
+};
+
 /*
  ********************************** MAP ****************************************
  */
@@ -232,7 +255,7 @@ const filterByCustomAreaClause = (lonLatArray) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
+  const { startDate, endDate, filterType, geo, identifier, lngLats, lat, lon } = params;
 
   return sls`
     SELECT * FROM
@@ -259,6 +282,7 @@ export const configureMapSQL = (params) => {
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       ${filterByIdentifierWhereClause(identifier, geo)}
+      ${filterByLocationSQL(lat, lon)}
       AND
         c.the_geom IS NOT NULL
       GROUP BY
