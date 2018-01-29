@@ -29,6 +29,9 @@ class Search extends Component {
 
     if (inputText && inputText.length) {
       this.props.fetchLocationGeocode(inputText);
+      this.setState({
+        inputText: '',
+      });
     }
   }
 
@@ -42,7 +45,7 @@ class Search extends Component {
     const { inputText } = this.state;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="SearchForm" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Search by address or intersection"

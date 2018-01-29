@@ -1,0 +1,15 @@
+.SearchResults {
+  width: 100%;
+  position: relative;
+  padding-right: 10px;
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  button {
+    &:last-child {
+      margin-left: 10px;
+    }
+  }
+}

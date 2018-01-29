@@ -6,8 +6,5 @@
   left: $margin-25 + $zoom-controls-width + $padding-10;
   z-index: 5;
   padding-right: 10px;
-
-  input {
-    width: 100%;
-  }
+  background-color: transparent;
 }

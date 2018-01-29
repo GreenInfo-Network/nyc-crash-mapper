@@ -1,10 +1,15 @@
 import React, { PropTypes } from 'react';
 
 import SearchForm from './SearchForm';
+import SearchResults from './SearchResults';
 
 const Search = props => (
   <div className="Search ui">
     <SearchForm {...props} />
+    {
+      (props.error || props.result) &&
+      <SearchResults {...props} />
+    }
   </div>
 );
 
