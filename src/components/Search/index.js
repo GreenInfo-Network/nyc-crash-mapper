@@ -1,42 +1,28 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 
-class Search extends Component {
-  state = {
-    inputText: '',
-  }
+import SearchForm from './SearchForm';
 
-  handleSubmit = (e) => {
-    const { inputText } = this.state;
+const Search = props => (
+  <div className="Search ui">
+    <SearchForm {...props} />
+  </div>
+);
 
-    e.preventDefault();
+Search.propTypes = {
+  error: PropTypes.string,
+  isFetching: PropTypes.bool.isRequired,
+  searchTerm: PropTypes.string,
+  result: PropTypes.shape({
+    addressFormatted: PropTypes.string,
+    coordinates: PropTypes.arrayOf(PropTypes.number)
+  }),
+  fetchLocationGeocode: PropTypes.func.isRequired,
+};
 
-    if (inputText && inputText.length) {
-      // TO DO
-    }
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      inputText: e.target.value,
-    });
-  }
-
-  render() {
-    const { inputText } = this.state;
-
-    return (
-      <div className="Search ui">
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="Search by address or intersection"
-            value={inputText}
-            onChange={this.handleChange}
-          />
-        </form>
-      </div>
-    );
-  }
-}
+Search.defaultProps = {
+  error: null,
+  result: null,
+  searchTerm: null
+};
 
 export default Search;
