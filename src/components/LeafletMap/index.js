@@ -58,13 +58,13 @@ class LeafletMap extends Component {
 
     // if loading a geo but no identifier, fetch geo-polygons to start up
     // if loading both/neither, that's already handled by standard props updates
-    if (geo && !identifier) {
+    if (geo && geo !== 'citywide' && !identifier) {
       this.props.fetchGeoPolygons(geo);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geo, geojson, identifier, drawEnabeled } = nextProps;
+    const { geo, geojson, identifier, drawEnabeled, searchResult } = nextProps;
 
     if (identifier !== this.props.identifier) {
       // user filtered by a specific geography, so hide the GeoJSON boundary overlay
@@ -130,6 +130,24 @@ class LeafletMap extends Component {
       // clear any existing custom drawn polygon before drawing another one
       this.customFilterClearPoly();
       this.customFilterEnableDraw();
+    }
+
+    // Handle Address Search Result
+    // user searched for a street address, zoom and center the map, add a marker
+    if (searchResult &&
+      (JSON.stringify(searchResult) !== JSON.stringify(this.props.searchResult))
+    ) {
+      const { coordinates, addressFormatted } = searchResult;
+      this.map.setView(coordinates, 16);
+      this.searchMarker = L.marker(coordinates)
+        .bindPopup(`<p>${addressFormatted}</p>`)
+        .addTo(this.map);
+    }
+
+    // remove marker if user cleared search result or applied filter by location
+    if (!searchResult && this.props.searchResult) {
+      this.map.removeLayer(this.searchMarker);
+      this.searchMarker = null;
     }
   }
 
@@ -454,6 +472,7 @@ LeafletMap.defaultProps = {
   identifier: '',
   lngLats: [],
   geojson: {},
+  searchResult: null,
 };
 
 LeafletMap.propTypes = {
@@ -494,6 +513,10 @@ LeafletMap.propTypes = {
     }).isRequired,
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
+  searchResult: PropTypes.shape({
+    addressFormatted: PropTypes.string,
+    result: PropTypes.arrayOf(PropTypes.number)
+  }),
 };
 
 export default LeafletMap;
