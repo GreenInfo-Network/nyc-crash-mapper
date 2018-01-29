@@ -108,7 +108,7 @@ class LeafletMap extends Component {
       this.props.fetchGeoPolygons(geo);
     }
 
-    if (geojson.features.length) {
+    if (geojson && geojson.features && geojson.features.length) {
       if (
         (geojson.geoName !== this.props.geojson.geoName) ||
         (geo !== 'citywide' && this.props.geo === 'citywide') ||
