@@ -57,3 +57,6 @@ export const labelFormats = {
   nypd_precinct: 'NYPD Precinct {}',
   intersection: '{}',
 };
+
+// TO DO: replace this with a key on Chekpeds / GreenInfo account
+export const geocodingK = 'AIzaSyCgATLAbiGUrmZSIaJsCZTewG9Zu32jxus';
