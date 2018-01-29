@@ -21,7 +21,9 @@ Search.propTypes = {
     addressFormatted: PropTypes.string,
     coordinates: PropTypes.arrayOf(PropTypes.number)
   }),
+  clearLocationGeocode: PropTypes.func.isRequired,
   fetchLocationGeocode: PropTypes.func.isRequired,
+  filterByLocation: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {

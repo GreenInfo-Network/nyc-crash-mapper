@@ -20,3 +20,4 @@ export {
 } from './filter_by_area_actions';
 export filterByContributingFactor from './filter_contributing_factor_actions';
 export { openModal, closeModal } from './modal_actions';
+export { clearLocationGeocode, filterByLocation } from './filter_by_location_actions';

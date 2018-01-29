@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 
-import { fetchLocationGeocode } from '../actions';
+import {
+  fetchLocationGeocode,
+  clearLocationGeocode,
+  filterByLocation,
+} from '../actions';
 
 import Search from '../components/Search';
 
@@ -14,4 +18,8 @@ const mapStateToProps = ({ geocoding }) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchLocationGeocode })(Search);
+export default connect(mapStateToProps, {
+  fetchLocationGeocode,
+  clearLocationGeocode,
+  filterByLocation,
+})(Search);

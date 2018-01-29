@@ -1,4 +1,5 @@
 import {
+  CLEAR_LOCATION_GEOCODE,
   LOCATION_GEOCODE_REQUEST,
   LOCATION_GEOCODE_SUCCESS,
   LOCATION_GEOCODE_ERROR,
@@ -50,6 +51,9 @@ export default (state = defaultState, action) => {
         isFetching: false,
         error: action.error
       };
+
+    case CLEAR_LOCATION_GEOCODE:
+      return defaultState;
 
     default:
       return state;
