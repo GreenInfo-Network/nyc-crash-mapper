@@ -58,7 +58,7 @@ class LeafletMap extends Component {
 
     // if loading a geo but no identifier, fetch geo-polygons to start up
     // if loading both/neither, that's already handled by standard props updates
-    if (geo && !identifier) {
+    if (geo && geo !== 'citywide' && !identifier) {
       this.props.fetchGeoPolygons(geo);
     }
   }
@@ -108,7 +108,7 @@ class LeafletMap extends Component {
       this.props.fetchGeoPolygons(geo);
     }
 
-    if (geojson.features.length) {
+    if (geojson && geojson.features && geojson.features.length) {
       if (
         (geojson.geoName !== this.props.geojson.geoName) ||
         (geo !== 'citywide' && this.props.geo === 'citywide') ||
