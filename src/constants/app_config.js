@@ -58,5 +58,27 @@ export const labelFormats = {
   intersection: '{}',
 };
 
+// GeoJSON polyfons for clicking specific areas
+// the style for drawing them onto the map
+export const geoPolygonStyle = {
+    fillColor: '#105b63',
+    fillOpacity: 1
+};
+
+// API key for geocoding
 // TO DO: replace this with a key on Chekpeds / GreenInfo account
 export const geocodingK = 'AIzaSyCgATLAbiGUrmZSIaJsCZTewG9Zu32jxus';
+
+// geocoder search: the radius of the "preview" circle, and its visual style
+export const intersectionCircleRadius = 27.4;  // 90ft in meters
+export const intersectionCircleStyle = {
+  /*
+  color: '#105b63',
+  opacity: 1,
+  weight: 2,
+  */
+  stroke: false,
+  fillColor: '#105b63',
+  fillOpacity: 0.5,
+  clickable: false,
+};

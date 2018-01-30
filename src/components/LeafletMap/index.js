@@ -3,7 +3,15 @@ import momentPropTypes from 'react-moment-proptypes';
 import sls from 'single-line-string';
 
 import { configureMapSQL } from '../../constants/sql_queries';
-import { basemapURL, cartoUser, crashDataFieldNames, labelFormats } from '../../constants/app_config';
+import {
+  basemapURL,
+  cartoUser,
+  crashDataFieldNames,
+  labelFormats,
+  geoPolygonStyle,
+  intersectionCircleRadius,
+  intersectionCircleStyle
+} from '../../constants/app_config';
 import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
 
 import ZoomControls from './ZoomControls';
@@ -142,12 +150,16 @@ class LeafletMap extends Component {
       this.searchMarker = L.marker(coordinates)
         .bindPopup(`<p>${addressFormatted}</p>`)
         .addTo(this.map);
+      this.searchCircle = L.circle(coordinates, intersectionCircleRadius, intersectionCircleStyle)
+        .addTo(this.map);
     }
 
     // remove marker if user cleared search result or applied filter by location
     if (!searchResult && this.props.searchResult) {
       this.map.removeLayer(this.searchMarker);
+      this.map.removeLayer(this.searchCircle);
       this.searchMarker = null;
+      this.searchCircle = null;
     }
   }
 
@@ -369,10 +381,7 @@ class LeafletMap extends Component {
     function handleMouseover(e) {
       const layer = e.target;
 
-      layer.setStyle({
-        fillColor: '#105b63',
-        fillOpacity: 1
-      });
+      layer.setStyle(geoPolygonStyle);
 
       self.revealFilterAreaTooltip(geo, e);
 
