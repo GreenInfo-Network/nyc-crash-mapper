@@ -10,6 +10,7 @@ import OptionsFiltersConnected from '../containers/OptionsFiltersConnected';
 import ModalConnected from '../containers/ModalConnected';
 import SmallDeviceMessage from './SmallDeviceMessage';
 import LoadingIndicator from './LoadingIndicator';
+import Search from '../containers/SearchConnected';
 
 class App extends Component {
   constructor() {
@@ -96,6 +97,7 @@ class App extends Component {
             <SmallDeviceMessage /> :
           [
             <AppHeader key="app-header" openModal={openModal} />,
+            <Search key="search-ui" />,
             <LeafletMapConnected
               key="leaflet-map"
               location={location}

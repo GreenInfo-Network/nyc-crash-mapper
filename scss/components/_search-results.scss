@@ -1,0 +1,32 @@
+.SearchResults {
+  width: 100%;
+  position: relative;
+  padding-right: 10px;
+
+  border: 1px solid $marine-light;
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  p.address {
+    font-size: 14px;
+  }
+
+  button.close {
+    float: right;
+
+    height: 20px;
+    padding: 0 5px;
+    margin: 5px 5px 10px 10px;
+    font-size: 11px;
+    line-height: 11px;
+    background-color: $off-white;
+    border-color: transparent;
+    color: $marine-light;
+    text-align: left;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    border: none;
+  }
+}
