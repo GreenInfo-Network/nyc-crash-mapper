@@ -1,9 +1,8 @@
 .Search {
   width: 300px;
-  height: 38px + $padding-10 * 2;
   position: absolute;
-  top: $margin-5 + $app-header-height;
-  left: $margin-25 + $zoom-controls-width + $padding-10;
+  top: $margin-5 + $app-header-height - 10;
+  left: $margin-25 + $zoom-controls-width + $padding-10 - 10;
   z-index: 5;
   padding-right: 10px;
   background-color: transparent;
