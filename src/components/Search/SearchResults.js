@@ -25,7 +25,7 @@ class SearchResults extends Component {
     this.props.filterByLocation(result.coordinates);
   }
 
-  handleSearchAgain = (e) => {
+  closeThisPanel = (e) => {
     e.preventDefault();
     this.props.clearLocationGeocode();
   }
@@ -43,21 +43,15 @@ class SearchResults extends Component {
 
     if (result) {
       return [
+        <button onClick={this.closeThisPanel} className="close" key="closebutton">✕</button>,
         <p key="message">Filter crashes by this location?</p>,
-        <p key="result">{result.addressFormatted}</p>,
+        <p className="address" key="result">{result.addressFormatted}</p>,
         <button
           className="filter-options-button"
           key="filter-result"
           onClick={this.handleFilterResult}
         >
           Filter Crashes
-        </button>,
-        <button
-          className="filter-options-button"
-          key="search-again"
-          onClick={this.handleSearchAgain}
-        >
-          Search Again
         </button>
       ];
     }
