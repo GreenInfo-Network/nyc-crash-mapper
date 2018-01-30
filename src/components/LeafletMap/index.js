@@ -9,7 +9,7 @@ import {
   crashDataFieldNames,
   labelFormats,
   geoPolygonStyle,
-  intersectionCircleRadius,
+  intersectionCircleRadiusMeters,
   intersectionCircleStyle
 } from '../../constants/app_config';
 import { boroughs, configureLayerSource, crashDataChanged } from '../../constants/api';
@@ -150,7 +150,9 @@ class LeafletMap extends Component {
       this.searchMarker = L.marker(coordinates)
         .bindPopup(`<p>${addressFormatted}</p>`)
         .addTo(this.map);
-      this.searchCircle = L.circle(coordinates, intersectionCircleRadius, intersectionCircleStyle)
+      this.searchCircle = L.circle(coordinates,
+        intersectionCircleRadiusMeters,
+        intersectionCircleStyle)
         .addTo(this.map);
     }
 

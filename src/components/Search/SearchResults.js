@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import { intersectionCircleRadiusFeet } from '../../constants/app_config';
+
 class SearchResults extends Component {
   static propTypes = {
     clearLocationGeocode: PropTypes.func.isRequired,
@@ -44,7 +46,7 @@ class SearchResults extends Component {
     if (result) {
       return [
         <button onClick={this.closeThisPanel} className="close" key="closebutton">✕</button>,
-        <p key="message">Filter crashes by this location?</p>,
+        <p key="message">Filter crashes within {intersectionCircleRadiusFeet} feet of this location?</p>,
         <p className="address" key="result">{result.addressFormatted}</p>,
         <button
           className="filter-options-button"

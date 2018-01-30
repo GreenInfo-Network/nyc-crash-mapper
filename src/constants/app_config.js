@@ -61,8 +61,8 @@ export const labelFormats = {
 // GeoJSON polyfons for clicking specific areas
 // the style for drawing them onto the map
 export const geoPolygonStyle = {
-    fillColor: '#105b63',
-    fillOpacity: 1
+  fillColor: '#105b63',
+  fillOpacity: 1
 };
 
 // API key for geocoding
@@ -70,7 +70,8 @@ export const geoPolygonStyle = {
 export const geocodingK = 'AIzaSyCgATLAbiGUrmZSIaJsCZTewG9Zu32jxus';
 
 // geocoder search: the radius of the "preview" circle, and its visual style
-export const intersectionCircleRadius = 27.4;  // 90ft in meters
+export const intersectionCircleRadiusMeters = 27.4;
+export const intersectionCircleRadiusFeet = Math.round(intersectionCircleRadiusMeters * 3.28084);
 export const intersectionCircleStyle = {
   /*
   color: '#105b63',
