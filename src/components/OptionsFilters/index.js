@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import OptionsContainer from './OptionsContainer';
 import FilterByArea from '../../containers/FilterByAreaConnected';
+import FilterByAreaMessage from '../../containers/FilterByAreaMessageConnected';
 import FilterByType from '../../containers/FilterByTypeConnected';
 import FilterByDate from '../../containers/FilterByDateConnected';
 import DownloadData from './DownloadData';
@@ -26,6 +27,7 @@ class OptionsFilters extends Component {
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Boundary'}>
+            <FilterByAreaMessage />
             <FilterByArea />
           </OptionsContainer>
           <hr />
@@ -57,13 +59,13 @@ class OptionsFilters extends Component {
 
 OptionsFilters.defaultProps = {
   maxDate: '',
-  height: 120
+  height: 120,
 };
 
 OptionsFilters.propTypes = {
   maxDate: PropTypes.string,
   openModal: PropTypes.func.isRequired,
-  height: PropTypes.number
+  height: PropTypes.number,
 };
 
 export default OptionsFilters;
