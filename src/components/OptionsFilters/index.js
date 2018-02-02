@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import OptionsContainer from './OptionsContainer';
 import FilterByArea from '../../containers/FilterByAreaConnected';
-import FilterByAreaMessage from '../../containers/FilterByAreaMessageConnected';
+import FilterByAreaMessage from './FilterByAreaMessage';
 import FilterByType from '../../containers/FilterByTypeConnected';
 import FilterByDate from '../../containers/FilterByDateConnected';
 import DownloadData from './DownloadData';
@@ -11,7 +11,7 @@ import FooterOptions from './FooterOptions';
 
 class OptionsFilters extends Component {
   render() {
-    const { height, maxDate, openModal } = this.props;
+    const { height, maxDate, openModal, geo } = this.props;
 
     return (
       <div className="ui right app-options-filters">
@@ -27,7 +27,7 @@ class OptionsFilters extends Component {
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Filter by Boundary'}>
-            <FilterByAreaMessage />
+            <FilterByAreaMessage geo={geo} />
             <FilterByArea />
           </OptionsContainer>
           <hr />
@@ -66,6 +66,7 @@ OptionsFilters.propTypes = {
   maxDate: PropTypes.string,
   openModal: PropTypes.func.isRequired,
   height: PropTypes.number,
+  geo: PropTypes.string.isRequired,
 };
 
 export default OptionsFilters;
