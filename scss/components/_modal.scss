@@ -4,9 +4,9 @@
 
   .Modal {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 25%;
+    left: 25%;
+    transform: translate(-25%, -25%);
     background-color: #fff;
     border: 1px solid $medium-grey;
     border-radius: $border-radius;
@@ -63,12 +63,12 @@
   .modal-share-fb,
   .modal-share-twitter,
   .modal-share-url {
-    max-width: 550px;
+    max-width: 700px;
   }
 
   .modal-about {
-    height: 300px;
-    max-height: 300px;
+    height: 80vh;
+    max-height: 80vh;
     overflow-y: auto;
 
     p {

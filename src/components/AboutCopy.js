@@ -33,15 +33,6 @@ const AboutCopy = () => (
       </li>
       <li>
         <p>
-          Get{' '}
-          <a href="http://www.vaccaroandwhite.com">
-            <strong>LEGAL ASSISTANCE</strong>
-          </a>{' '}
-          for someone you know who was hit by a driver
-        </p>
-      </li>
-      <li>
-        <p>
           <a href="https://www.transalt.org/familiesforsafestreets">
             <strong>JOIN</strong>
           </a>{' '}
@@ -110,17 +101,17 @@ const AboutCopy = () => (
       more. Any active filters may easily be shared with others using the website's URL.
     </p>
     <p>
-      <strong>CHARTING: TREND</strong> allows you to compare two selected areas’ performance against
-      each other and to a citywide or borough-wide reference, while filtering by date range or type
-      of crash. COMPARE lets you compare two time periods for a given area. RANK shows where one
-      area ranks in terms of safety in the context of all similar areas over the most recent
-      three-year period.
+      <strong>ANALYZING:</strong> TREND allows you to compare two selected areas’ performance
+      against each other and to a citywide or borough-wide reference, while filtering by date range
+      or type of crash. COMPARE lets you compare two time periods for a given area. RANK shows
+      where one area or intersection ranks in terms of safety in the context of all similar areas
+      over the most recent two-year period.
     </p>
     <p>
       <strong>ENHANCED DATA</strong>: Collision data is updated from the NYC Open Data Portal daily
-      or as soon as new data becomes available. NYC Crash Mapper uses vehicle collision data for New
-      York City from August 2011 to the present. The data was aggregated and normalized from the NYC
-      Open Data Portal{' '}
+      or as soon as new data becomes available, with a sweep back one month to catch recently
+      updated data. NYC Crash Mapper uses vehicle collision data for New York City from August 2011
+       to the present. The data was aggregated and normalized from the NYC Open Data Portal{' '}
       <a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95">
         <strong>NYPD Motor Vehicle Collisions</strong>
       </a>{' '}
@@ -130,28 +121,21 @@ const AboutCopy = () => (
       </a>.
     </p>
     <p>
-      At the time of initial launch in spring 2017, 15% of the crashes were not geocoded due to the
-      source data lacking values for latitude and longitude or adequate address attributes in the
-      NYC Open Data Portal. As a result, the statistics (total crashes, fatalities, and injuries)
-      displayed in the bottom of the map view may differ from what is shown on the map when Filter
-      By Boundary is set to "Citywide." When a Filter By Boundary other than "Citywide" is used,
-      such as a "Community Board", the stats will only display counts for crashes that have been
-      geocoded and are located within a selected boundary.
+      As a result of some of the source data not being geocoded, the statistics (total crashes,
+       fatalities, and injuries) displayed in the bottom of the map view may differ from what
+      is shown on the map when Filter By Boundary is set to "Citywide." When a Filter By
+      Boundary other than "Citywide" is used, such as a "Community Board", the stats will
+      only display counts for crashes that have been geocoded and are located within a
+      selected boundary.
     </p>
     <p>
-      <strong>
-        Note that we include non-geocoded data at the citywide level to advocate for the NYPD to
-        improve the quality of NYC's vehicle collision data by geocoding all crash locations (not
-        just 80% of them) and providing values for contributing factors.
-      </strong>
-    </p>
-    <p>
-      <strong>NYC CRASH MAPPER</strong>, now with both mapping and charting, was made possible by{' '}
+      <strong>NYC CRASH MAPPER</strong> was made possible by{' '}
       <a href="https://carto.com/">
         <strong>CARTO</strong>
       </a>{' '}
       for hosting the data and making the creation of this tool possible through their Grants For
-      Good program; by The Lily Auchincloss and PEPSI foundations, and the New York City Council.
+      Good program; by The Lily Auchincloss and PEPSI foundations, the Manhattan Borough President
+       and the New York City Council.
     </p>
     <p>
       This application is the result of four iterations of a mapping initiative started by
