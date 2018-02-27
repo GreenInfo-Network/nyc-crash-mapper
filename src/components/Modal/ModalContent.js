@@ -9,6 +9,7 @@ const ModalContent = (WrappedComponent, config) => {
     render() {
       const title = {
         about: 'About NYC Crash Mapper',
+        help: 'How to Use Crash Mapper',
         copyright: 'Copyright',
         disclaimer: 'Disclaimer',
         'download-data': 'Download Data',

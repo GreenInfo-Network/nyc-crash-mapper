@@ -14,6 +14,7 @@ const Menu = (props) => {
     { type: 'link', value: 'compare', label: 'Compare' },
     { type: 'link', value: 'rank', label: 'Rank' },
     { type: 'modal', value: 'about', label: 'About' },
+    { type: 'modal', value: 'help', label: 'Help' },
   ];
 
   const mapTypeToElement = (item) => {

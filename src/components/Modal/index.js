@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 
 import ModalContent from './ModalContent';
 import About from './About';
+import Help from './Help';
 import DownloadData from './DownloadData';
 import ShareURL from './ShareURL';
 import ShareFB from './ShareFB';
@@ -21,6 +22,7 @@ class ModalWrapper extends Component {
     const { modalType, closeModal, filterType, filterArea, startDate, endDate } = this.props;
     const modalTypes = {
       about: About,
+      help: Help,
       copyright: Copyright,
       disclaimer: Disclaimer,
       'download-data': DownloadData,
