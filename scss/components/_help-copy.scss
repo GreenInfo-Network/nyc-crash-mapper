@@ -1,0 +1,41 @@
+.help-panel {
+  max-height: 80vh;
+  overflow: scroll;
+
+  td {
+    vertical-align: top;
+  }
+
+  td:last-child {
+    padding-left: 10px;
+  }
+
+  h6 {
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+  }
+
+  p {
+    padding: 0 0 $padding-25 0;
+  }
+
+  ul {
+    list-style: disc inside none;
+  }
+
+  p,
+  li {
+    color: $marine;
+    font-size: 1.4rem;
+  }
+
+  p {
+    padding-bottom: 20px;
+  }
+
+  li > p {
+    display: inline;
+    padding-bottom: 0;
+  }
+}
