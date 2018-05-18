@@ -10,10 +10,11 @@ const Search = ({
   suggestions,
   fetchSearchResults,
   updateAutosuggestValue,
-  clearSearchResults
+  clearSearchResults,
+  selectSearchResult
 }) => {
-  const onSuggestionsFetchRequested = ({ value }) => {
-    fetchSearchResults(value);
+  const onSuggestionsFetchRequested = () => {
+    fetchSearchResults();
   };
 
   const onSuggestionsClearRequested = () => {
@@ -22,6 +23,11 @@ const Search = ({
 
   const handleChange = (event, { newValue }) => {
     updateAutosuggestValue(newValue);
+  };
+
+  const onSuggestionSelected = () => {
+    const result = suggestions.length ? suggestions[0] : null;
+    selectSearchResult(result);
   };
 
   // eslint-disable-next-line
@@ -47,6 +53,7 @@ const Search = ({
       <Autosuggest
         onSuggestionsFetchRequested={throttle(onSuggestionsFetchRequested, THROTTLE_WAIT_MS)}
         onSuggestionsClearRequested={onSuggestionsClearRequested}
+        onSuggestionSelected={onSuggestionSelected}
         getSuggestionValue={getSuggestionValue}
         suggestions={suggestions}
         renderSuggestion={renderSuggestion}
@@ -63,7 +70,8 @@ Search.propTypes = {
   suggestions: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
   updateAutosuggestValue: PropTypes.func.isRequired,
-  clearSearchResults: PropTypes.func.isRequired
+  clearSearchResults: PropTypes.func.isRequired,
+  selectSearchResult: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {

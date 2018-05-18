@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
   fetchSearchResults,
   updateAutosuggestValue,
-  clearSearchResults
+  clearSearchResults,
+  selectSearchResult,
 } from '../actions';
 
 import Search from '../components/Search';
@@ -20,5 +21,6 @@ const mapStateToProps = ({
 export default connect(mapStateToProps, {
   fetchSearchResults,
   updateAutosuggestValue,
-  clearSearchResults
+  clearSearchResults,
+  selectSearchResult,
 })(Search);
