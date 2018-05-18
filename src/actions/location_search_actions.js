@@ -30,7 +30,7 @@ export const fetchSearchResults = () => {
   return (dispatch, getState) => {
     const { autosuggestValue } = getState().search;
     dispatch(requestSearchResults());
-    return fetch(`${url}?${autosuggestValue}`)
+    return fetch(`${url}${autosuggestValue}`)
       .then(res => res.json())
       .then((json) => {
         const payload = json.features;
