@@ -2,7 +2,7 @@ import {
   LOCATION_SEARCH_REQUEST,
   LOCATION_SEARCH_SUCCESS,
   LOCATION_SEARCH_ERROR,
-  CLEAR_LOCATION_SEARCH,
+  CLEAR_SEARCH_SUGGESTIONS,
   UPDATE_AUTOSUGGEST_VALUE,
   LOCATION_SEARCH_SELECT,
 } from '../constants/action_types';
@@ -49,7 +49,7 @@ export default function (state = defaultState, action) {
         selectedFeature: action.feature
       };
 
-    case CLEAR_LOCATION_SEARCH:
+    case CLEAR_SEARCH_SUGGESTIONS:
       return {
         ...state,
         suggestions: []

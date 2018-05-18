@@ -4,7 +4,7 @@ import {
   LOCATION_SEARCH_REQUEST,
   LOCATION_SEARCH_SUCCESS,
   LOCATION_SEARCH_ERROR,
-  CLEAR_LOCATION_SEARCH,
+  CLEAR_SEARCH_SUGGESTIONS,
   UPDATE_AUTOSUGGEST_VALUE,
   LOCATION_SEARCH_SELECT
 } from '../constants/action_types';
@@ -50,6 +50,6 @@ export const selectSearchResult = feature => ({
   feature
 });
 
-export const clearSearchResults = () => ({
-  type: CLEAR_LOCATION_SEARCH
+export const clearSearchSuggestions = () => ({
+  type: CLEAR_SEARCH_SUGGESTIONS
 });

@@ -10,7 +10,7 @@ const Search = ({
   suggestions,
   fetchSearchResults,
   updateAutosuggestValue,
-  clearSearchResults,
+  clearSearchSuggestions,
   selectSearchResult
 }) => {
   const onSuggestionsFetchRequested = () => {
@@ -18,7 +18,7 @@ const Search = ({
   };
 
   const onSuggestionsClearRequested = () => {
-    clearSearchResults();
+    clearSearchSuggestions();
   };
 
   const handleChange = (event, { newValue }) => {
@@ -64,13 +64,13 @@ const Search = ({
 };
 
 Search.propTypes = {
-  error: PropTypes.oneOf(PropTypes.object),
+  error: PropTypes.oneOf([PropTypes.object]),
   isFetching: PropTypes.bool.isRequired,
   autosuggestValue: PropTypes.string.isRequired,
   suggestions: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
   updateAutosuggestValue: PropTypes.func.isRequired,
-  clearSearchResults: PropTypes.func.isRequired,
+  clearSearchSuggestions: PropTypes.func.isRequired,
   selectSearchResult: PropTypes.func.isRequired,
 };
 
