@@ -1,35 +1,73 @@
 import React, { PropTypes } from 'react';
+import throttle from 'lodash/throttle';
+import Autosuggest from 'react-autosuggest';
 
-import SearchForm from './SearchForm';
-import SearchResults from './SearchResults';
+// don't overwhelm the geocoding API
+const THROTTLE_WAIT_MS = 200;
 
-const Search = props => (
-  <div className="Search ui">
-    <SearchForm {...props} />
-    {
-      (props.error || props.result) &&
-      <SearchResults {...props} />
-    }
-  </div>
-);
+const Search = ({
+  autosuggestValue,
+  suggestions,
+  fetchSearchResults,
+  updateAutosuggestValue,
+  clearSearchResults
+}) => {
+  const onSuggestionsFetchRequested = ({ value }) => {
+    fetchSearchResults(value);
+  };
+
+  const onSuggestionsClearRequested = () => {
+    clearSearchResults();
+  };
+
+  const handleChange = (event, { newValue }) => {
+    updateAutosuggestValue(newValue);
+  };
+
+  // eslint-disable-next-line
+  const getSuggestionValue = suggestion =>
+    suggestion && suggestion.properties && suggestion.properties.name
+    ? suggestion.properties.name
+    : null;
+
+  // eslint-disable-next-line
+  const renderSuggestion = feature =>
+    feature && feature.properties && feature.properties.name ? (
+      <span>{feature.properties.name}</span>
+    ) : null;
+
+  const inputProps = {
+    placeholder: 'Search an NYC address...',
+    value: autosuggestValue,
+    onChange: handleChange
+  };
+
+  return (
+    <div className="Search ui">
+      <Autosuggest
+        onSuggestionsFetchRequested={throttle(onSuggestionsFetchRequested, THROTTLE_WAIT_MS)}
+        onSuggestionsClearRequested={onSuggestionsClearRequested}
+        getSuggestionValue={getSuggestionValue}
+        suggestions={suggestions}
+        renderSuggestion={renderSuggestion}
+        inputProps={inputProps}
+      />
+    </div>
+  );
+};
 
 Search.propTypes = {
-  error: PropTypes.string,
+  error: PropTypes.oneOf(PropTypes.object),
   isFetching: PropTypes.bool.isRequired,
-  searchTerm: PropTypes.string,
-  result: PropTypes.shape({
-    addressFormatted: PropTypes.string,
-    coordinates: PropTypes.arrayOf(PropTypes.number)
-  }),
-  clearLocationGeocode: PropTypes.func.isRequired,
-  fetchLocationGeocode: PropTypes.func.isRequired,
-  filterByLocation: PropTypes.func.isRequired,
+  autosuggestValue: PropTypes.string.isRequired,
+  suggestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchSearchResults: PropTypes.func.isRequired,
+  updateAutosuggestValue: PropTypes.func.isRequired,
+  clearSearchResults: PropTypes.func.isRequired
 };
 
 Search.defaultProps = {
-  error: null,
-  result: null,
-  searchTerm: null
+  error: null
 };
 
 export default Search;

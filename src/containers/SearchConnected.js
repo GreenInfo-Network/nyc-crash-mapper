@@ -1,25 +1,24 @@
 import { connect } from 'react-redux';
 
 import {
-  fetchLocationGeocode,
-  clearLocationGeocode,
-  filterByLocation,
+  fetchSearchResults,
+  updateAutosuggestValue,
+  clearSearchResults
 } from '../actions';
 
 import Search from '../components/Search';
 
-const mapStateToProps = ({ geocoding }) => {
-  const { error, isFetching, searchTerm, result } = geocoding;
-  return {
-    error,
-    isFetching,
-    result,
-    searchTerm,
-  };
-};
+const mapStateToProps = ({
+  search: { error, isFetching, suggestions, autosuggestValue }
+}) => ({
+  error,
+  isFetching,
+  autosuggestValue,
+  suggestions
+});
 
 export default connect(mapStateToProps, {
-  fetchLocationGeocode,
-  clearLocationGeocode,
-  filterByLocation,
+  fetchSearchResults,
+  updateAutosuggestValue,
+  clearSearchResults
 })(Search);
