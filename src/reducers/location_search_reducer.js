@@ -43,7 +43,8 @@ export default function (state = defaultState, action) {
 
     case CLEAR_LOCATION_SEARCH:
       return {
-        ...defaultState
+        ...state,
+        suggestions: []
       };
 
     default:

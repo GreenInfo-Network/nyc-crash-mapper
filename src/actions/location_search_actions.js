@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+import { polyfill } from 'es6-promise';
 import {
   LOCATION_SEARCH_REQUEST,
   LOCATION_SEARCH_SUCCESS,
@@ -5,6 +7,8 @@ import {
   CLEAR_LOCATION_SEARCH,
   UPDATE_AUTOSUGGEST_VALUE
 } from '../constants/action_types';
+
+polyfill();
 
 export const requestSearchResults = () => ({
   type: LOCATION_SEARCH_REQUEST
@@ -19,6 +23,21 @@ export const receiveSearchError = error => ({
   type: LOCATION_SEARCH_ERROR,
   error
 });
+
+export const fetchSearchResults = () => {
+  const url = 'https://geosearch.planninglabs.nyc/v1/autocomplete?text=';
+  return (dispatch, getState) => {
+    const { autosuggestValue } = getState().search;
+    dispatch(requestSearchResults());
+    return fetch(`${url}?${autosuggestValue}`)
+      .then(res => res.json())
+      .then((json) => {
+        const payload = json.features;
+        return dispatch(receiveSearchResults(payload));
+      })
+      .catch(error => dispatch(receiveSearchError(error)));
+  };
+};
 
 export const updateAutosuggestValue = value => ({
   type: UPDATE_AUTOSUGGEST_VALUE,
