@@ -5,7 +5,8 @@ import {
   LOCATION_SEARCH_SUCCESS,
   LOCATION_SEARCH_ERROR,
   CLEAR_LOCATION_SEARCH,
-  UPDATE_AUTOSUGGEST_VALUE
+  UPDATE_AUTOSUGGEST_VALUE,
+  LOCATION_SEARCH_SELECT
 } from '../constants/action_types';
 
 polyfill();
@@ -42,6 +43,11 @@ export const fetchSearchResults = () => {
 export const updateAutosuggestValue = value => ({
   type: UPDATE_AUTOSUGGEST_VALUE,
   value
+});
+
+export const selectSearchResult = feature => ({
+  type: LOCATION_SEARCH_SELECT,
+  feature
 });
 
 export const clearSearchResults = () => ({

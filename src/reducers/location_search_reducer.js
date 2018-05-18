@@ -3,14 +3,16 @@ import {
   LOCATION_SEARCH_SUCCESS,
   LOCATION_SEARCH_ERROR,
   CLEAR_LOCATION_SEARCH,
-  UPDATE_AUTOSUGGEST_VALUE
+  UPDATE_AUTOSUGGEST_VALUE,
+  LOCATION_SEARCH_SELECT,
 } from '../constants/action_types';
 
 const defaultState = {
   error: null,
   isFetching: false,
   suggestions: [],
-  autosuggestValue: ''
+  autosuggestValue: '',
+  selectedFeature: null,
 };
 
 export default function (state = defaultState, action) {
@@ -39,6 +41,12 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         autosuggestValue: action.value
+      };
+
+    case LOCATION_SEARCH_SELECT:
+      return {
+        ...state,
+        selectedFeature: action.feature
       };
 
     case CLEAR_LOCATION_SEARCH:
