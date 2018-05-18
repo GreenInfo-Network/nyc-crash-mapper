@@ -13,6 +13,7 @@ import crashesMaxDate from './crashes_max_date_reducer';
 import crashStats from './crash_stats_reducer';
 import modal from './modal_reducer';
 import geocoding from './geocodeReducer';
+import search from './location_search_reducer';
 
 // breakpoints for redux-responsive store
 // taken from scss/skeleton/base/variables
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   geocoding,
   modal,
   routing: routerReducer,
+  search,
   yearRange,
 });
 
