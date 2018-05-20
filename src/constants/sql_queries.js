@@ -1,6 +1,6 @@
 import sls from 'single-line-string';
 
-import { cartoTables } from './app_config';
+import { cartoTables, intersectionCircleRadiusMeters } from './app_config';
 
 const { nyc_borough,
   nyc_city_council,
@@ -221,21 +221,22 @@ const filterByCustomAreaClause = (lonLatArray) => {
   return '';
 };
 
-
-const filterByLocationSQL = ({ lat, lon }) => {
-  if (lat && lon) {
+// Creates the WHERE clause for filtering crashes by a radius from a lat lon coordinate pair
+// @param {array} filterCoords, an array of two coordinates [lon, lat]
+const filterByLocationSQL = (filterCoords) => {
+  if (filterCoords.length) {
     return sls`
       AND
         ST_Contains(
           ST_Buffer(
             ST_Transform(
               ST_SetSRID(
-                ST_MakePoint(${lon}, ${lat}),
+                ST_MakePoint(${filterCoords[0]}, ${filterCoords[1]}),
                 4326
               ),
               3785
             ),
-            65
+            ${intersectionCircleRadiusMeters}
           ),
           c.the_geom_webmercator
         )
@@ -255,7 +256,7 @@ const filterByLocationSQL = ({ lat, lon }) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, lngLats, lat, lon } = params;
+  const { startDate, endDate, filterType, geo, identifier, lngLats, filterCoords } = params;
 
   return sls`
     SELECT * FROM
@@ -282,7 +283,7 @@ export const configureMapSQL = (params) => {
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
       ${filterByIdentifierWhereClause(identifier, geo)}
-      ${filterByLocationSQL(lat, lon)}
+      ${filterByLocationSQL(filterCoords)}
       AND
         c.the_geom IS NOT NULL
       GROUP BY
