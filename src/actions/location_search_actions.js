@@ -6,7 +6,8 @@ import {
   LOCATION_SEARCH_ERROR,
   CLEAR_SEARCH_SUGGESTIONS,
   UPDATE_AUTOSUGGEST_VALUE,
-  LOCATION_SEARCH_SELECT
+  LOCATION_SEARCH_SELECT,
+  RESET_LOCATION_SEARCH,
 } from '../constants/action_types';
 
 polyfill();
@@ -43,7 +44,7 @@ export const fetchSearchResults = () => {
         const payload = json.features;
         return dispatch(receiveSearchResults(payload));
       })
-      .catch(error => dispatch(receiveSearchError(error)));
+      .catch(error => dispatch(receiveSearchError(error.message)));
   };
 };
 
@@ -59,4 +60,8 @@ export const selectSearchResult = feature => ({
 
 export const clearSearchSuggestions = () => ({
   type: CLEAR_SEARCH_SUGGESTIONS
+});
+
+export const resetLocationSearch = () => ({
+  type: RESET_LOCATION_SEARCH
 });

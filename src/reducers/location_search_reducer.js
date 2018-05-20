@@ -5,6 +5,7 @@ import {
   CLEAR_SEARCH_SUGGESTIONS,
   UPDATE_AUTOSUGGEST_VALUE,
   LOCATION_SEARCH_SELECT,
+  RESET_LOCATION_SEARCH,
 } from '../constants/action_types';
 
 const defaultState = {
@@ -53,6 +54,11 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         suggestions: []
+      };
+
+    case RESET_LOCATION_SEARCH:
+      return {
+        ...defaultState
       };
 
     default:
