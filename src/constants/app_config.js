@@ -65,10 +65,6 @@ export const geoPolygonStyle = {
   fillOpacity: 1
 };
 
-// API key for geocoding
-// TO DO: replace this with a key on Chekpeds / GreenInfo account
-export const geocodingK = 'AIzaSyCgATLAbiGUrmZSIaJsCZTewG9Zu32jxus';
-
 // geocoder search: the radius of the "preview" circle, and its visual style
 export const intersectionCircleRadiusMeters = 27.4;
 export const intersectionCircleRadiusFeet = Math.round(intersectionCircleRadiusMeters * 3.28084);

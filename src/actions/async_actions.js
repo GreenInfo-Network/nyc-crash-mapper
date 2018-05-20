@@ -1,6 +1,6 @@
 import { polyfill } from 'es6-promise';
 import fetch from 'isomorphic-fetch';
-import { cartoSQLQuery, geocodingK } from '../constants/app_config';
+import { cartoSQLQuery } from '../constants/app_config';
 import * as actions from '../constants/action_types';
 import {
   configureStatsSQL,
@@ -184,53 +184,5 @@ export const fetchGeoPolygons = (geo) => {
         return dispatch(receiveGeoPolygons(json));
       })
       .catch(error => dispatch(receiveGeoPolygonsError(error)));
-  };
-};
-
-
-// address geocode
-// we are about to make a GET request to geocode a location
-const locationGeocodeRequest = searchTerm => ({
-  type: actions.LOCATION_GEOCODE_REQUEST,
-  searchTerm
-});
-
-// we have JSON data representing the geocoded location
-const locationGeocodeSuccess = json => ({
-  type: actions.LOCATION_GEOCODE_SUCCESS,
-  json
-});
-
-// we encountered an error geocoding the location
-export const locationGeocodeError = error => ({
-  type: actions.LOCATION_GEOCODE_ERROR,
-  error
-});
-
-/*
- * Redux Thunk action creator to fetch geocoded JSON for a given location / address
- * @param {string} location: A URI encoded string representing an address,
- *   e.g. "1600+Amphitheatre+Parkway,+Mountain+View,+CA"
-*/
-export const fetchLocationGeocode = (searchTerm) => {
-  const searchTermEncoded = encodeURIComponent(searchTerm);
-  const viewportBias = encodeURIComponent('40.485604,-74.284058|40.935303,-73.707275');
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchTermEncoded}&bounds=${viewportBias}&key=${geocodingK}`;
-
-  return (dispatch) => {
-    dispatch(locationGeocodeRequest(searchTerm));
-    return fetch(url)
-      .then(maybeHandleHTTPError)
-      .then(res => res.json())
-      .then((json) => {
-        const { results, status } = json;
-        // catch a non-successful geocode result that was returned in the response
-        if (!results || !results.length || status !== 'OK') {
-          dispatch(locationGeocodeError('Address not found, please try again.'));
-        } else {
-          dispatch(locationGeocodeSuccess(results[0]));
-        }
-      })
-      .catch(error => dispatch(locationGeocodeError(error)));
   };
 };
