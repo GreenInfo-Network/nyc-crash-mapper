@@ -142,13 +142,14 @@ class LeafletMap extends Component {
 
     // Handle Address Search Result
     // user searched for a street address, zoom and center the map, add a marker
-    if (searchResult &&
-      (JSON.stringify(searchResult) !== JSON.stringify(this.props.searchResult))
-    ) {
-      const { coordinates, addressFormatted } = searchResult;
+    // eslint-disable-next-line
+    if (searchResult && JSON.stringify(searchResult) !== JSON.stringify(this.props.searchResult)) {
+      let { coordinates } = searchResult.geometry;
+      coordinates = coordinates.reverse(); // because Leaflet...
+      const { label } = searchResult.properties;
       this.map.setView(coordinates, 16);
       this.searchMarker = L.marker(coordinates)
-        .bindPopup(`<p>${addressFormatted}</p>`)
+        .bindPopup(`<p>${label}</p>`)
         .addTo(this.map);
       this.searchCircle = L.circle(coordinates,
         intersectionCircleRadiusMeters,
@@ -525,8 +526,9 @@ LeafletMap.propTypes = {
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
   searchResult: PropTypes.shape({
-    addressFormatted: PropTypes.string,
-    result: PropTypes.arrayOf(PropTypes.number)
+    properties: PropTypes.object,
+    geometry: PropTypes.object,
+    type: PropTypes.string
   }),
 };
 

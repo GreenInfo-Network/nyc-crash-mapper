@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { filterByAreaIdentifier, filterByAreaCustom, fetchGeoPolygons } from '../actions/';
 import LeafletMap from '../components/LeafletMap/';
 
-const mapStateToProps = ({ filterDate, filterType, filterArea, geocoding }, ownProps) => {
+const mapStateToProps = ({ filterDate, filterType, filterArea, search }, ownProps) => {
   const { startDate, endDate } = filterDate;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
   const { geo, geojson, identifier, lngLats, drawEnabeled } = filterArea;
-  const { result } = geocoding;
+  const { selectedFeature } = search;
   return {
     zoom: zoom ? Number(zoom) : undefined,
     lat: lat ? Number(lat) : undefined,
@@ -21,7 +21,7 @@ const mapStateToProps = ({ filterDate, filterType, filterArea, geocoding }, ownP
     geojson,
     identifier,
     lngLats,
-    searchResult: result,
+    searchResult: selectedFeature,
   };
 };
 
