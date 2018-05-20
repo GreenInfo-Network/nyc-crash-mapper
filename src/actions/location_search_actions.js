@@ -31,7 +31,14 @@ export const fetchSearchResults = () => {
     const { autosuggestValue } = getState().search;
     dispatch(requestSearchResults());
     return fetch(`${url}${autosuggestValue}`)
-      .then(res => res.json())
+      .then((res) => {
+        // fetch has an annoying way of handling http errors...
+        if (!res.ok) {
+          throw Error(res.statusText);
+        } else {
+          return res.json();
+        }
+      })
       .then((json) => {
         const payload = json.features;
         return dispatch(receiveSearchResults(payload));

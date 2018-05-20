@@ -12,6 +12,15 @@ import {
 
 polyfill();
 
+// fetch() has an annoying way of handling http errors, so make sure to check for them
+function maybeHandleHTTPError (response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  } else {
+    return response;
+  }
+}
+
 const requestCrashStatsData = () => ({
   type: actions.CRASHES_ALL_REQUEST
 });
@@ -32,6 +41,7 @@ export const fetchCrashStatsData = (params) => {
   return (dispatch) => {
     dispatch(requestCrashStatsData());
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then(json => dispatch(receiveCrashStatsData(json.rows[0])))
       .catch(error => dispatch(receiveCrashStatsError(error)));
@@ -58,6 +68,7 @@ export const fetchContributingFactors = (params) => {
   return (dispatch) => {
     dispatch(requestContributingFactors());
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then(json => dispatch(receiveContributingFactors(json.rows)))
       .catch(error => dispatch(receiveContributingFactorsError(error)));
@@ -84,6 +95,7 @@ export const fetchCrashesYearRange = () => {
   return (dispatch) => {
     dispatch(requestCrashesYearRange());
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then(json => dispatch(receiveCrashesYearRange(json.rows)))
       .catch(error => dispatch(receiveCrashesYearRangeError(error)));
@@ -110,6 +122,7 @@ export const fetchCrashesDateRange = () => {
   return (dispatch) => {
     dispatch(requestCrashesDateRange());
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then(json => dispatch(receiveCrashesDateRange(json.rows)))
       .catch(error => dispatch(receiveCrashesDateRangeError(error)));
@@ -136,6 +149,7 @@ export const fetchCrashesMaxDate = () => {
   return (dispatch) => {
     dispatch(requestCrashesMaxDate());
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then(json => dispatch(receiveCrashesMaxDate(json.rows)))
       .catch(error => dispatch(receiveCrashesMaxDateError(error)));
@@ -162,6 +176,7 @@ export const fetchGeoPolygons = (geo) => {
   return (dispatch) => {
     dispatch(requestGeoPolygons());
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then((json) => {
         // tack on the geography name so that it may be diff'd in LeafletMap propTypes
@@ -205,6 +220,7 @@ export const fetchLocationGeocode = (searchTerm) => {
   return (dispatch) => {
     dispatch(locationGeocodeRequest(searchTerm));
     return fetch(url)
+      .then(maybeHandleHTTPError)
       .then(res => res.json())
       .then((json) => {
         const { results, status } = json;
