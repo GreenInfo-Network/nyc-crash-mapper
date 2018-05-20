@@ -17,6 +17,7 @@ import { boroughs, configureLayerSource, crashDataChanged } from '../../constant
 import ZoomControls from './ZoomControls';
 import CustomFilter from './customFilter';
 
+
 class LeafletMap extends Component {
   constructor() {
     super();
@@ -142,7 +143,6 @@ class LeafletMap extends Component {
 
     // Handle Address Search Result
     // user searched for a street address, zoom and center the map, add a marker
-    // eslint-disable-next-line
     if (searchResult && JSON.stringify(searchResult) !== JSON.stringify(this.props.searchResult)) {
       let { coordinates } = searchResult.geometry;
       coordinates = coordinates.reverse(); // because Leaflet...
@@ -485,6 +485,7 @@ LeafletMap.defaultProps = {
   lngLats: [],
   geojson: {},
   searchResult: null,
+  filterCoords: [],
 };
 
 LeafletMap.propTypes = {
@@ -525,6 +526,7 @@ LeafletMap.propTypes = {
     }).isRequired,
     noInjuryFatality: PropTypes.bool.isRequired
   }).isRequired,
+  filterCoords: PropTypes.arrayOf(PropTypes.number),
   searchResult: PropTypes.shape({
     properties: PropTypes.object,
     geometry: PropTypes.object,
