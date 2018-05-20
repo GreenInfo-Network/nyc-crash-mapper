@@ -5,17 +5,19 @@ import {
   updateAutosuggestValue,
   clearSearchSuggestions,
   selectSearchResult,
+  resetLocationSearch,
 } from '../actions';
 
 import Search from '../components/Search';
 
 const mapStateToProps = ({
-  search: { error, isFetching, suggestions, autosuggestValue }
+  search: { error, isFetching, suggestions, autosuggestValue, selectedFeature }
 }) => ({
   error,
   isFetching,
   autosuggestValue,
-  suggestions
+  suggestions,
+  selectedFeature
 });
 
 export default connect(mapStateToProps, {
@@ -23,4 +25,5 @@ export default connect(mapStateToProps, {
   updateAutosuggestValue,
   clearSearchSuggestions,
   selectSearchResult,
+  resetLocationSearch,
 })(Search);

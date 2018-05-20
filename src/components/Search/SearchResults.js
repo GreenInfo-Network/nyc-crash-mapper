@@ -4,50 +4,42 @@ import { intersectionCircleRadiusFeet } from '../../constants/app_config';
 
 class SearchResults extends Component {
   static propTypes = {
-    clearLocationGeocode: PropTypes.func.isRequired,
+    resetLocationSearch: PropTypes.func.isRequired,
     error: PropTypes.string,
     filterByLocation: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    searchTerm: PropTypes.string,
-    result: PropTypes.shape({
-      addressFormatted: PropTypes.string,
-      coordinates: PropTypes.arrayOf(PropTypes.number)
-    }),
+    selectedFeature: PropTypes.shape({}),
   }
 
   static defaultProps = {
     error: null,
     result: null,
-    searchTerm: null
+    selectedFeature: null
   }
 
   handleFilterResult = (e) => {
     e.preventDefault();
-    const { result } = this.props;
-    this.props.filterByLocation(result.coordinates);
+    const { selectedFeature } = this.props;
+    this.props.filterByLocation(selectedFeature.coordinates);
   }
 
   closeThisPanel = (e) => {
     e.preventDefault();
-    this.props.clearLocationGeocode();
+    this.props.resetLocationSearch();
   }
 
   showSearchResult = () => {
-    const { error, isFetching, result } = this.props;
+    const { error, isFetching, selectedFeature } = this.props;
 
     if (isFetching) {
       return (<p>searching...</p>);
-    }
-
-    if (error) {
+    } else if (error) {
       return (<p>{error}</p>);
-    }
-
-    if (result) {
+    } else if (selectedFeature) {
       return [
         <button onClick={this.closeThisPanel} className="close" key="closebutton">✕</button>,
         <p key="message">Filter crashes within {intersectionCircleRadiusFeet} feet of this location?</p>,
-        <p className="address" key="result">{result.addressFormatted}</p>,
+        <p className="address" key="result">{selectedFeature.properties.label}</p>,
         <button
           className="filter-options-button"
           key="filter-result"
@@ -57,7 +49,6 @@ class SearchResults extends Component {
         </button>
       ];
     }
-
     return null;
   }
 

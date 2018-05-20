@@ -2,8 +2,13 @@ import React, { PropTypes } from 'react';
 import throttle from 'lodash/throttle';
 import Autosuggest from 'react-autosuggest';
 
+import SearchResults from './SearchResults';
+
 // don't overwhelm the geocoding API
 const THROTTLE_WAIT_MS = 200;
+
+// TODO: implement filter by location
+const noop = () => {};
 
 const Search = ({
   autosuggestValue,
@@ -11,7 +16,11 @@ const Search = ({
   fetchSearchResults,
   updateAutosuggestValue,
   clearSearchSuggestions,
-  selectSearchResult
+  selectSearchResult,
+  resetLocationSearch,
+  selectedFeature,
+  error,
+  isFetching
 }) => {
   const onSuggestionsFetchRequested = () => {
     fetchSearchResults();
@@ -59,12 +68,22 @@ const Search = ({
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
+      {
+        (selectedFeature || error) &&
+          <SearchResults
+            selectedFeature={selectedFeature}
+            resetLocationSearch={resetLocationSearch}
+            filterByLocation={noop}
+            isFetching={isFetching}
+            error={error}
+          />
+      }
     </div>
   );
 };
 
 Search.propTypes = {
-  error: PropTypes.oneOf([PropTypes.object]),
+  error: PropTypes.string,
   isFetching: PropTypes.bool.isRequired,
   autosuggestValue: PropTypes.string.isRequired,
   suggestions: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -72,10 +91,17 @@ Search.propTypes = {
   updateAutosuggestValue: PropTypes.func.isRequired,
   clearSearchSuggestions: PropTypes.func.isRequired,
   selectSearchResult: PropTypes.func.isRequired,
+  resetLocationSearch: PropTypes.func.isRequired,
+  selectedFeature: PropTypes.shape({
+    geometry: PropTypes.object,
+    properties: PropTypes.object,
+    type: PropTypes.string
+  })
 };
 
 Search.defaultProps = {
-  error: null
+  error: null,
+  selectedFeature: null
 };
 
 export default Search;
