@@ -13,6 +13,7 @@ const VENDOR_LIBS = [
   'normalize-scss',
   'query-string',
   'react',
+  'react-autosuggest',
   'react-collapse',
   'react-copy-to-clipboard',
   'react-dom',
