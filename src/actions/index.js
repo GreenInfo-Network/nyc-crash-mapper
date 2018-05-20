@@ -21,3 +21,4 @@ export {
 export filterByContributingFactor from './filter_contributing_factor_actions';
 export { openModal, closeModal } from './modal_actions';
 export * from './location_search_actions';
+export * from './filter_by_search_location';

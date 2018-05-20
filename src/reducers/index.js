@@ -13,6 +13,7 @@ import crashesMaxDate from './crashes_max_date_reducer';
 import crashStats from './crash_stats_reducer';
 import modal from './modal_reducer';
 import search from './location_search_reducer';
+import filterLocation from './filter_by_location_search';
 
 // breakpoints for redux-responsive store
 // taken from scss/skeleton/base/variables
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   filterDate,
   filterArea,
   filterContributingFactor,
+  filterLocation,
   filterType,
   modal,
   routing: routerReducer,
