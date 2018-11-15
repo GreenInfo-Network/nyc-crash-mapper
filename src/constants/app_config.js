@@ -14,6 +14,8 @@ export const cartoTables = {
   nyc_community_board: 'nyc_community_board',
   nyc_neighborhood: 'nyc_neighborhood',
   nyc_nypd_precinct: 'nyc_nypd_precinct',
+  nyc_assembly: 'nyc_assembly',
+  nyc_senate: 'nyc_senate',
   nyc_intersections: 'nyc_intersections',
   nyc_crashes: 'crashes_all_prod'
 };
@@ -53,6 +55,8 @@ export const labelFormats = {
   borough: '{}',
   city_council: 'City Council District {}',
   community_board: 'Community Board {}',
+  assembly: 'Assembly District {}',
+  senate: 'Senate District {}',
   neighborhood: '{}',
   nypd_precinct: 'NYPD Precinct {}',
   intersection: '{}',

@@ -7,6 +7,8 @@ const { nyc_borough,
   nyc_community_board,
   nyc_neighborhood,
   nyc_nypd_precinct,
+  nyc_senate,
+  nyc_assembly,
   nyc_intersections,
   nyc_crashes } = cartoTables;
 
@@ -57,7 +59,27 @@ export const filterByAreaSQL = {
       identifier,
       ST_Collect(the_geom) as the_geom
     FROM
-      ${nyc_nypd_precinct}
+      ${nyc_senate}
+    GROUP BY
+      identifier
+  `,
+
+  assembly: sls`
+    SELECT DISTINCT
+      identifier,
+      ST_Collect(the_geom) as the_geom
+    FROM
+      ${nyc_assembly}
+    GROUP BY
+      identifier
+  `,
+
+  senate: sls`
+    SELECT DISTINCT
+      identifier,
+      ST_Collect(the_geom) as the_geom
+    FROM
+      ${nyc_senate}
     GROUP BY
       identifier
   `,
@@ -168,6 +190,8 @@ export const filterAreaBtnTableMap = {
   community_board: nyc_community_board,
   city_council: nyc_city_council,
   neighborhood: nyc_neighborhood,
+  assembly: nyc_assembly,
+  senate: nyc_senate,
   nypd_precinct: nyc_nypd_precinct,
   intersection: nyc_intersections,
 };

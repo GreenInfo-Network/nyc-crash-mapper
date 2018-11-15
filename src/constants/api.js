@@ -12,7 +12,7 @@ export const momentize = dateString => moment(dateString, dateStringFormatModel,
 
 // Names for Filter by Boundary
 export const geos = ['citywide', 'borough', 'community_board', 'city_council',
-  'neighborhood', 'nypd_precinct', 'intersection', 'custom'];
+  'neighborhood', 'assembly', 'senate', 'nypd_precinct', 'intersection', 'custom'];
 
 // Borough Names mapped to array index position
 export const boroughs = [undefined, 'Manhattan', 'Bronx', 'Brooklyn', 'Queens', 'Staten Island'];

@@ -99,6 +99,26 @@ const FilterByBoundary = (props) => {
       </li>
       <li>
         <FilterButton
+          label={'Assembly District'}
+          id={'assembly'}
+          isActive={geo === 'assembly'}
+          handleClick={filterByAreaType}
+          preventRetrigger
+        />
+        { showIdentifier('assembly') }
+      </li>
+      <li>
+        <FilterButton
+          label={'Senate District'}
+          id={'senate'}
+          isActive={geo === 'senate'}
+          handleClick={filterByAreaType}
+          preventRetrigger
+        />
+        { showIdentifier('senate') }
+      </li>
+      <li>
+        <FilterButton
           label={'Intersection'}
           id={'intersection'}
           isActive={geo === 'intersection'}
