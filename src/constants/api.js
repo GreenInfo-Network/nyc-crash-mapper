@@ -55,7 +55,8 @@ export const makeDefaultState = () => {
     return geos[0];
   };
 
-  // parse query params
+  // parse query params, with compatibility hack issue 97 to accept Chart View identifier
+  // which is really the full string name with a borough prefix
   Object.keys(q).forEach((key) => {
     const decoded = decodeURIComponent(q[key]);
     if (isJsonString(decoded)) {
@@ -64,6 +65,17 @@ export const makeDefaultState = () => {
       p[key] = decoded;
     }
   });
+  if (p.identifier) {
+    if (p.identifier.indexOf(',') !== -1) {
+      p.identifier = p.identifier.split(',')[1];
+    }
+    p.identifier = p.identifier.trim();
+
+    const identifierEndsInNumber = p.identifier.match(/(\d+)$/);
+    if (identifierEndsInNumber) {
+      p.identifier = parseInt(identifierEndsInNumber[1], 10);
+    }
+  }
 
   return {
     filterDate: {
