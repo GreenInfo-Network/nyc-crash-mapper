@@ -65,7 +65,7 @@ export const makeDefaultState = () => {
       p[key] = decoded;
     }
   });
-  if (p.identifier) {
+  if (p.identifier && typeof p.identifier === 'string') {
     if (p.identifier.indexOf(',') !== -1) {
       p.identifier = p.identifier.split(',')[1];
     }
@@ -73,7 +73,7 @@ export const makeDefaultState = () => {
 
     const identifierEndsInNumber = p.identifier.match(/(\d+)$/);
     if (identifierEndsInNumber) {
-      p.identifier = parseInt(identifierEndsInNumber[1], 10);
+      p.identifier = identifierEndsInNumber[1];
     }
   }
 
