@@ -59,7 +59,7 @@ export const filterByAreaSQL = {
       identifier,
       ST_Collect(the_geom) as the_geom
     FROM
-      ${nyc_senate}
+      ${nyc_nypd_precinct}
     GROUP BY
       identifier
   `,
