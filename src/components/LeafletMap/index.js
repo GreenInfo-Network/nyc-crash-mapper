@@ -60,6 +60,9 @@ class LeafletMap extends Component {
     // if loading both/neither, that's already handled by standard props updates
     if (geo && geo !== 'citywide' && !identifier) {
       this.props.fetchGeoPolygons(geo);
+    } else if (geo && identifier) {
+      const sql = configureMapSQL(this.props);
+      this.fitMapBounds(sql);
     }
   }
 
