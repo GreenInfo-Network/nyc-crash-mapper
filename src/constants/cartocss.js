@@ -37,34 +37,19 @@ const cartocss = sls`
       marker-fill: @fatality;
     }
 
-    #${nyc_crashes} [ total_crashes > 67] {
-       marker-width: 25;
+    #${nyc_crashes} [ total_crashes > 8] {
+       marker-width: 24;
     }
-    #${nyc_crashes} [ total_crashes <= 67] {
-       marker-width: 23;
+    #${nyc_crashes} [ total_crashes <= 5] {
+       marker-width: 20;
     }
-    #${nyc_crashes} [ total_crashes <= 60] {
-       marker-width: 21;
+    #${nyc_crashes} [ total_crashes <= 3] {
+       marker-width: 16;
     }
-    #${nyc_crashes} [ total_crashes <= 53] {
-       marker-width: 19;
-    }
-    #${nyc_crashes} [ total_crashes <= 46] {
-       marker-width: 17;
-    }
-    #${nyc_crashes} [ total_crashes <= 39] {
-       marker-width: 15.5;
-    }
-    #${nyc_crashes} [ total_crashes <= 32] {
-       marker-width: 14;
-    }
-    #${nyc_crashes} [ total_crashes <= 25] {
+    #${nyc_crashes} [ total_crashes <= 2] {
        marker-width: 12;
     }
-    #${nyc_crashes} [ total_crashes <= 18] {
-       marker-width: 10;
-    }
-    #${nyc_crashes} [ total_crashes <= 11] {
+    #${nyc_crashes} [ total_crashes <= 1] {
        marker-width: 8;
     }
   }

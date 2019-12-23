@@ -28,27 +28,27 @@ export default () => (
           <g className="legendCells">
             <g className="cell" transform="translate(0, 25)">
               <circle className="swatch" r="12.5" style={{ r: '12.5px' }}>
-                <title>74 or fewer crashes</title>
+                <title>8 or more crashes</title>
               </circle>
-              <text className="label" transform="translate(15.5,5)">{'> 67'}</text>
+              <text className="label" transform="translate(15.5,5)">{'> 8'}</text>
             </g>
             <g className="cell" transform="translate(0, 54.33333396911621)">
               <circle className="swatch" r="9.666666666666666" style={{ r: '9.66667px' }}>
-                <title>46 or fewer crashes</title>
+                <title>5 or fewer crashes</title>
               </circle>
-              <text className="label" transform="translate(24.5,5)">53</text>
+              <text className="label" transform="translate(24.5,5)">5</text>
             </g>
             <g className="cell" transform="translate(0, 78.00000095367432)">
               <circle className="swatch" r="6.833333333333333" style={{ r: '6.83333px' }}>
-                <title>32 or fewer crashes</title>
+                <title>3 or fewer crashes</title>
               </circle>
-              <text className="label" transform="translate(24.5,5)">32</text>
+              <text className="label" transform="translate(24.5,5)">3</text>
             </g>
             <g className="cell" transform="translate(0, 96.00000095367432)">
               <circle className="swatch" r="4" style={{ r: '4px' }}>
-                <title>11 or fewer crashes</title>
+                <title>2 or fewer crashes</title>
               </circle>
-              <text className="label" transform="translate(13.5,5)">{'<=11'}</text>
+              <text className="label" transform="translate(13.5,5)">{'<=2'}</text>
             </g>
           </g>
         </g>
