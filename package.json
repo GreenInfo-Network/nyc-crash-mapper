@@ -31,7 +31,7 @@
     "es6-promise": "^4.0.5",
     "isomorphic-fetch": "^2.2.1",
     "leaflet-draw": "^0.4.9",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.13",
     "moment": "^2.17.1",
     "normalize-scss": "^6.0.0",
     "query-string": "^5.0.1",
