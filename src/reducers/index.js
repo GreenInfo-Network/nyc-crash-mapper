@@ -5,6 +5,7 @@ import { routerReducer } from 'react-router-redux';
 import filterDate from './filter_by_date';
 import filterArea from './filter_by_area_reducer';
 import filterType from './filter_by_type_reducer';
+import filterVehicle from './filter_by_vehicle_reducer';
 import filterContributingFactor from './filter_contributing_factor_reducer';
 import contributingFactors from './stats_contributing_factors_reducer';
 import yearRange from './year_range_reducer';
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   filterArea,
   filterContributingFactor,
   filterType,
+  filterVehicle,
   modal,
   routing: routerReducer,
   yearRange,

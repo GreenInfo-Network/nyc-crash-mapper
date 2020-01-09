@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { filterByAreaIdentifier, filterByAreaCustom, fetchGeoPolygons } from '../actions/';
 import LeafletMap from '../components/LeafletMap/';
 
-const mapStateToProps = ({ filterDate, filterType, filterArea }, ownProps) => {
+const mapStateToProps = ({ filterDate, filterType, filterVehicle, filterArea }, ownProps) => {
   const { startDate, endDate } = filterDate;
   const { location: { query } } = ownProps;
   const { lat, lng, zoom } = query;
@@ -15,6 +15,7 @@ const mapStateToProps = ({ filterDate, filterType, filterArea }, ownProps) => {
     startDate,
     endDate,
     filterType,
+    filterVehicle,
     drawEnabeled,
     geo,
     geojson,

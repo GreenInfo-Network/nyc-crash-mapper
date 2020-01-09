@@ -1,4 +1,5 @@
-export { fetchCrashStatsData,
+export {
+  fetchCrashStatsData,
   fetchContributingFactors,
   fetchCrashesYearRange,
   fetchCrashesDateRange,
@@ -11,6 +12,16 @@ export {
   filterByTypeFatality,
   filterByNoInjFat
 } from './filter_by_type_actions';
+export {
+  filterByVehicleCar,
+  filterByVehicleTruck,
+  filterByVehicleMotorcycle,
+  filterByVehicleBicycle,
+  filterByVehicleSuv,
+  filterByVehicleBusVan,
+  filterByVehicleScooter,
+  filterByVehicleOther
+} from './filter_by_vehicle_actions';
 export {
   filterByAreaType,
   filterByAreaIdentifier,

@@ -11,7 +11,7 @@ import {
 
 import App from '../components/App';
 
-const mapStateToProps = ({ browser, filterDate, filterType, filterArea }) => {
+const mapStateToProps = ({ browser, filterDate, filterType, filterVehicle, filterArea }) => {
   const { startDate, endDate } = filterDate;
   const { identifier, geo, lngLats } = filterArea;
   const { height, width } = browser;
@@ -19,6 +19,7 @@ const mapStateToProps = ({ browser, filterDate, filterType, filterArea }) => {
     startDate,
     endDate,
     filterType,
+    filterVehicle,
     identifier,
     geo,
     lngLats,

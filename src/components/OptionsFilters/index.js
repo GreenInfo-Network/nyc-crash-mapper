@@ -4,6 +4,7 @@ import OptionsContainer from './OptionsContainer';
 import FilterByArea from '../../containers/FilterByAreaConnected';
 import FilterByAreaMessage from './FilterByAreaMessage';
 import FilterByType from '../../containers/FilterByTypeConnected';
+import FilterByVehicle from '../../containers/FilterByVehicleConnected';
 import FilterByDate from '../../containers/FilterByDateConnected';
 import DownloadData from './DownloadData';
 import ShareOptions from './ShareOptions';
@@ -31,8 +32,12 @@ class OptionsFilters extends Component {
             <FilterByArea />
           </OptionsContainer>
           <hr />
-          <OptionsContainer title={'Filter by Type'}>
+          <OptionsContainer title={'Filter by Crash Type'}>
             <FilterByType />
+          </OptionsContainer>
+          <hr />
+          <OptionsContainer title={'Filter by Vehicle'}>
+            <FilterByVehicle />
           </OptionsContainer>
           <hr />
           <OptionsContainer title={'Data'} isOpened={false}>
