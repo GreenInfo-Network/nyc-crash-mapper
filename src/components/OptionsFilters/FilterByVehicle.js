@@ -79,7 +79,7 @@ class FilterByVehicle extends Component {
           </li>
           <li>
             <FilterButton
-              label={'Other'}
+              label={'Other / Unspecified'}
               id={'pedestrian'}
               handleClick={filterByVehicleOther}
               btnSize={'med'}

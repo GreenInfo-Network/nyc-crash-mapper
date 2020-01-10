@@ -195,7 +195,22 @@ const filterByVehicleWhereClause = (filterVehicle) => {
   if (vehicle.suv) anyofthese.push('hasvehicle_suv');
   if (vehicle.busvan) anyofthese.push('hasvehicle_busvan');
   if (vehicle.scooter) anyofthese.push('hasvehicle_scooter');
-  if (vehicle.other) anyofthese.push('hasvehicle_other');
+
+  // other is really other OR unknown/unmatched
+  if (vehicle.other) {
+    anyofthese.push(sls`
+      hasvehicle_other OR (
+        NOT hasvehicle_car AND
+        NOT hasvehicle_truck AND
+        NOT hasvehicle_motorcycle AND
+        NOT hasvehicle_bicycle AND
+        NOT hasvehicle_suv AND
+        NOT hasvehicle_busvan AND
+        NOT hasvehicle_scooter AND
+        NOT hasvehicle_other
+      )
+    `);
+  }
 
   const whereClause = anyofthese.length ? `AND (${anyofthese.join(' OR ')})` : '';
   console.debug(whereClause);  // eslint-disable-line
