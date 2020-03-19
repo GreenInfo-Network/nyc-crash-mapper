@@ -36,7 +36,7 @@ class OptionsFilters extends Component {
             <FilterByType />
           </OptionsContainer>
           <hr />
-          <OptionsContainer title={'Filter by Vehicle Type'}>
+          <OptionsContainer title={'Filter by Vehicle Type Involved'}>
             <FilterByVehicle />
           </OptionsContainer>
           <hr />
