@@ -129,6 +129,11 @@ const AboutCopy = () => (
       selected boundary.
     </p>
     <p>
+      NYPD captures up to five (5) vehicles included in a crash. As long as any one of these
+      vehicles matches the filter selected, the related injuries and fatalities will be counted
+      – even if the vehicle is potentially not directly responsible for the fatalities/injuries.
+    </p>
+    <p>
       <strong>NYC CRASH MAPPER</strong> was made possible by{' '}
       <a href="https://carto.com/">
         <strong>CARTO</strong>
