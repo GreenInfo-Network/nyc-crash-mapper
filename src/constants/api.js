@@ -103,6 +103,18 @@ export const makeDefaultState = () => {
       },
       noInjuryFatality: isBool(p.noInjFat) ? p.noInjFat : false,
     },
+    filterVehicle: {
+      vehicle: {
+        car: isBool(p.vcar) ? p.vcar : true,
+        truck: isBool(p.vtruck) ? p.vtruck : true,
+        motorcycle: isBool(p.vmotorcycle) ? p.vmotorcycle : true,
+        bicycle: isBool(p.vbicycle) ? p.vbicycle : true,
+        suv: isBool(p.vsuv) ? p.vsuv : true,
+        busvan: isBool(p.vbusvan) ? p.vbusvan : true,
+        scooter: isBool(p.vscooter) ? p.vscooter : true,
+        other: isBool(p.vother) ? p.vother : true,
+      },
+    },
     filterContributingFactor: p.contrFactor || 'ALL',
     modal: {
       showModal: false,
@@ -118,17 +130,20 @@ export const configureLayerSource = (sql) => {
 };
 
 // Should the component fetch new crash data?
+// also used in App.js to determine whether to update URL params
 // @param {object} curProps; the component's this.props
 // @param {object} nextProps; the component's nextProps in componentWillReceiveProps
 export const crashDataChanged = (curProps, nextProps) => {
   const { endDate, startDate, filterType, identifier, geo, lngLats } = nextProps;
   const { injury, fatality, noInjuryFatality } = filterType;
+  const { filterVehicle } = nextProps;
 
   if (!startDate.isSame(curProps.startDate) ||
       !endDate.isSame(curProps.endDate) ||
       !isEqual(injury, curProps.filterType.injury) ||
       !isEqual(fatality, curProps.filterType.fatality) ||
       noInjuryFatality !== curProps.filterType.noInjuryFatality ||
+      !isEqual(filterVehicle.vehicle, curProps.filterVehicle.vehicle) ||
       (geo === 'citywide' && curProps.geo !== 'citywide') ||
       (identifier && identifier !== curProps.identifier) ||
       (lngLats && lngLats.length && !isEqual(lngLats, curProps.lngLats))) {

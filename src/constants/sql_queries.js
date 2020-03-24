@@ -182,6 +182,42 @@ const filterByTypeWhereClause = (filterType) => {
   return whereClause;
 };
 
+// Generates the SQL WHERE clause for "Filter by Type"
+// @param {object} the store.filterType piece of state
+const filterByVehicleWhereClause = (filterVehicle) => {
+  const { vehicle } = filterVehicle;
+
+  const anyofthese = [];
+  if (vehicle.car) anyofthese.push('hasvehicle_car');
+  if (vehicle.truck) anyofthese.push('hasvehicle_truck');
+  if (vehicle.motorcycle) anyofthese.push('hasvehicle_motorcycle');
+  if (vehicle.bicycle) anyofthese.push('hasvehicle_bicycle');
+  if (vehicle.suv) anyofthese.push('hasvehicle_suv');
+  if (vehicle.busvan) anyofthese.push('hasvehicle_busvan');
+  if (vehicle.scooter) anyofthese.push('hasvehicle_scooter');
+
+  // other is really other OR unknown/unmatched
+  if (vehicle.other) {
+    anyofthese.push(sls`
+      hasvehicle_other OR (
+        NOT hasvehicle_car AND
+        NOT hasvehicle_truck AND
+        NOT hasvehicle_motorcycle AND
+        NOT hasvehicle_bicycle AND
+        NOT hasvehicle_suv AND
+        NOT hasvehicle_busvan AND
+        NOT hasvehicle_scooter AND
+        NOT hasvehicle_other
+      )
+    `);
+  }
+
+  const whereClause = anyofthese.length ? `AND (${anyofthese.join(' OR ')})` : '';
+  console.debug(whereClause);  // eslint-disable-line
+
+  return whereClause;
+};
+
 // Links the Filter by Boundary button name to corresponding Carto table name
 // NOTE: Deliberately not using Borough, because when > 1 year of data is selected
 // the spatial join will time out on Borough polygons
@@ -256,7 +292,7 @@ const filterByCustomAreaClause = (lonLatArray) => {
 // @param {string} harm: crash type, one of 'ALL', 'cyclist', 'motorist', 'ped'
 // @param {string} persona: crash type, of of 'ALL', 'fatality', 'injury', 'no inj/fat'
 export const configureMapSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
+  const { startDate, endDate, filterType, filterVehicle, geo, identifier, lngLats } = params;
 
   return sls`
     SELECT * FROM
@@ -282,6 +318,7 @@ export const configureMapSQL = (params) => {
       ${filterByDateWhereClause(startDate, endDate)}
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
+      ${filterByVehicleWhereClause(filterVehicle)}
       ${filterByIdentifierWhereClause(identifier, geo)}
       AND
         c.the_geom IS NOT NULL
@@ -302,7 +339,7 @@ export const configureMapSQL = (params) => {
  */
 
 export const configureStatsSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
+  const { startDate, endDate, filterType, filterVehicle, geo, identifier, lngLats } = params;
 
   return sls`
     SELECT
@@ -322,6 +359,7 @@ export const configureStatsSQL = (params) => {
     ${filterByDateWhereClause(startDate, endDate)}
     ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
+    ${filterByVehicleWhereClause(filterVehicle)}
     ${filterByIdentifierWhereClause(identifier, geo)}
   `;
 };
@@ -331,7 +369,7 @@ export const configureStatsSQL = (params) => {
 */
 
 export const configureFactorsSQL = (params) => {
-  const { startDate, endDate, filterType, geo, identifier, lngLats } = params;
+  const { startDate, endDate, filterType, filterVehicle, geo, identifier, lngLats } = params;
 
   return sls`
     WITH all_factors as (
@@ -344,6 +382,7 @@ export const configureFactorsSQL = (params) => {
       ${filterByDateWhereClause(startDate, endDate)}
       ${filterByCustomAreaClause(lngLats)}
       ${filterByTypeWhereClause(filterType)}
+      ${filterByVehicleWhereClause(filterVehicle)}
       ${filterByIdentifierWhereClause(identifier, geo)}
     )
     SELECT
@@ -364,7 +403,7 @@ export const configureFactorsSQL = (params) => {
 
 // Creates the SQL query for "Download Data" buttons
 export const configureDownloadDataSQL = (params) => {
-  const { startDate, endDate, filterArea, filterType } = params;
+  const { startDate, endDate, filterArea, filterType, filterVehicle } = params;
   const { geo, lngLats, identifier } = filterArea;
 
   return sls`
@@ -396,6 +435,7 @@ export const configureDownloadDataSQL = (params) => {
     ${filterByDateWhereClause(startDate, endDate)}
     ${filterByCustomAreaClause(lngLats)}
     ${filterByTypeWhereClause(filterType)}
+    ${filterByVehicleWhereClause(filterVehicle)}
     ${filterByIdentifierWhereClause(identifier, geo)}
   `;
 };

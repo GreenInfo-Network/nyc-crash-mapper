@@ -4,7 +4,7 @@ import { dateStringFormatModel } from '../constants/api';
 import { openModal } from '../actions';
 import Menu from '../components/Menu';
 
-const mapStateToProps = ({ filterDate, filterArea, filterType }) => {
+const mapStateToProps = ({ filterDate, filterArea, filterType, filterVehicle }) => {
   const { startDate, endDate } = filterDate;
   const { geo, identifier, lngLats } = filterArea;
   const { injury, fatality } = filterType;
@@ -22,6 +22,14 @@ const mapStateToProps = ({ filterDate, filterArea, filterType }) => {
     cfat: fatality.cyclist,
     minj: injury.motorist,
     mfat: fatality.motorist,
+    vcar: filterVehicle.vehicle.car,
+    vtruck: filterVehicle.vehicle.truck,
+    vmotorcycle: filterVehicle.vehicle.motorcycle,
+    vbicycle: filterVehicle.vehicle.bicycle,
+    vsuv: filterVehicle.vehicle.suv,
+    vbusvan: filterVehicle.vehicle.busvan,
+    vscooter: filterVehicle.vehicle.scooter,
+    vother: filterVehicle.vehicle.other,
   };
 };
 

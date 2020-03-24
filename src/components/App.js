@@ -35,6 +35,7 @@ class App extends Component {
     if (crashDataChanged(this.props, nextProps)) {
       const { query } = this.props.location;
       this.updateQueryParams({ ...query, ...nextProps });
+
       this.props.fetchCrashStatsData(nextProps)
         .then(this.props.fetchContributingFactors(nextProps))
         .catch((error) => { throw error; });
@@ -57,8 +58,10 @@ class App extends Component {
     // this allows for "stateful URLs" so that when app loads, it will load
     // with the same filters & map zoom & center last viewed, enabling sharing
     // of unique views of the data via the URL between users
-    const { lat, lng, zoom, startDate, endDate, identifier, geo, lngLats, filterType } = params;
+    const { lat, lng, zoom, startDate, endDate, identifier, geo, lngLats } = params;
+    const { filterType, filterVehicle } = params;
     const { injury, fatality, noInjuryFatality } = filterType;
+    const { vehicle } = filterVehicle;
 
     const newQueryParams = {
       lat,
@@ -76,6 +79,14 @@ class App extends Component {
       cfat: fatality.cyclist,
       mfat: fatality.motorist,
       pfat: fatality.pedestrian,
+      vcar: vehicle.car,
+      vtruck: vehicle.truck,
+      vmotorcycle: vehicle.motorcycle,
+      vbicycle: vehicle.bicycle,
+      vsuv: vehicle.suv,
+      vbusvan: vehicle.busvan,
+      vscooter: vehicle.scooter,
+      vother: vehicle.other,
     };
 
     this.context.router.push(`?${queryString.stringify(newQueryParams)}`);
@@ -144,6 +155,18 @@ App.propTypes = {
       motorist: PropTypes.bool,
       pedestrian: PropTypes.bool,
     }),
+  }).isRequired,
+  filterVehicle: PropTypes.shape({
+    vehicle: PropTypes.shape({
+      car: PropTypes.bool.isRequired,
+      truck: PropTypes.bool.isRequired,
+      motorcycle: PropTypes.bool.isRequired,
+      bicycle: PropTypes.bool.isRequired,
+      suv: PropTypes.bool.isRequired,
+      busvan: PropTypes.bool.isRequired,
+      scooter: PropTypes.bool.isRequired,
+      other: PropTypes.bool.isRequired,
+    }).isRequired,
   }).isRequired,
   identifier: PropTypes.oneOfType([
     PropTypes.number,
