@@ -140,13 +140,17 @@ const AboutCopy = () => (
       </a>{' '}
       for hosting the data and making the creation of this tool possible through their Grants For
       Good program; by The Lily Auchincloss and PEPSI foundations, the Manhattan Borough President
-       and the New York City Council.
+      and the New York City Council. The{' '}
+      <a href="https://lilynyc.org/">
+        <strong>LILY AUCHINCLOSS FOUNDATION</strong>
+      </a>{' '}
+      generous grant helped to write the vehicular analysis modules.
     </p>
     <p>
       This application is the result of four iterations of a mapping initiative started by
       Transportation Alternatives in 2006 and continued by John Kraus.The current version of the
-      application with charts was built in 2017 by{' '}
-      <a href="http://greeninfo.org">
+      application with charts was built in 2017 by Chris Henrick and {' '}
+      <a href="https://greeninfo.org">
         <strong>GreenInfo Network</strong>
       </a>.
     </p>
