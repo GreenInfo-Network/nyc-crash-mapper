@@ -45,4 +45,16 @@ DownloadData.propTypes = {
   closeModal: PropTypes.func.isRequired,
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
+  filterVehicle: PropTypes.shape({
+    vehicle: PropTypes.shape({
+      car: PropTypes.bool.isRequired,
+      truck: PropTypes.bool.isRequired,
+      motorcycle: PropTypes.bool.isRequired,
+      bicycle: PropTypes.bool.isRequired,
+      suv: PropTypes.bool.isRequired,
+      busvan: PropTypes.bool.isRequired,
+      scooter: PropTypes.bool.isRequired,
+      other: PropTypes.bool.isRequired,
+    }).isRequired,
+  }).isRequired,
 };

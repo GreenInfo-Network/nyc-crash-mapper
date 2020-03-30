@@ -19,7 +19,9 @@ class ModalWrapper extends Component {
   }
 
   handleModalType() {
-    const { modalType, closeModal, filterType, filterArea, startDate, endDate } = this.props;
+    const { modalType, closeModal, } = this.props;
+    const { startDate, endDate } = this.props;
+    const { filterType, filterArea, filterVehicle } = this.props;
     const modalTypes = {
       about: About,
       help: Help,
@@ -34,7 +36,7 @@ class ModalWrapper extends Component {
     const HOC = ModalContent(modalTypes[modalType], hocConfig);
 
     return (
-      <HOC {...{ filterType, filterArea, startDate, endDate }} />
+      <HOC {...{ filterType, filterArea, filterVehicle, startDate, endDate }} />
     );
   }
 
@@ -66,6 +68,18 @@ ModalWrapper.propTypes = {
   modalType: PropTypes.string,
   filterType: PropTypes.shape({}).isRequired,
   filterArea: PropTypes.shape({}).isRequired,
+  filterVehicle: PropTypes.shape({
+    vehicle: PropTypes.shape({
+      car: PropTypes.bool.isRequired,
+      truck: PropTypes.bool.isRequired,
+      motorcycle: PropTypes.bool.isRequired,
+      bicycle: PropTypes.bool.isRequired,
+      suv: PropTypes.bool.isRequired,
+      busvan: PropTypes.bool.isRequired,
+      scooter: PropTypes.bool.isRequired,
+      other: PropTypes.bool.isRequired,
+    }).isRequired,
+  }).isRequired,
   startDate: momentPropTypes.momentObj.isRequired,
   endDate: momentPropTypes.momentObj.isRequired,
 };

@@ -4,7 +4,6 @@ import FilterButton from './FilterButton';
 
 const DownloadData = (props) => {
   const { lastUpdated, openModal } = props;
-
   return (
     <div className="download-data">
       <FilterButton

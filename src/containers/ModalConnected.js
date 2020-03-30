@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { closeModal } from '../actions/';
 import Modal from '../components/Modal/';
 
-const mapStateToProps = ({ modal, filterType, filterArea, filterDate }) => {
+const mapStateToProps = ({ modal, filterType, filterArea, filterVehicle, filterDate }) => {
   const { showModal, modalType } = modal;
   const { startDate, endDate } = filterDate;
   return {
@@ -11,6 +11,7 @@ const mapStateToProps = ({ modal, filterType, filterArea, filterDate }) => {
     modalType,
     filterArea,
     filterType,
+    filterVehicle,
     startDate,
     endDate,
   };
