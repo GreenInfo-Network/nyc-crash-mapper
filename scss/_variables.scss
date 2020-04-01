@@ -12,9 +12,9 @@ $marine: #105b63 !default;
 $marine-light: lighten($marine, 10) !default;
 
 $off-white: #FFFAD5 !default;
-$grey: #4d4d4d !default;
+$grey: #3d3d3d !default;
 $medium-grey: lighten($dark-grey, 50) !default;
-$ui-grey: rgba($grey, 0.8) !default;
+$ui-grey: rgba($grey, 0.9) !default;
 $transparent: rgba(0,0,0,0) !default;
 
 $btn-hover: lighten($yellow-orange, 10) !default;
