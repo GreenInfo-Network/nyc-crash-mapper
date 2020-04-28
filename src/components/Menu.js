@@ -11,6 +11,7 @@ const Menu = (props) => {
   const items = [
     { type: null, value: 'map', label: 'Map' },
     { type: 'link', value: 'trend', label: 'Trend' },
+    { type: 'link', value: 'vehicle', label: 'Vehicle' },
     { type: 'link', value: 'compare', label: 'Compare' },
     { type: 'link', value: 'rank', label: 'Rank' },
     { type: 'modal', value: 'about', label: 'About' },
