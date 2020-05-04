@@ -102,27 +102,24 @@ const HelpCopy = () => (
           </td>
         </tr>
         <tr>
-          <td style={{ 'vertical-align': 'middle', 'text-align': 'center' }}>
-            Video coming soon
+          <td>
+            <iframe
+              title="Help-Rank"
+              src="https://player.vimeo.com/video/414577873"
+              width="480"
+              height="270"
+              frameBorder="0"
+              allowFullScreen
+            />
           </td>
           <td>
             <h6>Crashmapper Vehicle Filter</h6>
             <p>
-              When selecting a vehicle type, the numbers returned will be those relating to any
-              crash where the vehicle is involved. Please note these technical limitations:
+              Do many crashes involve certain type of vehicles?
+              Is there a category of vehicles more dangerous
+              to vulnerable users as they cause more fatalities and injuries?
+              Is it specific to an area when enforcement should be increased?
             </p>
-            <ul>
-              <li>
-                NYPD officers use free form entries to report the vehicle involved in a crash.
-                CHEKPEDS maps these entries to eight categories.
-              </li>
-              <li>
-                NYPD captures up to five (5) vehicles included in a crash. As long as one of these
-                vehicles matches the filter selected, the related injuries and fatalities will be
-                counted – even if the vehicle is potentially not directly responsible for the
-                fatalities/injuries.
-              </li>
-            </ul>
           </td>
         </tr>
       </tbody>
