@@ -130,8 +130,9 @@ const AboutCopy = () => (
     </p>
     <p>
       In the NYPD motor vehicles collisions dataset, some injuries and fatalities do not have a
-      role/vehicle ascribed to them. As a result the pedestrian/cyclist/motorist numbers in
-      CrashMapper may not add up to the exact total injuries and fatalities in OpenData.
+      role/vehicle ascribed to them. “Other” includes crashes in the source data that are not
+      labeled by category (pedestrian, cyclists or motorists). In our experience they include
+      mostly crashes where the victims are e-bike users.
     </p>
     <p>
       NYPD captures up to five (5) vehicles included in a crash. As long as any one of these

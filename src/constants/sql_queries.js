@@ -157,10 +157,19 @@ const filterByTypeWhereClause = (filterType) => {
     })
     .join('OR');
 
+  const typesInjuredSelected = Object.values(injury).filter(i => i).length;
+  const typesKilledSelected = Object.values(fatality).filter(i => i).length;
+
   const typesInjuredMapped = mapTypes(injury, 'injury');
   const typesKilledMapped = mapTypes(fatality, 'fatality');
 
-  if (typesInjuredMapped.length > 0 && typesKilledMapped.length > 0) {
+  if (typesInjuredSelected === 3 && typesKilledSelected === 3) {
+    whereClause += 'AND (number_of_persons_injured > 0 OR number_of_persons_killed > 0)';
+  } else if (typesInjuredSelected > 0 && typesKilledSelected === 3) {
+    whereClause += `AND (${typesInjuredMapped} OR number_of_persons_killed > 0)`;
+  } else if (typesInjuredSelected === 3 && typesKilledSelected > 0) {
+    whereClause += `AND (number_of_persons_injured > 0 OR ${typesKilledMapped})`;
+  } else if (typesInjuredMapped.length > 0 && typesKilledMapped.length > 0) {
     whereClause += `AND (${typesInjuredMapped} OR ${typesKilledMapped})`;
   } else if (typesInjuredMapped.length > 0) {
     whereClause += `AND (${typesInjuredMapped})`;
@@ -178,6 +187,8 @@ const filterByTypeWhereClause = (filterType) => {
       number_of_persons_killed = 0
     `;
   }
+
+console.debug(['GDA', typesInjuredSelected, typesKilledSelected, whereClause ]);  //eslint-disable-line
 
   return whereClause;
 };
@@ -309,8 +320,10 @@ export const configureMapSQL = (params) => {
         SUM(c.number_of_motorist_killed) as motorist_killed,
         SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
         SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
-        SUM(c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured) as persons_injured,
-        SUM(c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed) as persons_killed
+        SUM(c.number_of_persons_injured - (c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured)) as other_injured,
+        SUM(c.number_of_persons_killed - (c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed)) as other_killed,
+        SUM(c.number_of_persons_injured) as persons_injured,
+        SUM(c.number_of_persons_killed) as persons_killed
       FROM
         ${nyc_crashes} c
       ${joinToGeoTableClause(geo)}
@@ -350,8 +363,10 @@ export const configureStatsSQL = (params) => {
       SUM(c.number_of_motorist_killed) as motorist_killed,
       SUM(c.number_of_pedestrian_injured) as pedestrian_injured,
       SUM(c.number_of_pedestrian_killed) as pedestrian_killed,
-      SUM(c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured) as persons_injured,
-      SUM(c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed) as persons_killed
+      SUM(c.number_of_persons_injured - (c.number_of_pedestrian_injured + c.number_of_cyclist_injured + c.number_of_motorist_injured)) as other_injured,
+      SUM(c.number_of_persons_killed - (c.number_of_pedestrian_killed + c.number_of_cyclist_killed + c.number_of_motorist_killed)) as other_killed,
+      SUM(c.number_of_persons_injured) as persons_injured,
+      SUM(c.number_of_persons_killed) as persons_killed
     FROM
       ${nyc_crashes} c
     ${joinToGeoTableClause(geo)}

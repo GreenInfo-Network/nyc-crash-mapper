@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const StatsCounter = (props) => {
-  const { cyclist, ped, driver, total, title } = props;
+  const { cyclist, ped, driver, other, total, title } = props;
 
   return (
     <div className="stats-counter">
@@ -19,6 +19,10 @@ const StatsCounter = (props) => {
         <p>Motorist</p>
       </div>
       <div className="count">
+        <p>{other.toLocaleString()}</p>
+        <p>Unknown</p>
+      </div>
+      <div className="count">
         <p className="roboto-bold">{total.toLocaleString()}</p>
         <p className="roboto-bold">Total</p>
       </div>
@@ -30,6 +34,7 @@ StatsCounter.defaultProps = {
   cyclist: 0,
   driver: 0,
   ped: 0,
+  other: 0,
   total: 0,
   title: ''
 };
@@ -38,6 +43,7 @@ StatsCounter.propTypes = {
   cyclist: PropTypes.number,
   driver: PropTypes.number,
   ped: PropTypes.number,
+  other: PropTypes.number,
   total: PropTypes.number,
   title: PropTypes.string
 };

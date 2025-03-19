@@ -21,6 +21,8 @@ class StatsLegend extends Component {
       motorist_killed,
       pedestrian_injured,
       pedestrian_killed,
+      other_injured,
+      other_killed,
       persons_injured,
       persons_killed,
       total_crashes,
@@ -51,6 +53,7 @@ class StatsLegend extends Component {
                 cyclist={cyclist_killed}
                 driver={motorist_killed}
                 ped={pedestrian_killed}
+                other={other_killed}
                 total={persons_killed}
               />
               <StatsCounter
@@ -58,6 +61,7 @@ class StatsLegend extends Component {
                 cyclist={cyclist_injured}
                 driver={motorist_injured}
                 ped={pedestrian_injured}
+                other={other_injured}
                 total={persons_injured}
               />
             </div>
@@ -82,6 +86,8 @@ StatsLegend.defaultProps = {
   motorist_killed: 0,
   pedestrian_injured: 0,
   pedestrian_killed: 0,
+  other_injured: 0,
+  other_killed: 0,
   persons_injured: 0,
   persons_killed: 0,
   total_crashes: 0,
@@ -102,6 +108,8 @@ StatsLegend.propTypes = {
   motorist_killed: PropTypes.number,
   pedestrian_injured: PropTypes.number,
   pedestrian_killed: PropTypes.number,
+  other_injured: PropTypes.number,
+  other_killed: PropTypes.number,
   persons_injured: PropTypes.number,
   persons_killed: PropTypes.number,
   total_crashes: PropTypes.number,
