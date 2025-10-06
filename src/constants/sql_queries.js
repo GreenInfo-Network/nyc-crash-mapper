@@ -188,8 +188,6 @@ const filterByTypeWhereClause = (filterType) => {
     `;
   }
 
-console.debug(['GDA', typesInjuredSelected, typesKilledSelected, whereClause ]);  //eslint-disable-line
-
   return whereClause;
 };
 
