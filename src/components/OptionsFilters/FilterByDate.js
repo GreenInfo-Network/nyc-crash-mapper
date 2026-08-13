@@ -63,6 +63,7 @@ class FilterByDate extends Component {
 
     return (
       <div className="filter-by-date">
+        <p className="filter-by-date-message filter-by-date-alert">Attention: Data for May 2026 and later are known to be incomplete. We are working on it.</p>
         <ul className="filter-list">
           <li>
             <MonthYearSelector

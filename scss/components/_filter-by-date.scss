@@ -103,3 +103,17 @@
     }
   }
 }
+
+.filter-by-date-message {
+  font-size: 1.2rem;
+  font-weight: 500;
+
+  margin-bottom: $margin-10;
+  margin-left: $margin-10;
+}
+
+.filter-by-date-alert {
+    background-color: $btn-bg;
+    color: $marine-light;
+    padding: 1em;
+}
