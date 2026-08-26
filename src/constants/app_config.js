@@ -46,7 +46,7 @@ export const cartoLayerSource = {
 
 // basemap for Leaflet
 export const basemapURL =
-  'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+  'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png?key=cb1_297w_1_aaa869525419d3057dd395b1';
 
 // mapping of selectable area types onto a format string, for labels and tooltips
 // "NYPD Precinct 107" is nicer than "107"
