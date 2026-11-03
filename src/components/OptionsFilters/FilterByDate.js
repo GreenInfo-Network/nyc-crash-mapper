@@ -63,7 +63,7 @@ class FilterByDate extends Component {
 
     return (
       <div className="filter-by-date">
-        <p className="filter-by-date-message filter-by-date-alert">Attention: Data for May 2026 and later are known to be incomplete. NYC OpenData is working on it.</p>
+        <p className="filter-by-date-message filter-by-date-alert">2015 and prior years' data is being converted into NYC open Data new format</p>
         <ul className="filter-list">
           <li>
             <MonthYearSelector
