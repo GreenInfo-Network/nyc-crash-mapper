@@ -17,7 +17,7 @@ export const cartoTables = {
   nyc_assembly: 'nyc_assembly',
   nyc_senate: 'nyc_senate',
   nyc_intersections: 'nyc_highcrash_intersections',
-  nyc_crashes: 'crashes_all_prod'
+  nyc_crashes: 'crashes_all_prod_v2'
 };
 
 export const crashDataFieldNames = [
